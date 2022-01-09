@@ -8,7 +8,23 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
+    
+    
     <Grid>
+        <local:PixelRuler 
+            HorizontalAlignment = "Stretch" 
+            VerticalAlignment = "Top"
+            ScaleMarkPosition = "50"
+            RulerLength = "1000"
+            SmallDividerLength = "5"
+            LargeDividerLength = "10"
+            RulerWidth = "50"
+            PixelsPerUnit = "10"
+            UnitsPerScale = "5"
+            BackgroundColor = "White"
+            DividerColor = "Gray"
+            TextColor = "Black"
+            />
 
     </Grid>
 </Page>
