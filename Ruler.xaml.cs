@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -25,14 +26,14 @@ namespace WireFrame
     /// refer website: https://edi.wang/post/2018/11/5/build-pixel-ruler-uwp
     /// for details on how to implement this ruler functionality
     /// </summary>
-    public sealed partial class PixelRuler : UserControl, INotifyPropertyChanged
+    public sealed partial class Ruler : UserControl, INotifyPropertyChanged
     {
         //////////////////////
 
         public static readonly DependencyProperty ScaleMarkPositionProperty = DependencyProperty.Register(
             nameof(ScaleMarkPosition),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -47,7 +48,7 @@ namespace WireFrame
         public static readonly DependencyProperty RulerLengthProperty = DependencyProperty.Register(
             nameof(RulerLength),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -62,7 +63,7 @@ namespace WireFrame
         public static readonly DependencyProperty SmallDividerLengthProperty = DependencyProperty.Register(
             nameof(SmallDividerLength),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -77,7 +78,7 @@ namespace WireFrame
         public static readonly DependencyProperty LargeDividerLengthProperty = DependencyProperty.Register(
             nameof(LargeDividerLength),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -92,7 +93,7 @@ namespace WireFrame
         public static readonly DependencyProperty RulerWidthProperty = DependencyProperty.Register(
             nameof(RulerWidth),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -107,7 +108,7 @@ namespace WireFrame
         public static readonly DependencyProperty BackgroundColorProperty = DependencyProperty.Register(
             nameof(BackgroundColor),
             typeof(Color),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -126,7 +127,7 @@ namespace WireFrame
         public static readonly DependencyProperty DividerColorProperty = DependencyProperty.Register(
             nameof(DividerColor),
             typeof(Color),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -145,7 +146,7 @@ namespace WireFrame
         public static readonly DependencyProperty TextColorProperty = DependencyProperty.Register(
             nameof(TextColor),
             typeof(Color),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -164,7 +165,7 @@ namespace WireFrame
         public static DependencyProperty PixelsPerUnitProperty = DependencyProperty.Register(
             nameof(PixelsPerUnit),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -179,7 +180,7 @@ namespace WireFrame
         public static DependencyProperty UnitsPerScaleProperty = DependencyProperty.Register(
             nameof(UnitsPerScale),
             typeof(int),
-            typeof(PixelRuler),
+            typeof(Ruler),
             new PropertyMetadata(null)
         );
 
@@ -191,11 +192,26 @@ namespace WireFrame
 
         //////////////////////
 
+        public static DependencyProperty IsVerticalRulerProperty = DependencyProperty.Register(
+            nameof(IsVerticalRuler),
+            typeof(bool),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public bool IsVerticalRuler
+        {
+            get => (bool)GetValue(IsVerticalRulerProperty);
+            set => SetValue(IsVerticalRulerProperty, value);
+        }
+
+        //////////////////////
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         ///////////////////////////////////////////////////////////////////////////////////////////////
 
-        public PixelRuler()
+        public Ruler()
         {
             Color WHITE = Color.FromArgb(255, 200, 200, 200);
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
@@ -213,6 +229,7 @@ namespace WireFrame
             BackgroundColor = WHITE;
             DividerColor = BLACK;
             TextColor = BLACK;
+            IsVerticalRuler = false;
         }
 
         private void OnPropertyChanged(string propertyName = null)
@@ -220,36 +237,87 @@ namespace WireFrame
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void RulerCanvas_OnDraw(CanvasControl sender, CanvasDrawEventArgs args)
+        private void DrawHorizontalRuler(CanvasControl sender, CanvasDrawEventArgs args)
         {
+            var format = new CanvasTextFormat()
+            {
+                FontSize = (float)12,
+                FontFamily = new FontFamily("Courier New").Source,
+                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                VerticalAlignment = CanvasVerticalAlignment.Bottom,
+                WordWrapping = CanvasWordWrapping.NoWrap
+            };
+
             var session = args.DrawingSession;
 
             session.DrawLine(0, 0, RulerLength, 0, DividerColor); // top
             session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor); // bottom
 
-            for(int unit = 0, x=0; x < RulerLength - ScaleMarkPosition; x+=PixelsPerUnit)
+            for (int unit = 0, x = 0; x < RulerLength - ScaleMarkPosition; x += PixelsPerUnit)
             {
                 int offset = ScaleMarkPosition + x;
 
                 if (x % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    session.DrawLine(offset, 0, offset, LargeDividerLength, DividerColor);
+                    //session.DrawLine(offset, 0, offset, LargeDividerLength, DividerColor);
                     session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
 
-                    session.DrawText(unit.ToString(), offset, RulerWidth / 2, TextColor, new CanvasTextFormat()
-                    {
-                        FontSize = (float)FontSize,
-                        FontFamily = FontFamily.Source,
-                        HorizontalAlignment = CanvasHorizontalAlignment.Center,
-                        VerticalAlignment = CanvasVerticalAlignment.Center
-                    });
+                    float xLoc = offset + 3;
+                    float yLoc = RulerWidth - 5;
+                    CanvasTextLayout textLayout = new CanvasTextLayout(session, unit.ToString(), format, 0.0f, 0.0f);
+                    Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
+                    //session.DrawRectangle(theRectYouAreLookingFor, Colors.Green, 1.0f);
+                    session.DrawTextLayout(textLayout, xLoc, yLoc, Colors.Black);
 
                     ++unit;
                 }
                 else
                 {
-                    session.DrawLine(offset, 0, offset, SmallDividerLength, DividerColor);
+                    //session.DrawLine(offset, 0, offset, SmallDividerLength, DividerColor);
                     session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                }
+            }
+        }
+
+        private void DrawVerticalRuler(CanvasControl sender, CanvasDrawEventArgs args)
+        {
+            var format = new CanvasTextFormat()
+            {
+                FontSize = (float)12,
+                FontFamily = new FontFamily("Courier New").Source,
+                HorizontalAlignment = CanvasHorizontalAlignment.Right,
+                VerticalAlignment = CanvasVerticalAlignment.Top,
+                WordWrapping = CanvasWordWrapping.NoWrap
+            };
+
+            var session = args.DrawingSession;
+
+            session.DrawLine(0, 0, 0, RulerLength, DividerColor); // top
+            session.DrawLine(RulerWidth, 0, RulerWidth, RulerLength, DividerColor); // bottom
+
+            for (int unit = 0, y = 0; y < RulerLength - ScaleMarkPosition; y += PixelsPerUnit)
+            {
+                int offset = ScaleMarkPosition + y;
+
+                if (y % (PixelsPerUnit * UnitsPerScale) == 0)
+                {
+                    session.DrawLine(RulerWidth, offset, RulerWidth - LargeDividerLength, offset, DividerColor);
+
+                    float xLoc = RulerWidth - 19;
+                    float yLoc = offset + 3;
+                    CanvasTextLayout textLayout = new CanvasTextLayout(session, unit.ToString(), format, 0.0f, 0.0f);
+                    Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
+
+                    session.Transform = Matrix3x2.CreateRotation((float)-Math.PI * 0.5f, new Vector2(xLoc, yLoc));
+                    session.DrawTextLayout(textLayout, xLoc, yLoc, Colors.Black);
+                    session.Transform = Matrix3x2.Identity;
+
+                    ++unit;
+                }
+                else
+                {
+                    //session.DrawLine(offset, 0, offset, SmallDividerLength, DividerColor);
+                    session.DrawLine(RulerWidth, offset, RulerWidth - SmallDividerLength, offset, DividerColor);
                 }
             }
         }

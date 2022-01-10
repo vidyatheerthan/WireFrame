@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="WireFrame.PixelRuler"
+    x:Class="WireFrame.Ruler"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WireFrame"
@@ -10,10 +10,18 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <xaml:CanvasControl x:Name="RulerCanvas" 
+    <Grid>
+    <xaml:CanvasControl x:Name="HorizontalCanvas" 
                         Height="{x:Bind RulerWidth, Mode=OneWay}"
                         ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
-                        Draw="RulerCanvas_OnDraw"
-                    VerticalAlignment="Top" />
+                        Draw="DrawHorizontalRuler"
+                        Visibility="{Binding IsVerticalRuler, TargetNullValue=Collapsed}"/>
 
+        <xaml:CanvasControl x:Name="VerticalCanvas" 
+                        Width="{x:Bind RulerWidth, Mode=OneWay}"
+                        ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
+                        Draw="DrawVerticalRuler"
+                        Visibility="{Binding IsVerticalRuler, TargetNullValue=Collapsed}"/>
+    </Grid>
+    
 </UserControl>
