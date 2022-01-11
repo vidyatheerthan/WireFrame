@@ -11,7 +11,19 @@
     
     
     <Grid>
+
+        <local:Grid
+            x:Name="WFGrid"
+            Width="300" 
+            Height="300"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Top"
+            PixelsPerUnit="10" 
+            BackgroundColor="Black" 
+            DividerColor="Gray"/>
+
         <local:Ruler 
+            x:Name="WFHorizontalRuler"
             IsVerticalRuler="False"
             HorizontalAlignment = "Stretch" 
             VerticalAlignment = "Top"
@@ -24,10 +36,10 @@
             LargeDividerLength = "18"
             BackgroundColor = "White"
             DividerColor = "Black"
-            TextColor = "Black"
-            />
+            TextColor = "Black"/>
 
         <local:Ruler 
+            x:Name="WFVerticalRuler"
             IsVerticalRuler="True"
             HorizontalAlignment = "Left" 
             VerticalAlignment = "Stretch"
@@ -40,8 +52,9 @@
             LargeDividerLength = "18"
             BackgroundColor = "White"
             DividerColor = "Black"
-            TextColor = "Black"
-            />
+            TextColor = "Black"/>
+
+        
 
     </Grid>
 </Page>

@@ -11,7 +11,7 @@
     d:DesignWidth="400">
 
     <Grid>
-    <xaml:CanvasControl x:Name="HorizontalCanvas" 
+        <xaml:CanvasControl x:Name="HorizontalCanvas" 
                         Height="{x:Bind RulerWidth, Mode=OneWay}"
                         ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
                         Draw="DrawHorizontalRuler"

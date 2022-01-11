@@ -5,6 +5,8 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
+using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -25,6 +27,34 @@ namespace WireFrame
         public MainPage()
         {
             this.InitializeComponent();
+
+            Action NotifySizeChange = () =>
+            {
+                var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
+                var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
+
+                double Width = bounds.Width * scaleFactor;
+                double Height = bounds.Height * scaleFactor;
+
+                Resize(Width, Height);
+            };
+
+            Window.Current.CoreWindow.SizeChanged += async (ss, ee) =>
+            {
+                NotifySizeChange();
+                ee.Handled = true;
+            };
+
+            NotifySizeChange();
+        }
+
+        private void Resize(double Width, double Height)
+        {
+            WFGrid.Width = Width;
+            WFGrid.Height = Height;
+
+            WFHorizontalRuler.RulerLength = (int)Width;
+            WFVerticalRuler.RulerLength = (int)Height;
         }
     }
 }
