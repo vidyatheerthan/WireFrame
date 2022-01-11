@@ -15,13 +15,13 @@
                         Height="{x:Bind RulerWidth, Mode=OneWay}"
                         ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
                         Draw="DrawHorizontalRuler"
-                        Visibility="{Binding IsVerticalRuler, TargetNullValue=Collapsed}"/>
+                        Visibility="{x:Bind HorizontalRuler}"/>
 
         <xaml:CanvasControl x:Name="VerticalCanvas" 
                         Width="{x:Bind RulerWidth, Mode=OneWay}"
                         ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
                         Draw="DrawVerticalRuler"
-                        Visibility="{Binding IsVerticalRuler, TargetNullValue=Collapsed}"/>
+                        Visibility="{x:Bind VerticalRuler}"/>
     </Grid>
     
 </UserControl>

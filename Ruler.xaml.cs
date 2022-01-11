@@ -192,17 +192,32 @@ namespace WireFrame
 
         //////////////////////
 
-        public static DependencyProperty IsVerticalRulerProperty = DependencyProperty.Register(
-            nameof(IsVerticalRuler),
-            typeof(bool),
+        public static DependencyProperty HorizontalRulerProperty = DependencyProperty.Register(
+            nameof(HorizontalRuler),
+            typeof(Visibility),
             typeof(Ruler),
             new PropertyMetadata(null)
         );
 
-        public bool IsVerticalRuler
+        public Visibility HorizontalRuler
         {
-            get => (bool)GetValue(IsVerticalRulerProperty);
-            set => SetValue(IsVerticalRulerProperty, value);
+            get => (Visibility)GetValue(HorizontalRulerProperty);
+            set => SetValue(HorizontalRulerProperty, value);
+        }
+
+        //////////////////////
+
+        public static DependencyProperty VerticalRulerProperty = DependencyProperty.Register(
+            nameof(VerticalRuler),
+            typeof(Visibility),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public Visibility VerticalRuler
+        {
+            get => (Visibility)GetValue(VerticalRulerProperty);
+            set => SetValue(VerticalRulerProperty, value);
         }
 
         //////////////////////
@@ -229,7 +244,8 @@ namespace WireFrame
             BackgroundColor = WHITE;
             DividerColor = BLACK;
             TextColor = BLACK;
-            IsVerticalRuler = false;
+            HorizontalRuler = Visibility.Collapsed;
+            VerticalRuler = Visibility.Collapsed;
         }
 
         private void OnPropertyChanged(string propertyName = null)

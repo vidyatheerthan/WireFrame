@@ -24,7 +24,8 @@
 
         <local:Ruler 
             x:Name="WFHorizontalRuler"
-            IsVerticalRuler="False"
+            HorizontalRuler="Visible"
+            VerticalRuler="Collapsed"
             HorizontalAlignment = "Stretch" 
             VerticalAlignment = "Top"
             ScaleMarkPosition = "50"
@@ -40,7 +41,8 @@
 
         <local:Ruler 
             x:Name="WFVerticalRuler"
-            IsVerticalRuler="True"
+            HorizontalRuler="Collapsed"
+            VerticalRuler="Visible"
             HorizontalAlignment = "Left" 
             VerticalAlignment = "Stretch"
             ScaleMarkPosition = "50"
