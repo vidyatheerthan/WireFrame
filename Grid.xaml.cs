@@ -21,6 +21,7 @@ namespace WireFrame
 {
     public sealed partial class Grid : UserControl
     {
+        
         ////////////////////////////
 
         public static readonly DependencyProperty PixelsPerUnitProperty = DependencyProperty.Register(
@@ -34,6 +35,21 @@ namespace WireFrame
         {
             get => (int)GetValue(PixelsPerUnitProperty);
             set => SetValue(PixelsPerUnitProperty, value);
+        }
+
+        //////////////////////
+
+        public static DependencyProperty UnitsPerScaleProperty = DependencyProperty.Register(
+            nameof(UnitsPerScale),
+            typeof(int),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public int UnitsPerScale
+        {
+            get => (int)GetValue(UnitsPerScaleProperty);
+            set => SetValue(UnitsPerScaleProperty, value);
         }
 
         //////////////////////
@@ -72,18 +88,39 @@ namespace WireFrame
             }
         }
 
+        //////////////////////
+
+        public static readonly DependencyProperty SubDividerColorProperty = DependencyProperty.Register(
+            nameof(SubDividerColor),
+            typeof(Color),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public Color SubDividerColor
+        {
+            get => (Color)GetValue(SubDividerColorProperty);
+            set
+            {
+                SetValue(SubDividerColorProperty, value);
+            }
+        }
+
         ////////////////////////////
 
         public Grid()
         {
-            Color WHITE = Color.FromArgb(255, 200, 200, 200);
+            Color WHITE = Color.FromArgb(255, 255, 255, 255);
+            Color GRAY = Color.FromArgb(255, 200, 200, 200);
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
 
             this.InitializeComponent();
 
             PixelsPerUnit = 10;
+            UnitsPerScale = 4;
             BackgroundColor = BLACK;
-            DividerColor = WHITE;            
+            DividerColor = WHITE;
+            SubDividerColor = GRAY;
         }
 
         private void DrawGrid(CanvasControl sender, CanvasDrawEventArgs args)
@@ -92,12 +129,26 @@ namespace WireFrame
 
             for (int x = 0; x <= Width; x += PixelsPerUnit)
             {
-                session.DrawLine(x, 0, x, (int)Height, DividerColor);
+                if(x % (PixelsPerUnit * UnitsPerScale) == 0)
+                {
+                    session.DrawLine(x, 0, x, (int)Height, DividerColor);
+                }
+                else
+                {
+                    session.DrawLine(x, 0, x, (int)Height, SubDividerColor);
+                }                
             }
 
             for (int y = 0; y <= Height; y += PixelsPerUnit)
             {
-                session.DrawLine(0, y, (int)Width, y, DividerColor);
+                if (y % (PixelsPerUnit * UnitsPerScale) == 0)
+                {
+                    session.DrawLine(0, y, (int)Width, y, DividerColor);
+                }
+                else
+                {
+                    session.DrawLine(0, y, (int)Width, y, SubDividerColor);
+                }
             }
         }
     }

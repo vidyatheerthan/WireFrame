@@ -19,8 +19,10 @@
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             PixelsPerUnit="10" 
+            UnitsPerScale = "5"
             BackgroundColor="Black" 
-            DividerColor="Gray"/>
+            DividerColor="White"
+            SubDividerColor="Gray"/>
 
         <local:Ruler 
             x:Name="WFHorizontalRuler"
