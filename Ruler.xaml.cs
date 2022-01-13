@@ -267,7 +267,7 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(ScaleMarkPosition, RulerWidth, RulerLength, RulerWidth, DividerColor);
+            session.DrawLine(RulerWidth, RulerWidth, RulerLength, RulerWidth, DividerColor);
 
             for (int unit = 0, x = 0; x < RulerLength - ScaleMarkPosition; x += PixelsPerUnit)
             {
@@ -307,7 +307,7 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(RulerWidth, ScaleMarkPosition, RulerWidth, RulerLength, DividerColor);
+            session.DrawLine(RulerWidth, RulerWidth, RulerWidth, RulerLength, DividerColor);
 
             for (int unit = 0, y = 0; y < RulerLength - ScaleMarkPosition; y += PixelsPerUnit)
             {

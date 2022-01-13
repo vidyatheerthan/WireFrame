@@ -21,8 +21,8 @@
             PixelsPerUnit="10" 
             UnitsPerScale = "5"
             BackgroundColor="Black" 
-            DividerColor="#272727"
-            SubDividerColor="#181818"/>
+            DividerColor="#1F1F1F"
+            SubDividerColor="#0F0F0F"/>
 
         <local:Ruler 
             x:Name="WFHorizontalRuler"
