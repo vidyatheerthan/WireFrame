@@ -231,8 +231,6 @@ namespace WireFrame
             Color WHITE = Color.FromArgb(255, 200, 200, 200);
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
 
-            this.InitializeComponent();
-
             // initialize
             ScaleMarkPosition = 35;
             RulerLength = 2000;
@@ -246,6 +244,8 @@ namespace WireFrame
             TextColor = BLACK;
             HorizontalRuler = Visibility.Collapsed;
             VerticalRuler = Visibility.Collapsed;
+
+            this.InitializeComponent();
         }
 
         private void OnPropertyChanged(string propertyName = null)

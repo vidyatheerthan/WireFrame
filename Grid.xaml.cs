@@ -23,7 +23,37 @@ namespace WireFrame
     public sealed partial class Grid : UserControl
     {
         private Line[] cursorLines = new Line[2];
-        
+
+        ////////////////////////////
+
+        public static readonly DependencyProperty CursorStartXProperty = DependencyProperty.Register(
+            nameof(CursorStartX),
+            typeof(int),
+            typeof(Grid),
+            new PropertyMetadata(null)
+        );
+
+        public int CursorStartX
+        {
+            get => (int)GetValue(CursorStartXProperty);
+            set => SetValue(CursorStartXProperty, value);
+        }
+
+        ////////////////////////////
+
+        public static readonly DependencyProperty CursorStartYProperty = DependencyProperty.Register(
+            nameof(CursorStartY),
+            typeof(int),
+            typeof(Grid),
+            new PropertyMetadata(null)
+        );
+
+        public int CursorStartY
+        {
+            get => (int)GetValue(CursorStartYProperty);
+            set => SetValue(CursorStartYProperty, value);
+        }
+
         ////////////////////////////
 
         public static readonly DependencyProperty PixelsPerUnitProperty = DependencyProperty.Register(
@@ -108,6 +138,42 @@ namespace WireFrame
             }
         }
 
+        //////////////////////
+
+        public static readonly DependencyProperty SnapToDividerProperty = DependencyProperty.Register(
+            nameof(SnapToDivider),
+            typeof(bool),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public bool SnapToDivider
+        {
+            get => (bool)GetValue(SnapToDividerProperty);
+            set
+            {
+                SetValue(SnapToDividerProperty, value);
+            }
+        }
+
+        //////////////////////
+
+        public static readonly DependencyProperty SnapToSubDividerProperty = DependencyProperty.Register(
+            nameof(SnapToSubDivider),
+            typeof(bool),
+            typeof(Ruler),
+            new PropertyMetadata(null)
+        );
+
+        public bool SnapToSubDivider
+        {
+            get => (bool)GetValue(SnapToSubDividerProperty);
+            set
+            {
+                SetValue(SnapToSubDividerProperty, value);
+            }
+        }
+
         ////////////////////////////
 
         public Grid()
@@ -118,18 +184,22 @@ namespace WireFrame
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
             Color CYAN = Color.FromArgb(255, 0, 204, 204);
 
-            this.InitializeComponent();
-
             PixelsPerUnit = 10;
             UnitsPerScale = 4;
+            SnapToDivider = false;
+            SnapToSubDivider = false;
             BackgroundColor = BLACK;
             DividerColor = GRAY;
             SubDividerColor = LIGHT_GRAY;
+            CursorStartX = 0;
+            CursorStartY = 0;
 
             cursorLines[0] = new Line();
             cursorLines[0].Stroke = new SolidColorBrush(CYAN);
             cursorLines[1] = new Line();            
             cursorLines[1].Stroke = new SolidColorBrush(CYAN);
+
+            this.InitializeComponent();
 
             PointerEntered += PointerEnteredGrid;
             PointerMoved += PointerMovedInGrid;
@@ -169,7 +239,10 @@ namespace WireFrame
         private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)
         {
             var pos = args.GetCurrentPoint(this).Position;
-            
+
+            pos.X = Math.Max(pos.X, CursorStartX);
+            pos.Y = Math.Max(pos.Y, CursorStartY);
+
             cursorLines[0].X1 = pos.X;
             cursorLines[0].Y1 = 0;
             cursorLines[0].X2 = pos.X;
@@ -187,6 +260,20 @@ namespace WireFrame
         private void PointerMovedInGrid(object sender, PointerRoutedEventArgs args)
         {
             var pos = args.GetCurrentPoint(this).Position;
+            
+            pos.X = Math.Max(pos.X, CursorStartX);
+            pos.Y = Math.Max(pos.Y, CursorStartY);
+
+            if (SnapToDivider)
+            {
+                pos.X = Math.Round(pos.X / (PixelsPerUnit * UnitsPerScale)) * (PixelsPerUnit * UnitsPerScale);
+                pos.Y = Math.Round(pos.Y / (PixelsPerUnit * UnitsPerScale)) * (PixelsPerUnit * UnitsPerScale);
+            }
+            else if (SnapToSubDivider)
+            {
+                pos.X = Math.Round(pos.X / PixelsPerUnit) * PixelsPerUnit;
+                pos.Y = Math.Round(pos.Y / PixelsPerUnit) * PixelsPerUnit;
+            }
 
             cursorLines[0].X1 = pos.X;
             cursorLines[0].Y1 = 0;
