@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -21,6 +22,7 @@ namespace WireFrame
 {
     public sealed partial class Grid : UserControl
     {
+        private Line[] cursorLines = new Line[2];
         
         ////////////////////////////
 
@@ -113,6 +115,7 @@ namespace WireFrame
             Color WHITE = Color.FromArgb(255, 255, 255, 255);
             Color GRAY = Color.FromArgb(255, 200, 200, 200);
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
+            Color CYAN = Color.FromArgb(255, 0, 204, 204);
 
             this.InitializeComponent();
 
@@ -121,6 +124,15 @@ namespace WireFrame
             BackgroundColor = BLACK;
             DividerColor = WHITE;
             SubDividerColor = GRAY;
+
+            cursorLines[0] = new Line();
+            cursorLines[0].Stroke = new SolidColorBrush(CYAN);
+            cursorLines[1] = new Line();            
+            cursorLines[1].Stroke = new SolidColorBrush(CYAN);
+
+            PointerEntered += PointerEnteredGrid;
+            PointerMoved += PointerMovedInGrid;
+            PointerExited += PointerExitedGrid;
         }
 
         private void DrawGrid(CanvasControl sender, CanvasDrawEventArgs args)
@@ -150,6 +162,45 @@ namespace WireFrame
                     session.DrawLine(0, y, (int)Width, y, SubDividerColor);
                 }
             }
+        }
+
+        private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)
+        {
+            var pos = args.GetCurrentPoint(this).Position;
+            
+            cursorLines[0].X1 = pos.X;
+            cursorLines[0].Y1 = 0;
+            cursorLines[0].X2 = pos.X;
+            cursorLines[0].Y2 = Height;
+            
+            cursorLines[1].X1 = 0;
+            cursorLines[1].Y1 = pos.Y;
+            cursorLines[1].X2 = Width;
+            cursorLines[1].Y2 = pos.Y;
+
+            GridGrid.Children.Add(cursorLines[0]);
+            GridGrid.Children.Add(cursorLines[1]);
+        }
+
+        private void PointerMovedInGrid(object sender, PointerRoutedEventArgs args)
+        {
+            var pos = args.GetCurrentPoint(this).Position;
+
+            cursorLines[0].X1 = pos.X;
+            cursorLines[0].Y1 = 0;
+            cursorLines[0].X2 = pos.X;
+            cursorLines[0].Y2 = Height;
+
+            cursorLines[1].X1 = 0;
+            cursorLines[1].Y1 = pos.Y;
+            cursorLines[1].X2 = Width;
+            cursorLines[1].Y2 = pos.Y;
+        }
+
+        private void PointerExitedGrid(object sender, PointerRoutedEventArgs args)
+        {
+            GridGrid.Children.Remove(cursorLines[0]);
+            GridGrid.Children.Remove(cursorLines[1]);
         }
     }
 }

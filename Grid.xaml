@@ -10,8 +10,9 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <xaml:CanvasControl x:Name="GridCanvas" 
+    <Grid x:Name="GridGrid">
+        <xaml:CanvasControl x:Name="GridCanvas" 
                         ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
                         Draw="DrawGrid"/>
-    
+    </Grid>
 </UserControl>
