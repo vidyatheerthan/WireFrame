@@ -114,6 +114,7 @@ namespace WireFrame
         {
             Color WHITE = Color.FromArgb(255, 255, 255, 255);
             Color GRAY = Color.FromArgb(255, 200, 200, 200);
+            Color LIGHT_GRAY = Color.FromArgb(255, 100, 100, 100);
             Color BLACK = Color.FromArgb(255, 0, 0, 0);
             Color CYAN = Color.FromArgb(255, 0, 204, 204);
 
@@ -122,8 +123,8 @@ namespace WireFrame
             PixelsPerUnit = 10;
             UnitsPerScale = 4;
             BackgroundColor = BLACK;
-            DividerColor = WHITE;
-            SubDividerColor = GRAY;
+            DividerColor = GRAY;
+            SubDividerColor = LIGHT_GRAY;
 
             cursorLines[0] = new Line();
             cursorLines[0].Stroke = new SolidColorBrush(CYAN);
@@ -138,6 +139,7 @@ namespace WireFrame
         private void DrawGrid(CanvasControl sender, CanvasDrawEventArgs args)
         {
             var session = args.DrawingSession;
+            session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
             for (int x = 0; x <= Width; x += PixelsPerUnit)
             {

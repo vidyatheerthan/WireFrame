@@ -21,8 +21,8 @@
             PixelsPerUnit="10" 
             UnitsPerScale = "5"
             BackgroundColor="Black" 
-            DividerColor="White"
-            SubDividerColor="Gray"/>
+            DividerColor="#272727"
+            SubDividerColor="#181818"/>
 
         <local:Ruler 
             x:Name="WFHorizontalRuler"
@@ -36,10 +36,10 @@
             PixelsPerUnit = "10"
             UnitsPerScale = "5"
             SmallDividerLength = "7"
-            LargeDividerLength = "18"
-            BackgroundColor = "White"
-            DividerColor = "Black"
-            TextColor = "Black"/>
+            LargeDividerLength = "20"
+            BackgroundColor = "Black"
+            DividerColor = "White"
+            TextColor = "White"/>
 
         <local:Ruler 
             x:Name="WFVerticalRuler"
@@ -53,10 +53,10 @@
             PixelsPerUnit = "10"
             UnitsPerScale = "5"
             SmallDividerLength = "7"
-            LargeDividerLength = "18"
-            BackgroundColor = "White"
-            DividerColor = "Black"
-            TextColor = "Black"/>
+            LargeDividerLength = "20"
+            BackgroundColor = "Black"
+            DividerColor = "White"
+            TextColor = "White"/>
 
         
 

@@ -265,9 +265,9 @@ namespace WireFrame
             };
 
             var session = args.DrawingSession;
+            session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(0, 0, RulerLength, 0, DividerColor); // top
-            session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor); // bottom
+            session.DrawLine(ScaleMarkPosition, RulerWidth, RulerLength, RulerWidth, DividerColor);
 
             for (int unit = 0, x = 0; x < RulerLength - ScaleMarkPosition; x += PixelsPerUnit)
             {
@@ -275,7 +275,6 @@ namespace WireFrame
 
                 if (x % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    //session.DrawLine(offset, 0, offset, LargeDividerLength, DividerColor);
                     session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
 
                     float xLoc = offset + 3;
@@ -283,13 +282,12 @@ namespace WireFrame
                     CanvasTextLayout textLayout = new CanvasTextLayout(session, unit.ToString(), format, 0.0f, 0.0f);
                     Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
                     //session.DrawRectangle(theRectYouAreLookingFor, Colors.Green, 1.0f);
-                    session.DrawTextLayout(textLayout, xLoc, yLoc, Colors.Black);
+                    session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
 
                     ++unit;
                 }
                 else
                 {
-                    //session.DrawLine(offset, 0, offset, SmallDividerLength, DividerColor);
                     session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
                 }
             }
@@ -307,9 +305,9 @@ namespace WireFrame
             };
 
             var session = args.DrawingSession;
+            session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(0, 0, 0, RulerLength, DividerColor); // top
-            session.DrawLine(RulerWidth, 0, RulerWidth, RulerLength, DividerColor); // bottom
+            session.DrawLine(RulerWidth, ScaleMarkPosition, RulerWidth, RulerLength, DividerColor);
 
             for (int unit = 0, y = 0; y < RulerLength - ScaleMarkPosition; y += PixelsPerUnit)
             {
@@ -325,14 +323,13 @@ namespace WireFrame
                     Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
 
                     session.Transform = Matrix3x2.CreateRotation((float)-Math.PI * 0.5f, new Vector2(xLoc, yLoc));
-                    session.DrawTextLayout(textLayout, xLoc, yLoc, Colors.Black);
+                    session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
                     session.Transform = Matrix3x2.Identity;
 
                     ++unit;
                 }
                 else
                 {
-                    //session.DrawLine(offset, 0, offset, SmallDividerLength, DividerColor);
                     session.DrawLine(RulerWidth, offset, RulerWidth - SmallDividerLength, offset, DividerColor);
                 }
             }
