@@ -14,8 +14,8 @@
 
         <local:Grid
             x:Name="WFGrid"
-            Width="300" 
-            Height="300"
+            GridWidth="300" 
+            GridHeight="300"
             HorizontalAlignment="Left"
             VerticalAlignment="Top"
             PixelsPerUnit="10" 

@@ -12,7 +12,9 @@
 
     <Grid x:Name="GridGrid">
         <xaml:CanvasControl x:Name="GridCanvas" 
-                        ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
-                        Draw="DrawGrid"/>
+                            Width="{x:Bind GridWidth, Mode=OneWay}"
+                            Height="{x:Bind GridHeight, Mode=OneWay}"
+                            ClearColor="{x:Bind BackgroundColor, Mode=OneWay}"
+                            Draw="DrawGrid"/>
     </Grid>
 </UserControl>

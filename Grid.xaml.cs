@@ -176,6 +176,36 @@ namespace WireFrame
 
         ////////////////////////////
 
+        public static readonly DependencyProperty GridWidthProperty = DependencyProperty.Register(
+            nameof(GridWidth),
+            typeof(int),
+            typeof(Grid),
+            new PropertyMetadata(null)
+        );
+
+        public int GridWidth
+        {
+            get => (int)GetValue(GridWidthProperty);
+            set => SetValue(GridWidthProperty, value);
+        }
+
+        ////////////////////////////
+
+        public static readonly DependencyProperty GridHeightProperty = DependencyProperty.Register(
+            nameof(GridHeight),
+            typeof(int),
+            typeof(Grid),
+            new PropertyMetadata(null)
+        );
+
+        public int GridHeight
+        {
+            get => (int)GetValue(GridHeightProperty);
+            set => SetValue(GridHeightProperty, value);
+        }
+
+        ////////////////////////////
+
         public Grid()
         {
             Color WHITE = Color.FromArgb(255, 255, 255, 255);
@@ -193,6 +223,8 @@ namespace WireFrame
             SubDividerColor = LIGHT_GRAY;
             CursorStartX = 0;
             CursorStartY = 0;
+            GridWidth = (int)Width;
+            GridHeight = (int)Height;
 
             cursorLines[0] = new Line();
             cursorLines[0].Stroke = new SolidColorBrush(CYAN);
@@ -211,27 +243,27 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            for (int x = 0; x <= Width; x += PixelsPerUnit)
+            for (int x = 0; x <= GridWidth; x += PixelsPerUnit)
             {
                 if(x % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    session.DrawLine(x, 0, x, (int)Height, DividerColor);
+                    session.DrawLine(x, 0, x, (int)GridHeight, DividerColor);
                 }
                 else
                 {
-                    session.DrawLine(x, 0, x, (int)Height, SubDividerColor);
+                    session.DrawLine(x, 0, x, (int)GridHeight, SubDividerColor);
                 }                
             }
 
-            for (int y = 0; y <= Height; y += PixelsPerUnit)
+            for (int y = 0; y <= GridHeight; y += PixelsPerUnit)
             {
                 if (y % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    session.DrawLine(0, y, (int)Width, y, DividerColor);
+                    session.DrawLine(0, y, (int)GridWidth, y, DividerColor);
                 }
                 else
                 {
-                    session.DrawLine(0, y, (int)Width, y, SubDividerColor);
+                    session.DrawLine(0, y, (int)GridWidth, y, SubDividerColor);
                 }
             }
         }
@@ -240,17 +272,17 @@ namespace WireFrame
         {
             var pos = args.GetCurrentPoint(this).Position;
 
-            pos.X = Math.Max(pos.X, CursorStartX);
-            pos.Y = Math.Max(pos.Y, CursorStartY);
+            pos.X = Math.Max(CursorStartX, Math.Min(pos.X, GridWidth));
+            pos.Y = Math.Max(CursorStartY, Math.Min(pos.Y, GridHeight));
 
             cursorLines[0].X1 = pos.X;
             cursorLines[0].Y1 = 0;
             cursorLines[0].X2 = pos.X;
-            cursorLines[0].Y2 = Height;
+            cursorLines[0].Y2 = GridHeight;
             
             cursorLines[1].X1 = 0;
             cursorLines[1].Y1 = pos.Y;
-            cursorLines[1].X2 = Width;
+            cursorLines[1].X2 = GridWidth;
             cursorLines[1].Y2 = pos.Y;
 
             GridGrid.Children.Add(cursorLines[0]);
@@ -261,8 +293,8 @@ namespace WireFrame
         {
             var pos = args.GetCurrentPoint(this).Position;
             
-            pos.X = Math.Max(pos.X, CursorStartX);
-            pos.Y = Math.Max(pos.Y, CursorStartY);
+            pos.X = Math.Max(CursorStartX, Math.Min(pos.X, GridWidth));
+            pos.Y = Math.Max(CursorStartY, Math.Min(pos.Y, GridHeight));
 
             if (SnapToDivider)
             {
@@ -278,11 +310,11 @@ namespace WireFrame
             cursorLines[0].X1 = pos.X;
             cursorLines[0].Y1 = 0;
             cursorLines[0].X2 = pos.X;
-            cursorLines[0].Y2 = Height;
+            cursorLines[0].Y2 = GridHeight;
 
             cursorLines[1].X1 = 0;
             cursorLines[1].Y1 = pos.Y;
-            cursorLines[1].X2 = Width;
+            cursorLines[1].X2 = GridWidth;
             cursorLines[1].Y2 = pos.Y;
         }
 

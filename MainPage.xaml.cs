@@ -50,8 +50,8 @@ namespace WireFrame
 
         private void Resize(double Width, double Height)
         {
-            WFGrid.Width = Width;
-            WFGrid.Height = Height;
+            WFGrid.GridWidth = (int)Width;
+            WFGrid.GridHeight = (int)Height;
 
             WFHorizontalRuler.RulerLength = (int)Width;
             WFVerticalRuler.RulerLength = (int)Height;
