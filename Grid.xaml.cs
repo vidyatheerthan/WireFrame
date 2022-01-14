@@ -1,8 +1,11 @@
-﻿using Microsoft.Graphics.Canvas.UI.Xaml;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
+using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
@@ -272,6 +275,13 @@ namespace WireFrame
                     session.DrawLine(0, y, (int)GridWidth, y, SubDividerColor);
                 }
             }
+
+            if(clicked)
+            {
+                var vecPos = new Vector2((float)cursorLines[2].X1, (float)cursorLines[2].Y1);
+                string vecPosText = "(" + vecPos.X + "," + vecPos.Y + ")";
+                DrawText(vecPosText, vecPos, Colors.Cyan, Colors.Black, session);
+            }
         }
 
         private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)
@@ -347,6 +357,8 @@ namespace WireFrame
             GridGrid.Children.Add(cursorLines[3]);
 
             clicked = true;
+
+            this.GridCanvas.Invalidate();
         }
 
         private void PointerReleasedOnGrid(object sender, PointerRoutedEventArgs args)
@@ -355,6 +367,8 @@ namespace WireFrame
             GridGrid.Children.Remove(cursorLines[3]);
 
             clicked = false;
+
+            this.GridCanvas.Invalidate();
         }
 
         private Point SanitizePointerPosition(Point pos)
@@ -374,6 +388,23 @@ namespace WireFrame
             }
 
             return pos;
+        }
+
+        private void DrawText(string text, Vector2 pos, Color bgColor, Color fgColor, CanvasDrawingSession session)
+        {
+            CanvasTextFormat format = new CanvasTextFormat
+            {
+                FontFamily = FontFamily.Source,
+                FontSize = 14,
+                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                VerticalAlignment = CanvasVerticalAlignment.Bottom,
+                WordWrapping = CanvasWordWrapping.NoWrap
+            };
+
+            CanvasTextLayout textLayout = new CanvasTextLayout(session, text, format, 0.0f, 0.0f);
+            Rect rect = new Rect(pos.X + textLayout.LayoutBounds.X, pos.Y + textLayout.LayoutBounds.Y, textLayout.LayoutBounds.Width, textLayout.LayoutBounds.Height);
+            session.FillRectangle(rect, bgColor);
+            session.DrawTextLayout(textLayout, pos, fgColor);
         }
     }
 }
