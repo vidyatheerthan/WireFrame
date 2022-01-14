@@ -25,8 +25,26 @@ namespace WireFrame
 {
     public sealed partial class Grid : UserControl
     {
-        private Line[] cursorLines = new Line[4];
-        private bool clicked = false;
+        private class Line
+        {
+            Point from;
+            Point to;
+
+            public double X1 { get => from.X; set => from.X = value; }
+            public double Y1 { get => from.Y; set => from.Y = value; }
+            public double X2 { get => to.X; set => to.X = value; }
+            public double Y2 { get => to.Y; set => to.Y = value; }
+
+            public Line()
+            {
+                from = new Point(0.0, 0.0);
+                to = new Point(0.0, 0.0);
+            }
+        }
+
+        private Grid.Line[] cursorLines = new Grid.Line[4];
+        private PointerState pointerState = PointerState.Exited;
+        private KeyState pointerKeyState = KeyState.Released;
 
         ////////////////////////////
 
@@ -234,8 +252,7 @@ namespace WireFrame
             {
                 // index 0, 1 : cursor movement tracking lines
                 // index 2, 3 : cursor click tracking lines
-                cursorLines[i] = new Line();
-                cursorLines[i].Stroke = new SolidColorBrush(CYAN);
+                cursorLines[i] = new Grid.Line();
             }            
 
             this.InitializeComponent();
@@ -276,99 +293,93 @@ namespace WireFrame
                 }
             }
 
-            if(clicked)
+            if (pointerKeyState == KeyState.Pressed || pointerState == PointerState.Entered)
+            {
+                session.DrawLine((float)cursorLines[0].X1, (float)cursorLines[0].Y1, (float)cursorLines[0].X2, (float)cursorLines[0].Y2, Colors.Cyan);
+                session.DrawLine((float)cursorLines[1].X1, (float)cursorLines[1].Y1, (float)cursorLines[1].X2, (float)cursorLines[1].Y2, Colors.Cyan);
+            }
+
+            if (pointerKeyState == KeyState.Pressed)
             {
                 var vecPos = new Vector2((float)cursorLines[2].X1, (float)cursorLines[2].Y1);
                 string vecPosText = "(" + vecPos.X + "," + vecPos.Y + ")";
                 DrawText(vecPosText, vecPos, Colors.Cyan, Colors.Black, session);
+
+                session.DrawLine((float)cursorLines[2].X1, (float)cursorLines[2].Y1, (float)cursorLines[2].X2, (float)cursorLines[2].Y2, Colors.Cyan);
+                session.DrawLine((float)cursorLines[3].X1, (float)cursorLines[3].Y1, (float)cursorLines[3].X2, (float)cursorLines[3].Y2, Colors.Cyan);
             }
         }
 
         private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)
         {
-            if (clicked) return;
-
             var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
 
-            cursorLines[0].X1 = pos.X;
-            cursorLines[0].Y1 = 0;
-            cursorLines[0].X2 = pos.X;
-            cursorLines[0].Y2 = GridHeight;
-            
-            cursorLines[1].X1 = 0;
-            cursorLines[1].Y1 = pos.Y;
-            cursorLines[1].X2 = GridWidth;
-            cursorLines[1].Y2 = pos.Y;
+            UpdateCursorLines(pos);
 
-            GridGrid.Children.Add(cursorLines[0]);
-            GridGrid.Children.Add(cursorLines[1]);
+            pointerState = PointerState.Entered;
+
+            this.GridCanvas.Invalidate();
         }
 
         private void PointerMovedInGrid(object sender, PointerRoutedEventArgs args)
         {
             var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
 
-            cursorLines[0].X1 = pos.X;
-            cursorLines[0].Y1 = 0;
-            cursorLines[0].X2 = pos.X;
-            cursorLines[0].Y2 = GridHeight;
+            UpdateCursorLines(pos);
 
-            cursorLines[1].X1 = 0;
-            cursorLines[1].Y1 = pos.Y;
-            cursorLines[1].X2 = GridWidth;
-            cursorLines[1].Y2 = pos.Y;
-
-            if(clicked)
-            {
-                cursorLines[2].X2 = pos.X;
-                cursorLines[2].Y2 = cursorLines[2].Y1;
-
-                cursorLines[3].X2 = cursorLines[3].X1;
-                cursorLines[3].Y2 = pos.Y;
-            }
+            this.GridCanvas.Invalidate();
         }
 
         private void PointerExitedGrid(object sender, PointerRoutedEventArgs args)
         {
-            if (!clicked)
-            {
-                GridGrid.Children.Remove(cursorLines[0]);
-                GridGrid.Children.Remove(cursorLines[1]);
-            }
+            pointerState = PointerState.Exited;
+
+            this.GridCanvas.Invalidate();
         }
 
         private void PointerPressedOnGrid(object sender, PointerRoutedEventArgs args)
         {
-            if (clicked) return;
-
             var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
 
-            cursorLines[2].X1 = pos.X;
-            cursorLines[2].Y1 = pos.Y;
-            cursorLines[2].X2 = pos.X;
-            cursorLines[2].Y2 = pos.Y;
+            cursorLines[2].X1 = cursorLines[2].X2 = pos.X;
+            cursorLines[2].Y1 = cursorLines[2].Y2 = pos.Y;
 
-            cursorLines[3].X1 = pos.X;
-            cursorLines[3].Y1 = pos.Y;
-            cursorLines[3].X2 = pos.X;
-            cursorLines[3].Y2 = pos.Y;
+            cursorLines[3].X1 = cursorLines[3].X2 = pos.X;
+            cursorLines[3].Y1 = cursorLines[3].Y2 = pos.Y;
 
-            GridGrid.Children.Add(cursorLines[2]);
-            GridGrid.Children.Add(cursorLines[3]);
-
-            clicked = true;
+            pointerKeyState = KeyState.Pressed;
 
             this.GridCanvas.Invalidate();
         }
 
         private void PointerReleasedOnGrid(object sender, PointerRoutedEventArgs args)
         {
-            GridGrid.Children.Remove(cursorLines[2]);
-            GridGrid.Children.Remove(cursorLines[3]);
-
-            clicked = false;
+            pointerKeyState = KeyState.Released;
 
             this.GridCanvas.Invalidate();
+        }
+
+        private void UpdateCursorLines(Point pointer)
+        {
+            // Pointer Movement Lines
+
+            cursorLines[0].X1 = pointer.X;
+            cursorLines[0].Y1 = 0;
+            cursorLines[0].X2 = pointer.X;
+            cursorLines[0].Y2 = GridHeight;
+
+            cursorLines[1].X1 = 0;
+            cursorLines[1].Y1 = pointer.Y;
+            cursorLines[1].X2 = GridWidth;
+            cursorLines[1].Y2 = pointer.Y;
+
+            // Key Press Lines
+
+            cursorLines[2].X2 = pointer.X;
+            cursorLines[2].Y2 = cursorLines[2].Y1;
+
+            cursorLines[3].X2 = cursorLines[3].X1;
+            cursorLines[3].Y2 = pointer.Y;
         }
 
         private Point SanitizePointerPosition(Point pos)

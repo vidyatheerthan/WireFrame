@@ -20,7 +20,7 @@
             VerticalAlignment="Top"
             PixelsPerUnit="10" 
             UnitsPerScale = "5"
-            SnapToDivider="True"
+            SnapToSubDivider="True"
             CursorStartX="50"
             CursorStartY="50"
             BackgroundColor="Black" 
