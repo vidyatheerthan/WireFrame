@@ -22,7 +22,8 @@ namespace WireFrame
 {
     public sealed partial class Grid : UserControl
     {
-        private Line[] cursorLines = new Line[2];
+        private Line[] cursorLines = new Line[4];
+        private bool clicked = false;
 
         ////////////////////////////
 
@@ -226,16 +227,21 @@ namespace WireFrame
             GridWidth = (int)Width;
             GridHeight = (int)Height;
 
-            cursorLines[0] = new Line();
-            cursorLines[0].Stroke = new SolidColorBrush(CYAN);
-            cursorLines[1] = new Line();            
-            cursorLines[1].Stroke = new SolidColorBrush(CYAN);
+            for (int i = 0; i < cursorLines.Length; i++)
+            {
+                // index 0, 1 : cursor movement tracking lines
+                // index 2, 3 : cursor click tracking lines
+                cursorLines[i] = new Line();
+                cursorLines[i].Stroke = new SolidColorBrush(CYAN);
+            }            
 
             this.InitializeComponent();
 
             PointerEntered += PointerEnteredGrid;
             PointerMoved += PointerMovedInGrid;
             PointerExited += PointerExitedGrid;
+            PointerPressed += PointerPressedOnGrid;
+            PointerReleased += PointerReleasedOnGrid;
         }
 
         private void DrawGrid(CanvasControl sender, CanvasDrawEventArgs args)
@@ -270,10 +276,9 @@ namespace WireFrame
 
         private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)
         {
-            var pos = args.GetCurrentPoint(this).Position;
+            if (clicked) return;
 
-            pos.X = Math.Max(CursorStartX, Math.Min(pos.X, GridWidth));
-            pos.Y = Math.Max(CursorStartY, Math.Min(pos.Y, GridHeight));
+            var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
 
             cursorLines[0].X1 = pos.X;
             cursorLines[0].Y1 = 0;
@@ -291,8 +296,69 @@ namespace WireFrame
 
         private void PointerMovedInGrid(object sender, PointerRoutedEventArgs args)
         {
-            var pos = args.GetCurrentPoint(this).Position;
-            
+            var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
+
+            cursorLines[0].X1 = pos.X;
+            cursorLines[0].Y1 = 0;
+            cursorLines[0].X2 = pos.X;
+            cursorLines[0].Y2 = GridHeight;
+
+            cursorLines[1].X1 = 0;
+            cursorLines[1].Y1 = pos.Y;
+            cursorLines[1].X2 = GridWidth;
+            cursorLines[1].Y2 = pos.Y;
+
+            if(clicked)
+            {
+                cursorLines[2].X2 = pos.X;
+                cursorLines[2].Y2 = cursorLines[2].Y1;
+
+                cursorLines[3].X2 = cursorLines[3].X1;
+                cursorLines[3].Y2 = pos.Y;
+            }
+        }
+
+        private void PointerExitedGrid(object sender, PointerRoutedEventArgs args)
+        {
+            if (!clicked)
+            {
+                GridGrid.Children.Remove(cursorLines[0]);
+                GridGrid.Children.Remove(cursorLines[1]);
+            }
+        }
+
+        private void PointerPressedOnGrid(object sender, PointerRoutedEventArgs args)
+        {
+            if (clicked) return;
+
+            var pos = SanitizePointerPosition(args.GetCurrentPoint(this).Position);
+
+            cursorLines[2].X1 = pos.X;
+            cursorLines[2].Y1 = pos.Y;
+            cursorLines[2].X2 = pos.X;
+            cursorLines[2].Y2 = pos.Y;
+
+            cursorLines[3].X1 = pos.X;
+            cursorLines[3].Y1 = pos.Y;
+            cursorLines[3].X2 = pos.X;
+            cursorLines[3].Y2 = pos.Y;
+
+            GridGrid.Children.Add(cursorLines[2]);
+            GridGrid.Children.Add(cursorLines[3]);
+
+            clicked = true;
+        }
+
+        private void PointerReleasedOnGrid(object sender, PointerRoutedEventArgs args)
+        {
+            GridGrid.Children.Remove(cursorLines[2]);
+            GridGrid.Children.Remove(cursorLines[3]);
+
+            clicked = false;
+        }
+
+        private Point SanitizePointerPosition(Point pos)
+        {
             pos.X = Math.Max(CursorStartX, Math.Min(pos.X, GridWidth));
             pos.Y = Math.Max(CursorStartY, Math.Min(pos.Y, GridHeight));
 
@@ -307,21 +373,7 @@ namespace WireFrame
                 pos.Y = Math.Round(pos.Y / PixelsPerUnit) * PixelsPerUnit;
             }
 
-            cursorLines[0].X1 = pos.X;
-            cursorLines[0].Y1 = 0;
-            cursorLines[0].X2 = pos.X;
-            cursorLines[0].Y2 = GridHeight;
-
-            cursorLines[1].X1 = 0;
-            cursorLines[1].Y1 = pos.Y;
-            cursorLines[1].X2 = GridWidth;
-            cursorLines[1].Y2 = pos.Y;
-        }
-
-        private void PointerExitedGrid(object sender, PointerRoutedEventArgs args)
-        {
-            GridGrid.Children.Remove(cursorLines[0]);
-            GridGrid.Children.Remove(cursorLines[1]);
+            return pos;
         }
     }
 }
