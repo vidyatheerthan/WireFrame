@@ -27,7 +27,7 @@
 
         </StackPanel>
     
-        <Grid Grid.Column="1">
+        <Grid Grid.Column="1" BorderBrush="White" BorderThickness="1">
             
             <local:Grid
                 x:Name="WFGrid"
