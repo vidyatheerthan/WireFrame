@@ -104,9 +104,11 @@
                     TextColor = "White"/>
 
 
-                <Grid x:Name="X_CanvasPanel_Canvas">
-                    
-                </Grid>
+                <Canvas x:Name="X_CanvasPanel_Canvas">
+
+                    <local:Element Width="100" Height="100" Canvas.Left="100" Canvas.Top="250"/>
+
+                </Canvas>
 
             </Grid>
 
