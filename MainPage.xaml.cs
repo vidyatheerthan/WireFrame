@@ -50,11 +50,11 @@ namespace WireFrame
 
         private void Resize(double Width, double Height)
         {
-            WFGrid.GridWidth = (int)Width;
-            WFGrid.GridHeight = (int)Height;
+            X_CanvasPanel_Grid.GridWidth = (int) X_CanvasPanel.ActualWidth;
+            X_CanvasPanel_Grid.GridHeight = (int) X_CanvasPanel.ActualHeight;
 
-            WFHorizontalRuler.RulerLength = (int)Width;
-            WFVerticalRuler.RulerLength = (int)Height;
+            X_CanvasPanel_HorizontalRuler.RulerLength = (int) X_CanvasPanel.ActualWidth;
+            X_CanvasPanel_VerticalRuler.RulerLength = (int) X_CanvasPanel.ActualHeight;
         }
     }
 }

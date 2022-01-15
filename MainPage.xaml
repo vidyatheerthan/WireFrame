@@ -40,7 +40,7 @@
                 <ColumnDefinition Width="Auto" />
             </Grid.ColumnDefinitions>
 
-            <StackPanel Grid.Column="0" Background="Black" Width="100">
+            <StackPanel x:Name="X_LeftPanel" Grid.Column="0" Background="Black" Width="100">
             
                 <Button Background="#0F0F0F" Foreground="White" HorizontalAlignment="Stretch" VerticalAlignment="Top" Height="75">
                     Hello
@@ -51,11 +51,11 @@
                 </Button>
 
             </StackPanel>
-    
-            <Grid Grid.Column="1" BorderBrush="White" BorderThickness="1">
+
+            <Grid x:Name="X_CanvasPanel" Grid.Column="1" BorderBrush="White" BorderThickness="1">
             
                 <local:Grid
-                    x:Name="WFGrid"
+                    x:Name="X_CanvasPanel_Grid"
                     GridWidth="300" 
                     GridHeight="300"
                     HorizontalAlignment="Left"
@@ -70,7 +70,7 @@
                     SubDividerColor="#0F0F0F"/>
 
                 <local:Ruler 
-                    x:Name="WFHorizontalRuler"
+                    x:Name="X_CanvasPanel_HorizontalRuler"
                     HorizontalRuler="Visible"
                     VerticalRuler="Collapsed"
                     HorizontalAlignment = "Stretch" 
@@ -87,7 +87,7 @@
                     TextColor = "White"/>
 
                 <local:Ruler 
-                    x:Name="WFVerticalRuler"
+                    x:Name="X_CanvasPanel_VerticalRuler"
                     HorizontalRuler="Collapsed"
                     VerticalRuler="Visible"
                     HorizontalAlignment = "Left" 
@@ -103,9 +103,14 @@
                     DividerColor = "White"
                     TextColor = "White"/>
 
+
+                <Grid x:Name="X_CanvasPanel_Canvas">
+                    
+                </Grid>
+
             </Grid>
 
-            <StackPanel Grid.Column="2" Background="Black" Width="300">
+            <StackPanel x:Name="X_RightPanel" Grid.Column="2" Background="Black" Width="300">
 
                 <TextBlock Margin="10" Foreground="White" HorizontalAlignment="Stretch" Height="75" TextAlignment="Center" Padding="10" FontSize="20">
                     Panel
