@@ -301,8 +301,9 @@ namespace WireFrame
 
             if (pointerKeyState == KeyState.Pressed)
             {
-                var vecPos = new Vector2((float)cursorLines[2].X1, (float)cursorLines[2].Y1);
-                string vecPosText = "(" + vecPos.X + "," + vecPos.Y + ")";
+                var vecPos = new Vector2((float)(cursorLines[2].X1), (float)(cursorLines[2].Y1));
+                var vecLabel = new Vector2((float)(cursorLines[2].X2 - cursorLines[2].X1), (float)(cursorLines[3].Y2 - cursorLines[3].Y1));
+                string vecPosText = "(" + vecLabel.X + " x " + vecLabel.Y + ")";
                 DrawText(vecPosText, vecPos, Colors.Cyan, Colors.Black, session);
 
                 session.DrawLine((float)cursorLines[2].X1, (float)cursorLines[2].Y1, (float)cursorLines[2].X2, (float)cursorLines[2].Y2, Colors.Cyan);

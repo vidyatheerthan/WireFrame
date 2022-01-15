@@ -6,6 +6,7 @@ using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI.Core;
 using Windows.UI.ViewManagement;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -28,33 +29,16 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            Action NotifySizeChange = () =>
-            {
-                var bounds = ApplicationView.GetForCurrentView().VisibleBounds;
-                var scaleFactor = DisplayInformation.GetForCurrentView().RawPixelsPerViewPixel;
-
-                double Width = bounds.Width * scaleFactor;
-                double Height = bounds.Height * scaleFactor;
-
-                Resize(Width, Height);
-            };
-
-            Window.Current.CoreWindow.SizeChanged += async (ss, ee) =>
-            {
-                NotifySizeChange();
-                ee.Handled = true;
-            };
-
-            NotifySizeChange();
+            SizeChanged += WindowSizeChanged;
         }
 
-        private void Resize(double Width, double Height)
+        private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
         {
-            X_CanvasPanel_Grid.GridWidth = (int) X_CanvasPanel.ActualWidth;
-            X_CanvasPanel_Grid.GridHeight = (int) X_CanvasPanel.ActualHeight;
+            X_CanvasPanel_Grid.GridWidth = (int)(X_CanvasPanel.ActualWidth);
+            X_CanvasPanel_Grid.GridHeight = (int)(X_CanvasPanel.ActualHeight);
 
-            X_CanvasPanel_HorizontalRuler.RulerLength = (int) X_CanvasPanel.ActualWidth;
-            X_CanvasPanel_VerticalRuler.RulerLength = (int) X_CanvasPanel.ActualHeight;
+            X_CanvasPanel_HorizontalRuler.RulerLength = (int)(X_CanvasPanel.ActualWidth);
+            X_CanvasPanel_VerticalRuler.RulerLength = (int)(X_CanvasPanel.ActualHeight);
         }
     }
 }
