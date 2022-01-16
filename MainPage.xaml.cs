@@ -29,16 +29,6 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            SizeChanged += WindowSizeChanged;
-        }
-
-        private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            X_CanvasPanel_Grid.GridWidth = (int)(X_CanvasPanel.ActualWidth);
-            X_CanvasPanel_Grid.GridHeight = (int)(X_CanvasPanel.ActualHeight);
-
-            X_CanvasPanel_HorizontalRuler.RulerLength = (int)(X_CanvasPanel.ActualWidth);
-            X_CanvasPanel_VerticalRuler.RulerLength = (int)(X_CanvasPanel.ActualHeight);
         }
     }
 }

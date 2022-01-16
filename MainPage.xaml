@@ -52,65 +52,7 @@
 
             </StackPanel>
 
-            <Grid x:Name="X_CanvasPanel" Grid.Column="1" BorderBrush="White" BorderThickness="1">
-            
-                <local:Grid
-                    x:Name="X_CanvasPanel_Grid"
-                    GridWidth="300" 
-                    GridHeight="300"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    PixelsPerUnit="10" 
-                    UnitsPerScale = "5"
-                    SnapToSubDivider="True"
-                    CursorStartX="50"
-                    CursorStartY="50"
-                    BackgroundColor="Black" 
-                    DividerColor="#1F1F1F"
-                    SubDividerColor="#0F0F0F"/>
-
-                <local:Ruler 
-                    x:Name="X_CanvasPanel_HorizontalRuler"
-                    HorizontalRuler="Visible"
-                    VerticalRuler="Collapsed"
-                    HorizontalAlignment = "Stretch" 
-                    VerticalAlignment = "Top"
-                    ScaleMarkPosition = "50"
-                    RulerLength = "1000"
-                    RulerWidth = "20"            
-                    PixelsPerUnit = "10"
-                    UnitsPerScale = "5"
-                    SmallDividerLength = "7"
-                    LargeDividerLength = "20"
-                    BackgroundColor = "Black"
-                    DividerColor = "White"
-                    TextColor = "White"/>
-
-                <local:Ruler 
-                    x:Name="X_CanvasPanel_VerticalRuler"
-                    HorizontalRuler="Collapsed"
-                    VerticalRuler="Visible"
-                    HorizontalAlignment = "Left" 
-                    VerticalAlignment = "Stretch"
-                    ScaleMarkPosition = "50"
-                    RulerLength = "1000"
-                    RulerWidth = "20"            
-                    PixelsPerUnit = "10"
-                    UnitsPerScale = "5"
-                    SmallDividerLength = "7"
-                    LargeDividerLength = "20"
-                    BackgroundColor = "Black"
-                    DividerColor = "White"
-                    TextColor = "White"/>
-
-
-                <Canvas x:Name="X_CanvasPanel_Canvas">
-
-                    <local:Element Width="100" Height="100" Canvas.Left="100" Canvas.Top="250"/>
-
-                </Canvas>
-
-            </Grid>
+            <local:Canvas x:Name="X_Canvas" Grid.Column="1" />
 
             <StackPanel x:Name="X_RightPanel" Grid.Column="2" Background="Black" Width="300">
 
