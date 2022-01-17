@@ -19,11 +19,24 @@ namespace WireFrame
 {
     public sealed partial class Canvas : UserControl
     {
+        private const int MAX_ZOOM_PIXELS = 1000; // in pixels
+        private const int MIN_ZOOM_PIXELS = 10; // in pixels
+        private int zoom = 0; // in pixels
+
         public Canvas()
         {
             this.InitializeComponent();
 
+            zoom = MIN_ZOOM_PIXELS;
+
+            X_HorizontalRuler.PixelsPerUnit = zoom;
+            X_VerticalRuler.PixelsPerUnit = zoom;
+
+            X_HorizontalRuler.Zoom(zoom);
+            X_VerticalRuler.Zoom(zoom);
+
             SizeChanged += WindowSizeChanged;
+            PointerWheelChanged += PointerWheelChangedHandler;
         }
 
         private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
@@ -33,6 +46,25 @@ namespace WireFrame
 
             X_HorizontalRuler.RulerLength = (int)(X_ContainerGrid.ActualWidth);
             X_VerticalRuler.RulerLength = (int)(X_ContainerGrid.ActualHeight);
+        }
+
+        private void PointerWheelChangedHandler(object sender, PointerRoutedEventArgs args)
+        {
+            int zoom = 0;
+            var value = args.GetCurrentPoint(this).Properties.MouseWheelDelta;
+
+            zoom = GetZoomFactor(value); // -120 (or) +120
+
+            X_HorizontalRuler.Zoom(zoom);
+            X_VerticalRuler.Zoom(zoom);
+        }
+
+        private int GetZoomFactor(int direction)
+        {
+            if(direction > 0) zoom = Math.Min(MAX_ZOOM_PIXELS, zoom * 2);
+            else if (direction < 0) zoom = Math.Max(MIN_ZOOM_PIXELS, zoom / 2);
+
+            return zoom;
         }
     }
 }

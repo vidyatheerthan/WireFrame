@@ -267,7 +267,7 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(RulerWidth-1, RulerWidth, RulerLength, RulerWidth, DividerColor);
+            session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor);
 
             for (int unit = 0, x = 0; x < RulerLength - ScaleMarkPosition; x += PixelsPerUnit)
             {
@@ -275,7 +275,7 @@ namespace WireFrame
 
                 if (x % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
+                    session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
 
                     float xLoc = offset + 3;
                     float yLoc = RulerWidth - 5;
@@ -288,7 +288,14 @@ namespace WireFrame
                 }
                 else
                 {
-                    session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                    if (x % (PixelsPerUnit * UnitsPerScale / 2) == 0)
+                    {
+                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
+                    }
+                    else
+                    {
+                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                    }
                 }
             }
         }
@@ -307,7 +314,7 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            session.DrawLine(RulerWidth, RulerWidth-1, RulerWidth, RulerLength, DividerColor);
+            session.DrawLine(RulerWidth, 0, RulerWidth, RulerLength, DividerColor);
 
             for (int unit = 0, y = 0; y < RulerLength - ScaleMarkPosition; y += PixelsPerUnit)
             {
@@ -315,7 +322,7 @@ namespace WireFrame
 
                 if (y % (PixelsPerUnit * UnitsPerScale) == 0)
                 {
-                    session.DrawLine(RulerWidth, offset, RulerWidth - LargeDividerLength, offset, DividerColor);
+                    session.DrawLine(RulerWidth, offset, 0, offset, DividerColor);
 
                     float xLoc = RulerWidth - 19;
                     float yLoc = offset + 3;
@@ -330,8 +337,30 @@ namespace WireFrame
                 }
                 else
                 {
-                    session.DrawLine(RulerWidth, offset, RulerWidth - SmallDividerLength, offset, DividerColor);
+                    if (y % (PixelsPerUnit * UnitsPerScale / 2) == 0)
+                    {
+                        session.DrawLine(RulerWidth, offset, RulerWidth - LargeDividerLength, offset, DividerColor);
+                    }
+                    else
+                    {
+                        session.DrawLine(RulerWidth, offset, RulerWidth - SmallDividerLength, offset, DividerColor);
+                    }
                 }
+            }
+        }
+
+        public void Zoom(int zoom)
+        {
+            PixelsPerUnit = zoom;
+
+            if(HorizontalRuler == Visibility.Visible)
+            {
+                HorizontalCanvas.Invalidate();
+            }
+
+            if (VerticalRuler == Visibility.Visible)
+            {
+                VerticalCanvas.Invalidate();
             }
         }
     }
