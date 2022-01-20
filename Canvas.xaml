@@ -26,6 +26,26 @@
                     DividerColor="#1F1F1F"
                     SubDividerColor="#0F0F0F"/>
 
+
+        <ScrollViewer  Name="X_ScrollViewer"
+                       HorizontalAlignment="Stretch" 
+                       VerticalAlignment="Stretch" 
+                       MinZoomFactor="1" 
+                       MaxZoomFactor="100" 
+                       ZoomMode="Enabled" 
+                       HorizontalScrollMode="Enabled"
+                       VerticalScrollMode="Enabled"
+                       HorizontalScrollBarVisibility="Visible">
+
+            <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top">
+
+                <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
+
+            </Canvas>
+
+        </ScrollViewer>
+
+
         <local:Ruler 
                     x:Name="X_HorizontalRuler"
                     HorizontalRuler="Visible"
@@ -60,11 +80,6 @@
                     DividerColor = "White"
                     TextColor = "White"/>
 
-        <Canvas x:Name="X_Canvas">
-
-            <local:Element Width="100" Height="100" Canvas.Left="100" Canvas.Top="50"/>
-
-        </Canvas>
 
     </Grid>
 
