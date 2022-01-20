@@ -349,8 +349,12 @@ namespace WireFrame
             }
         }
 
-        public void Zoom(float zoom)
+        public void Zoom(int zoom)
         {
+            int scale = zoom % 100;
+
+            PixelsPerUnit = 10 + scale;
+
             if(HorizontalRuler == Visibility.Visible)
             {
                 HorizontalCanvas.Invalidate();
