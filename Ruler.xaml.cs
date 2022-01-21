@@ -279,35 +279,48 @@ namespace WireFrame
             session.DrawLine(RulerWidth, 0, RulerWidth, RulerWidth, DividerColor);
 
             float length = RulerLength - (RulerLength % 10);
-            float center = length * 0.5f;
+            //float center = length * 0.5f;
+            float center = 1024;
 
             float scale = (float)(center * this.zoom);
 
-            DrawLines(session, scale + ScaleMarkPosition, scale, 0);
+            DrawLines(session, scale + ScaleMarkPosition, scale);
         }
 
 
 
-        private void DrawLines(CanvasDrawingSession session, float begin, float scale, int dividerLevel)
+        private void DrawLines(CanvasDrawingSession session, float begin, float scale)
         {
             int minSize = PixelsPerUnit * UnitsPerScale;
             
-            if (scale > minSize)
+            if (scale > 5)
             {
                 if (begin < RulerLength)
                 {
+                    int dividerLevel = 0;
+
+                    if (scale < 10)
+                    {
+                        dividerLevel = 2;
+                    }
+                    else if (scale < 100)
+                    {
+                        dividerLevel = 1;
+                    }
 
                     DrawLine(session, begin, dividerLevel);
 
-                    int value = (int)Math.Round(begin / this.zoom);
-
-                    DrawTextHorizontal(session, begin, value.ToString());
+                    if (dividerLevel == 0)
+                    {
+                        int value = (int)Math.Round(begin / this.zoom);
+                        DrawTextHorizontal(session, begin, value.ToString());
+                    }
                 }
 
                 float half = (float)Math.Round(scale * 0.5f);
 
-                DrawLines(session, begin - half, half, dividerLevel + 1);
-                DrawLines(session, begin + half, half, dividerLevel + 1);
+                DrawLines(session, begin - half, half);
+                DrawLines(session, begin + half, half);
             }
         }
 
