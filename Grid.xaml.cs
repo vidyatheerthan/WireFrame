@@ -262,6 +262,14 @@ namespace WireFrame
             PointerExited += PointerExitedGrid;
             PointerPressed += PointerPressedOnGrid;
             PointerReleased += PointerReleasedOnGrid;
+
+            SizeChanged += WindowSizeChanged;
+        }
+
+        private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            GridWidth = (int)(ActualWidth);
+            GridHeight = (int)(ActualHeight);
         }
 
         private void DrawGrid(CanvasControl sender, CanvasDrawEventArgs args)

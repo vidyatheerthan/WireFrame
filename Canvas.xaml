@@ -11,42 +11,14 @@
 
     <Grid x:Name="X_ContainerGrid" BorderBrush="White" BorderThickness="1">
 
-        <local:Grid
-                    x:Name="X_Grid"
-                    GridWidth="300" 
-                    GridHeight="300"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
-                    PixelsPerUnit="10" 
-                    UnitsPerScale = "5"
-                    SnapToSubDivider="True"
-                    CursorStartX="50"
-                    CursorStartY="50"
-                    BackgroundColor="Black" 
-                    DividerColor="#1F1F1F"
-                    SubDividerColor="#0F0F0F"/>
-
-
-        <ScrollViewer  Name="X_ScrollViewer"
-                       HorizontalAlignment="Stretch" 
-                       VerticalAlignment="Stretch" 
-                       MinZoomFactor="1" 
-                       MaxZoomFactor="100" 
-                       ZoomMode="Enabled" 
-                       HorizontalScrollMode="Enabled"
-                       VerticalScrollMode="Enabled"
-                       HorizontalScrollBarVisibility="Visible">
-
-            <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top">
-
-                <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
-
-            </Canvas>
-
-        </ScrollViewer>
-
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
 
         <local:Ruler 
+                    Height="20"
+                    Grid.Row="0"
                     x:Name="X_HorizontalRuler"
                     HorizontalRuler="Visible"
                     VerticalRuler="Collapsed"
@@ -63,13 +35,24 @@
                     DividerColor = "White"
                     TextColor = "White"/>
 
-        <local:Ruler 
+
+
+        <Grid Grid.Row="1">
+
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+
+            <local:Ruler 
+                    Width="20"
+                    Grid.Column="0"
                     x:Name="X_VerticalRuler"
                     HorizontalRuler="Collapsed"
                     VerticalRuler="Visible"
                     HorizontalAlignment = "Left" 
                     VerticalAlignment = "Stretch"
-                    ScaleMarkPosition = "20"
+                    ScaleMarkPosition = "0"
                     RulerLength = "1000"
                     RulerWidth = "20"            
                     PixelsPerUnit = "10"
@@ -79,6 +62,50 @@
                     BackgroundColor = "Black"
                     DividerColor = "White"
                     TextColor = "White"/>
+
+            <Grid Grid.Column="1">
+
+
+                <local:Grid
+                    x:Name="X_Grid"
+                    GridWidth="300" 
+                    GridHeight="300"
+                    HorizontalAlignment="Stretch"
+                    VerticalAlignment="Stretch"
+                    PixelsPerUnit="10" 
+                    UnitsPerScale = "5"
+                    SnapToSubDivider="True"
+                    CursorStartX="50"
+                    CursorStartY="50"
+                    BackgroundColor="Black" 
+                    DividerColor="#1F1F1F"
+                    SubDividerColor="#0F0F0F"/>
+
+
+
+                <ScrollViewer  Name="X_ScrollViewer"
+                           HorizontalAlignment="Stretch" 
+                           VerticalAlignment="Stretch" 
+                           MinZoomFactor="1" 
+                           MaxZoomFactor="100" 
+                           ZoomMode="Enabled" 
+                           HorizontalScrollMode="Enabled"
+                           VerticalScrollMode="Enabled"
+                           HorizontalScrollBarVisibility="Visible">
+
+                    <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue">
+
+                        <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
+
+                    </Canvas>
+
+                </ScrollViewer>
+
+
+            </Grid>
+
+
+        </Grid>
 
 
     </Grid>

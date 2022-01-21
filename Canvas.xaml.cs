@@ -26,18 +26,10 @@ namespace WireFrame
             X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
             X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
 
-            SizeChanged += WindowSizeChanged;
             X_ScrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, ZoomHandler);
         }
 
-        private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
-        {
-            X_Grid.GridWidth = (int)(X_ContainerGrid.ActualWidth);
-            X_Grid.GridHeight = (int)(X_ContainerGrid.ActualHeight);
-
-            X_HorizontalRuler.RulerLength = (int)(X_ContainerGrid.ActualWidth);
-            X_VerticalRuler.RulerLength = (int)(X_ContainerGrid.ActualHeight);
-        }
+        
 
         private void ZoomHandler(DependencyObject sender, DependencyProperty dp)
         {

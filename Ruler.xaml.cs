@@ -1,4 +1,5 @@
-﻿using Microsoft.Graphics.Canvas.Text;
+﻿using Microsoft.Graphics.Canvas;
+using Microsoft.Graphics.Canvas.Text;
 using Microsoft.Graphics.Canvas.UI.Xaml;
 using System;
 using System.Collections.Generic;
@@ -224,6 +225,8 @@ namespace WireFrame
 
         public event PropertyChangedEventHandler PropertyChanged;
 
+        private double zoom = 0.0;
+
         ///////////////////////////////////////////////////////////////////////////////////////////////
 
         public Ruler()
@@ -246,6 +249,20 @@ namespace WireFrame
             VerticalRuler = Visibility.Collapsed;
 
             this.InitializeComponent();
+
+            SizeChanged += WindowSizeChanged;
+        }
+
+        private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
+        {
+            if (HorizontalRuler == Visibility.Visible)
+            {
+                RulerLength = (int)(ActualWidth);
+            }
+            else if (VerticalRuler == Visibility.Visible)
+            {
+                RulerLength = (int)(ActualHeight);
+            }
         }
 
         private void OnPropertyChanged(string propertyName = null)
@@ -255,50 +272,51 @@ namespace WireFrame
 
         private void DrawHorizontalRuler(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            var format = new CanvasTextFormat()
-            {
-                FontSize = (float)12,
-                FontFamily = new FontFamily("Courier New").Source,
-                HorizontalAlignment = CanvasHorizontalAlignment.Left,
-                VerticalAlignment = CanvasVerticalAlignment.Bottom,
-                WordWrapping = CanvasWordWrapping.NoWrap
-            };
+            
 
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
             session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor);
 
-            for (int unit = 0, x = 0; x < RulerLength - ScaleMarkPosition; x += PixelsPerUnit)
+
+            const float contentSize = 1000;
+
+            float scale = (float)(contentSize * this.zoom);
+
+            DrawLines(session, scale, 0);
+        }
+
+
+
+        private void DrawLines(CanvasDrawingSession session, float scale, int dividerLevel)
+        {
+            if (dividerLevel >= 3) return;
+
+            if (scale > 0.0f)
             {
-                int offset = ScaleMarkPosition + x;
-
-                if (x % (PixelsPerUnit * UnitsPerScale) == 0)
+                for (float unit = 0, x = 0; x<RulerLength - ScaleMarkPosition; x += scale)
                 {
-                    session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
+                    float offset = ScaleMarkPosition + x;
 
-                    float xLoc = offset + 3;
-                    float yLoc = RulerWidth - 5;
-                    CanvasTextLayout textLayout = new CanvasTextLayout(session, unit.ToString(), format, 0.0f, 0.0f);
-                    Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
-                    //session.DrawRectangle(theRectYouAreLookingFor, Colors.Green, 1.0f);
-                    session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
-
-                    ++unit;
-                }
-                else
-                {
-                    if (x % (PixelsPerUnit * UnitsPerScale / 2) == 0)
+                    switch (dividerLevel)
                     {
-                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
-                    }
-                    else
-                    {
-                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                        case 0:
+                            session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
+                            break;
+                        case 1:
+                            session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
+                            break;
+                        case 2:
+                            session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                            break;
                     }
                 }
+
+                DrawLines(session, scale * 0.5f, ++dividerLevel);
             }
         }
+
 
         private void DrawVerticalRuler(CanvasControl sender, CanvasDrawEventArgs args)
         {
@@ -351,6 +369,8 @@ namespace WireFrame
 
         public void Zoom(float zoom)
         {
+            this.zoom = zoom;
+
             if(HorizontalRuler == Visibility.Visible)
             {
                 HorizontalCanvas.Invalidate();
