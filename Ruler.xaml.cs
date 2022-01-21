@@ -272,19 +272,18 @@ namespace WireFrame
 
         private void DrawHorizontalRuler(CanvasControl sender, CanvasDrawEventArgs args)
         {
-            
-
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
             session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor);
+            session.DrawLine(RulerWidth, 0, RulerWidth, RulerWidth, DividerColor);
 
             float length = RulerLength - (RulerLength % 10);
             float center = length * 0.5f;
 
             float scale = (float)(center * this.zoom);
 
-            DrawLines(session, scale, scale, 0);
+            DrawLines(session, scale + ScaleMarkPosition, scale, 0);
         }
 
 
@@ -295,16 +294,14 @@ namespace WireFrame
             
             if (scale > minSize)
             {
-                float offset = ScaleMarkPosition + begin;
-
-                if (offset < RulerLength)
+                if (begin < RulerLength)
                 {
 
-                    DrawLine(session, offset, dividerLevel);
+                    DrawLine(session, begin, dividerLevel);
 
                     int value = (int)Math.Round(begin / this.zoom);
 
-                    DrawTextHorizontal(session, offset, value.ToString());
+                    DrawTextHorizontal(session, begin, value.ToString());
                 }
 
                 float half = (float)Math.Round(scale * 0.5f);
