@@ -284,37 +284,55 @@ namespace WireFrame
 
             float scale = (float)(contentSize * this.zoom);
 
-            DrawLines(session, scale, 0);
+            DrawLines(session, 0.0f, scale, 0);
         }
 
 
 
-        private void DrawLines(CanvasDrawingSession session, float scale, int dividerLevel)
+        private void DrawLines(CanvasDrawingSession session, float begin, float scale, int dividerLevel)
         {
-            if (dividerLevel >= 3) return;
+            int minSize = PixelsPerUnit * UnitsPerScale;
 
-            if (scale > 0.0f)
+            if (scale > minSize)
             {
-                for (float unit = 0, x = 0; x<RulerLength - ScaleMarkPosition; x += scale)
-                {
-                    float offset = ScaleMarkPosition + x;
+                float offset = ScaleMarkPosition + begin;
 
-                    switch (dividerLevel)
-                    {
-                        case 0:
-                            session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
-                            break;
-                        case 1:
-                            session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
-                            break;
-                        case 2:
-                            session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
-                            break;
-                    }
+                switch (dividerLevel)
+                {
+                    case 0:
+                        session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
+                        break;
+                    case 1:
+                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
+                        break;
+                    default:
+                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
+                        break;
                 }
 
-                DrawLines(session, scale * 0.5f, ++dividerLevel);
+                DrawTextHorizontal(session, offset, ((int)Math.Round(begin/this.zoom)).ToString());
+
+                DrawLines(session, begin, scale * 0.5f, dividerLevel + 1);
+                DrawLines(session, begin + scale, scale * 0.5f, dividerLevel + 1);
             }
+        }
+
+        private void DrawTextHorizontal(CanvasDrawingSession session, float x, string txt)
+        {
+            var format = new CanvasTextFormat()
+            {
+                FontSize = (float)12,
+                FontFamily = new FontFamily("Courier New").Source,
+                HorizontalAlignment = CanvasHorizontalAlignment.Left,
+                VerticalAlignment = CanvasVerticalAlignment.Bottom,
+                WordWrapping = CanvasWordWrapping.NoWrap
+            };
+
+            float xLoc = x + 3;
+            float yLoc = RulerWidth - 5;
+            CanvasTextLayout textLayout = new CanvasTextLayout(session, txt, format, 0.0f, 0.0f);
+            Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
+            session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
         }
 
 
