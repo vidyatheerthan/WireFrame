@@ -19,16 +19,15 @@ namespace WireFrame
 {
     public sealed partial class Canvas : UserControl
     {
-        private int zoom = 0;
-
         public Canvas()
         {
             this.InitializeComponent();
 
-            SizeChanged += WindowSizeChanged;
-            //X_ScrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, ZoomHandler);
+            X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
+            X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
 
-            PointerWheelChanged += PointerWheelChangedHandler;
+            SizeChanged += WindowSizeChanged;
+            X_ScrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, ZoomHandler);
         }
 
         private async void WindowSizeChanged(object sender, SizeChangedEventArgs args)
@@ -40,29 +39,10 @@ namespace WireFrame
             X_VerticalRuler.RulerLength = (int)(X_ContainerGrid.ActualHeight);
         }
 
-        //private void ZoomHandler(DependencyObject sender, DependencyProperty dp)
-        //{
-        //    X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
-        //    X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
-        //}
-
-        private void PointerWheelChangedHandler(object sender, PointerRoutedEventArgs args)
+        private void ZoomHandler(DependencyObject sender, DependencyProperty dp)
         {
-            int zoom = 0;
-            var value = args.GetCurrentPoint(this).Properties.MouseWheelDelta;
-
-            zoom = GetZoomFactor(value); // -120 (or) +120
-
-            X_HorizontalRuler.Zoom(zoom);
-            X_VerticalRuler.Zoom(zoom);
-        }
-
-        private int GetZoomFactor(int direction)
-        {
-            if (direction > 0) zoom = Math.Max(1, zoom - 1); 
-            else if (direction < 0) ++this.zoom;
-
-            return zoom;
+            X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
+            X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
         }
     }
 }

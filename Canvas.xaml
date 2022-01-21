@@ -27,7 +27,7 @@
                     SubDividerColor="#0F0F0F"/>
 
 
-        <!--<ScrollViewer  Name="X_ScrollViewer"
+        <ScrollViewer  Name="X_ScrollViewer"
                        HorizontalAlignment="Stretch" 
                        VerticalAlignment="Stretch" 
                        MinZoomFactor="1" 
@@ -35,7 +35,7 @@
                        ZoomMode="Enabled" 
                        HorizontalScrollMode="Enabled"
                        VerticalScrollMode="Enabled"
-                       HorizontalScrollBarVisibility="Visible">-->
+                       HorizontalScrollBarVisibility="Visible">
 
             <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top">
 
@@ -43,7 +43,7 @@
 
             </Canvas>
 
-        <!--</ScrollViewer>-->
+        </ScrollViewer>
 
 
         <local:Ruler 
