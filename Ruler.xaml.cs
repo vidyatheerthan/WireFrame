@@ -297,23 +297,28 @@ namespace WireFrame
             {
                 float offset = ScaleMarkPosition + begin;
 
-                switch (dividerLevel)
-                {
-                    case 0:
-                        session.DrawLine(offset, RulerWidth, offset, 0, DividerColor);
-                        break;
-                    case 1:
-                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - LargeDividerLength, DividerColor);
-                        break;
-                    default:
-                        session.DrawLine(offset, RulerWidth, offset, RulerWidth - SmallDividerLength, DividerColor);
-                        break;
-                }
+                DrawLine(session, offset, dividerLevel);
 
                 DrawTextHorizontal(session, offset, ((int)Math.Round(begin/this.zoom)).ToString());
 
                 DrawLines(session, begin, scale * 0.5f, dividerLevel + 1);
                 DrawLines(session, begin + scale, scale * 0.5f, dividerLevel + 1);
+            }
+        }
+
+        private void DrawLine(CanvasDrawingSession session, float x, int dividerLevel)
+        {
+            switch (dividerLevel)
+            {
+                case 0:
+                    session.DrawLine(x, RulerWidth, x, 0, DividerColor);
+                    break;
+                case 1:
+                    session.DrawLine(x, RulerWidth, x, RulerWidth - LargeDividerLength, DividerColor);
+                    break;
+                default:
+                    session.DrawLine(x, RulerWidth, x, RulerWidth - SmallDividerLength, DividerColor);
+                    break;
             }
         }
 
