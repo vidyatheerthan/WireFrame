@@ -313,22 +313,13 @@ namespace WireFrame
             }
         }
 
-        private int GetDividerLevel(float value)
+        private int GetDividerLevel(int value)
         {
             int dividerLevel = 2;
 
-            if ((value > 0) && (Math.Floor(value) == value))
-            {
-                if((int)value % 10 == 0)
-                {
-                    dividerLevel = 0;
-                }
-                else
-                {
-                    dividerLevel = 1;
-                }
-            }
-            
+            if(value % 10 == 0) dividerLevel = 0;
+            else if (value % 5 == 0) dividerLevel = 0;
+
             return dividerLevel;
         }
 
