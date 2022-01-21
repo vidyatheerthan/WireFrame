@@ -284,44 +284,51 @@ namespace WireFrame
 
             float scale = (float)(center * this.zoom);
 
-            DrawLines(session, scale + ScaleMarkPosition, scale);
+            DrawLines(session, scale, scale);
         }
 
 
 
         private void DrawLines(CanvasDrawingSession session, float begin, float scale)
         {
-            int minSize = PixelsPerUnit * UnitsPerScale;
-            
-            if (scale > 5)
+            if (scale > 2)
             {
                 if (begin < RulerLength)
                 {
-                    int dividerLevel = 0;
+                    float offset = ScaleMarkPosition + begin;
 
-                    if (scale < 10)
-                    {
-                        dividerLevel = 2;
-                    }
-                    else if (scale < 100)
-                    {
-                        dividerLevel = 1;
-                    }
+                    int dividerLevel = GetDividerLevel(scale);
 
-                    DrawLine(session, begin, dividerLevel);
+                    DrawLine(session, offset, dividerLevel);
 
                     if (dividerLevel == 0)
                     {
                         int value = (int)Math.Round(begin / this.zoom);
-                        DrawTextHorizontal(session, begin, value.ToString());
+                        DrawTextHorizontal(session, offset, value.ToString());
                     }
                 }
 
-                float half = (float)Math.Round(scale * 0.5f);
+                float half = scale * 0.5f;
 
                 DrawLines(session, begin - half, half);
                 DrawLines(session, begin + half, half);
             }
+        }
+
+        private int GetDividerLevel(float scale)
+        {
+            int dividerLevel = 0;
+
+            if (scale < 10)
+            {
+                dividerLevel = 2;
+            }
+            else if (scale < 100)
+            {
+                dividerLevel = 1;
+            }
+
+            return dividerLevel;
         }
 
         private void DrawLine(CanvasDrawingSession session, float x, int dividerLevel)
