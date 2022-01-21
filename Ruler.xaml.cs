@@ -257,11 +257,11 @@ namespace WireFrame
         {
             if (HorizontalRuler == Visibility.Visible)
             {
-                RulerLength = (int)(ActualWidth);
+                RulerLength = (int)(args.NewSize.Width);
             }
             else if (VerticalRuler == Visibility.Visible)
             {
-                RulerLength = (int)(ActualHeight);
+                RulerLength = (int)(args.NewSize.Height);
             }
         }
 
@@ -279,12 +279,12 @@ namespace WireFrame
 
             session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor);
 
+            float length = RulerLength - (RulerLength % 10);
+            float center = length * 0.5f;
 
-            const float contentSize = 1000;
+            float scale = (float)(center * this.zoom);
 
-            float scale = (float)(contentSize * this.zoom);
-
-            DrawLines(session, 0.0f, scale, 0);
+            DrawLines(session, scale, scale, 0);
         }
 
 
@@ -292,17 +292,25 @@ namespace WireFrame
         private void DrawLines(CanvasDrawingSession session, float begin, float scale, int dividerLevel)
         {
             int minSize = PixelsPerUnit * UnitsPerScale;
-
+            
             if (scale > minSize)
             {
                 float offset = ScaleMarkPosition + begin;
 
-                DrawLine(session, offset, dividerLevel);
+                if (offset < RulerLength)
+                {
 
-                DrawTextHorizontal(session, offset, ((int)Math.Round(begin/this.zoom)).ToString());
+                    DrawLine(session, offset, dividerLevel);
 
-                DrawLines(session, begin, scale * 0.5f, dividerLevel + 1);
-                DrawLines(session, begin + scale, scale * 0.5f, dividerLevel + 1);
+                    int value = (int)Math.Round(begin / this.zoom);
+
+                    DrawTextHorizontal(session, offset, value.ToString());
+                }
+
+                float half = (float)Math.Round(scale * 0.5f);
+
+                DrawLines(session, begin - half, half, dividerLevel + 1);
+                DrawLines(session, begin + half, half, dividerLevel + 1);
             }
         }
 
