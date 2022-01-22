@@ -279,31 +279,31 @@ namespace WireFrame
             session.DrawLine(RulerWidth, 0, RulerWidth, RulerWidth, DividerColor);
 
       
-            float scale = (float)(1024.0f * this.zoom);
+            float scale = (float)(1024.0f * this.zoom); // should be multiple of 8
 
-            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
-            var x = pointerPosition.X - Window.Current.Bounds.X;
-
-            DrawLines(session, (float)x, scale);
+            DrawLines(session, (float)0, scale);
         }
 
 
 
         private void DrawLines(CanvasDrawingSession session, float begin, float scale)
         {
-            if (scale < 5) return;
+            if (scale < 10) return;
 
+            int value = (int)Math.Round(begin / this.zoom);
 
-            int dividerLevel = GetDividerLevel(scale);
+            int dividerLevel = GetDividerLevel(value);
 
             float offset = ScaleMarkPosition + begin;
 
-            DrawLine(session, offset, dividerLevel);
-
-            if (dividerLevel == 0)
+            if (offset > ScaleMarkPosition)
             {
-                int value = (int)Math.Round(begin / this.zoom);
-                DrawTextHorizontal(session, offset, value.ToString());
+                DrawLine(session, offset, dividerLevel);
+
+                if (dividerLevel == 0)
+                {
+                    DrawTextHorizontal(session, offset, value.ToString());
+                }
             }
 
             float half = scale * 0.5f;
@@ -312,18 +312,12 @@ namespace WireFrame
             DrawLines(session, begin + half, half);
         }
 
-        private int GetDividerLevel(float scale)
+        private int GetDividerLevel(int value)
         {
-            int dividerLevel = 0;
+            int dividerLevel = 2;
 
-            if (scale < 10)
-            {
-                dividerLevel = 2;
-            }
-            else if (scale < 100)
-            {
-                dividerLevel = 1;
-            }
+            if (value % 5 == 0) dividerLevel = 0;
+            else if (value % 2 == 0) dividerLevel = 1;
 
             return dividerLevel;
         }
