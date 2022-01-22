@@ -278,30 +278,32 @@ namespace WireFrame
             session.DrawLine(0, RulerWidth, RulerLength, RulerWidth, DividerColor);
             session.DrawLine(RulerWidth, 0, RulerWidth, RulerWidth, DividerColor);
 
-            const float center = 1024;
+      
+            float scale = (float)(1024.0f * this.zoom);
 
-            float scale = (float)(center * this.zoom);
+            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
+            var x = pointerPosition.X - Window.Current.Bounds.X;
 
-            DrawLines(session, scale, scale);
+            DrawLines(session, (float)x, scale);
         }
 
 
 
         private void DrawLines(CanvasDrawingSession session, float begin, float scale)
         {
-            if (scale > 10)
+            if (scale > 5)
             {
                 if (begin < RulerLength)
                 {
-                    float offset = ScaleMarkPosition + begin;
-                    int value = (int)Math.Round(begin / this.zoom);
+                    int dividerLevel = GetDividerLevel(scale);
 
-                    int dividerLevel = GetDividerLevel(value);
+                    float offset = ScaleMarkPosition + begin;
 
                     DrawLine(session, offset, dividerLevel);
 
                     if (dividerLevel == 0)
                     {
+                        int value = (int)Math.Round(begin / this.zoom);
                         DrawTextHorizontal(session, offset, value.ToString());
                     }
                 }
@@ -313,12 +315,18 @@ namespace WireFrame
             }
         }
 
-        private int GetDividerLevel(int value)
+        private int GetDividerLevel(float scale)
         {
-            int dividerLevel = 2;
+            int dividerLevel = 0;
 
-            if(value % 10 == 0) dividerLevel = 0;
-            else if (value % 5 == 0) dividerLevel = 0;
+            if (scale < 10)
+            {
+                dividerLevel = 2;
+            }
+            else if (scale < 100)
+            {
+                dividerLevel = 1;
+            }
 
             return dividerLevel;
         }
