@@ -307,7 +307,7 @@ namespace WireFrame
         private void DrawVerticalRulerBorder(CanvasDrawingSession session)
         {
             session.DrawLine(RulerWidth, 0, RulerWidth, RulerLength, DividerColor);
-            session.DrawLine(0, RulerWidth, RulerWidth, RulerWidth, DividerColor);
+            //session.DrawLine(0, RulerWidth, RulerWidth, RulerWidth, DividerColor);
         }
 
 
@@ -410,7 +410,7 @@ namespace WireFrame
             };
 
             float xLoc = RulerWidth - 5;
-            float yLoc = y + 3;
+            float yLoc = y - 3;
             CanvasTextLayout textLayout = new CanvasTextLayout(session, txt, format, 0.0f, 0.0f);
             Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
 
@@ -418,56 +418,6 @@ namespace WireFrame
             session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
             session.Transform = Matrix3x2.Identity;
         }
-
-
-        //private void DrawVerticalRuler(CanvasControl sender, CanvasDrawEventArgs args)
-        //{
-        //    var format = new CanvasTextFormat()
-        //    {
-        //        FontSize = (float)12,
-        //        FontFamily = new FontFamily("Courier New").Source,
-        //        HorizontalAlignment = CanvasHorizontalAlignment.Right,
-        //        VerticalAlignment = CanvasVerticalAlignment.Top,
-        //        WordWrapping = CanvasWordWrapping.NoWrap
-        //    };
-
-        //    var session = args.DrawingSession;
-        //    session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
-
-        //    session.DrawLine(RulerWidth, 0, RulerWidth, RulerLength, DividerColor);
-
-        //    for (int unit = 0, y = 0; y < RulerLength - ScaleMarkPosition; y += PixelsPerUnit)
-        //    {
-        //        int offset = ScaleMarkPosition + y;
-
-        //        if (y % (PixelsPerUnit * UnitsPerScale) == 0)
-        //        {
-        //            session.DrawLine(RulerWidth, offset, 0, offset, DividerColor);
-
-        //            float xLoc = RulerWidth - 19;
-        //            float yLoc = offset + 3;
-        //            CanvasTextLayout textLayout = new CanvasTextLayout(session, unit.ToString(), format, 0.0f, 0.0f);
-        //            Rect theRectYouAreLookingFor = new Rect(xLoc + textLayout.DrawBounds.X, yLoc + textLayout.DrawBounds.Y, textLayout.DrawBounds.Width, textLayout.DrawBounds.Height);
-
-        //            session.Transform = Matrix3x2.CreateRotation((float)-Math.PI * 0.5f, new Vector2(xLoc, yLoc));
-        //            session.DrawTextLayout(textLayout, xLoc, yLoc, TextColor);
-        //            session.Transform = Matrix3x2.Identity;
-
-        //            ++unit;
-        //        }
-        //        else
-        //        {
-        //            if (y % (PixelsPerUnit * UnitsPerScale / 2) == 0)
-        //            {
-        //                session.DrawLine(RulerWidth, offset, RulerWidth - LargeDividerLength, offset, DividerColor);
-        //            }
-        //            else
-        //            {
-        //                session.DrawLine(RulerWidth, offset, RulerWidth - SmallDividerLength, offset, DividerColor);
-        //            }
-        //        }
-        //    }
-        //}
 
         public void Zoom(float zoom)
         {

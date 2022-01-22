@@ -52,7 +52,7 @@
                     VerticalRuler="Visible"
                     HorizontalAlignment = "Left" 
                     VerticalAlignment = "Stretch"
-                    ScaleMarkPosition = "20"
+                    ScaleMarkPosition = "0"
                     RulerLength = "1000"
                     RulerWidth = "20"            
                     PixelsPerUnit = "10"
