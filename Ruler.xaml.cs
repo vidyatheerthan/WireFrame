@@ -282,7 +282,11 @@ namespace WireFrame
 
             DrawHorizontalRulerBorder(session);
 
-            DrawLines(session, (float)0, scale, DrawHorizontalLine, DrawHorizontalText);
+            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
+            var x = (int)(pointerPosition.X - Window.Current.Bounds.X);
+            x = x - (x % 2);
+
+            DrawLines(session, (float)x, scale, DrawHorizontalLine, DrawHorizontalText);
         }
 
         private void DrawVerticalRuler(CanvasControl sender, CanvasDrawEventArgs args)
@@ -294,7 +298,11 @@ namespace WireFrame
 
             DrawVerticalRulerBorder(session);
 
-            DrawLines(session, (float)0, scale, DrawVerticalLine, DrawVerticalText);
+            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
+            var y = (int)(pointerPosition.Y - Window.Current.Bounds.Y);
+            y = y - (y % 2);
+
+            DrawLines(session, (float)y, scale, DrawVerticalLine, DrawVerticalText);
         }
 
 
@@ -318,7 +326,7 @@ namespace WireFrame
 
             int value = (int)Math.Round(begin / this.zoom);
 
-            int dividerLevel = GetDividerLevel(value);
+            int dividerLevel = GetDividerLevel(scale);
 
             float offset = ScaleMarkPosition + begin;
 
@@ -338,12 +346,12 @@ namespace WireFrame
             DrawLines(session, begin + half, half, drawLine, drawText);
         }
 
-        private int GetDividerLevel(int value)
+        private int GetDividerLevel(float scale)
         {
-            int dividerLevel = 2;
+            int dividerLevel = 0;
 
-            if (value % 10 == 0) dividerLevel = 0;
-            else if (value % 5 == 0) dividerLevel = 1;
+            if (scale < 10) dividerLevel = 2;
+            else if (scale < 100) dividerLevel = 1;
 
             return dividerLevel;
         }

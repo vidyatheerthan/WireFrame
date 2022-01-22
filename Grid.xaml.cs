@@ -282,7 +282,14 @@ namespace WireFrame
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
             float scale = (float)(1024.0f * this.zoom); // should be multiple of 8
-            DrawLines(session, (float)0, scale);
+
+
+            var pointerPosition = Windows.UI.Core.CoreWindow.GetForCurrentThread().PointerPosition;
+            var x = pointerPosition.X - Window.Current.Bounds.X;
+            var y = pointerPosition.Y - Window.Current.Bounds.Y;
+
+            DrawHorizontalLines(session, (float)x, scale);
+            DrawVerticalLines(session, (float)y, scale);
 
             DrawCursorLines(session);
         }
@@ -314,21 +321,34 @@ namespace WireFrame
             }
         }
 
-        private void DrawLines(CanvasDrawingSession session, float begin, float scale)
+        private void DrawHorizontalLines(CanvasDrawingSession session, float begin, float scale)
         {
             if (scale < 10) return;
 
             if (begin > 0)
             {
-                int value = (int)Math.Round(begin / this.zoom);
-                DrawHorizontalLine(session, begin, GetDividerLevel(value));
-                DrawVerticalLine(session, begin, GetDividerLevel(value));
+                DrawHorizontalLine(session, begin, GetDividerLevel(scale));
             }
 
             float half = scale * 0.5f;
 
-            DrawLines(session, begin - half, half);
-            DrawLines(session, begin + half, half);
+            DrawHorizontalLines(session, begin - half, half);
+            DrawHorizontalLines(session, begin + half, half);
+        }
+
+        private void DrawVerticalLines(CanvasDrawingSession session, float begin, float scale)
+        {
+            if (scale < 10) return;
+
+            if (begin > 0)
+            {
+                DrawVerticalLine(session, begin, GetDividerLevel(scale));
+            }
+
+            float half = scale * 0.5f;
+
+            DrawVerticalLines(session, begin - half, half);
+            DrawVerticalLines(session, begin + half, half);
         }
 
         private void DrawHorizontalLine(CanvasDrawingSession session, float x, int dividerLevel)
@@ -345,11 +365,12 @@ namespace WireFrame
             session.DrawLine(0, y, (int)GridWidth, y, color);
         }
 
-        private int GetDividerLevel(int value)
+        private int GetDividerLevel(float scale)
         {
-            int dividerLevel = 1;
+            int dividerLevel = 0;
 
-            if (value % 10 == 0) dividerLevel = 0;
+            if (scale < 10) dividerLevel = 2;
+            else if (scale < 100) dividerLevel = 1;
 
             return dividerLevel;
         }
