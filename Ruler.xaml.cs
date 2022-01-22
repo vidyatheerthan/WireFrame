@@ -316,8 +316,8 @@ namespace WireFrame
         {
             int dividerLevel = 2;
 
-            if (value % 5 == 0) dividerLevel = 0;
-            else if (value % 2 == 0) dividerLevel = 1;
+            if (value % 10 == 0) dividerLevel = 0;
+            else if (value % 5 == 0) dividerLevel = 1;
 
             return dividerLevel;
         }
