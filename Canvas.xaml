@@ -65,24 +65,6 @@
 
             <Grid Grid.Column="1">
 
-
-                <local:Grid
-                    x:Name="X_Grid"
-                    GridWidth="300" 
-                    GridHeight="300"
-                    HorizontalAlignment="Stretch"
-                    VerticalAlignment="Stretch"
-                    PixelsPerUnit="10" 
-                    UnitsPerScale = "5"
-                    SnapToSubDivider="True"
-                    CursorStartX="50"
-                    CursorStartY="50"
-                    BackgroundColor="Black" 
-                    DividerColor="#1F1F1F"
-                    SubDividerColor="#0F0F0F"/>
-
-
-
                 <ScrollViewer  Name="X_ScrollViewer"
                            HorizontalAlignment="Stretch" 
                            VerticalAlignment="Stretch" 
@@ -95,12 +77,28 @@
 
                     <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue">
 
+                        <local:Grid
+                            x:Name="X_Grid"
+                            GridWidth="1000" 
+                            GridHeight="1000"
+                            PixelsPerUnit="10" 
+                            UnitsPerScale = "5"
+                            SnapToSubDivider="True"
+                            CursorStartX="50"
+                            CursorStartY="50"
+                            BackgroundColor="Transparent" 
+                            DividerColor="#1F1F1F"
+                            SubDividerColor="#0F0F0F">
+
+                        </local:Grid>
+
                         <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
 
                     </Canvas>
 
                 </ScrollViewer>
 
+                
 
             </Grid>
 
