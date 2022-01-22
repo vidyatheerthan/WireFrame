@@ -26,7 +26,11 @@ namespace WireFrame
             X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
             X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
 
+            X_HorizontalRuler.Scroll(X_ScrollViewer.HorizontalOffset);
+            X_VerticalRuler.Scroll(X_ScrollViewer.VerticalOffset);
+
             X_ScrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, ZoomHandler);
+            X_ScrollViewer.ViewChanged += ViewChangeHandler;
         }
 
         
@@ -35,6 +39,12 @@ namespace WireFrame
         {
             X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
             X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
+        }
+
+        private void ViewChangeHandler(object sender, ScrollViewerViewChangedEventArgs e)
+        {
+            X_HorizontalRuler.Scroll(X_ScrollViewer.HorizontalOffset);
+            X_VerticalRuler.Scroll(X_ScrollViewer.VerticalOffset);
         }
     }
 }

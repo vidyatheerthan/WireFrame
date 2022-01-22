@@ -429,5 +429,18 @@ namespace WireFrame
                 VerticalCanvas.Invalidate();
             }
         }
+
+        public void Scroll(double offset)
+        {
+            if (HorizontalRuler == Visibility.Visible)
+            {
+                HorizontalCanvas.Invalidate();
+            }
+
+            if (VerticalRuler == Visibility.Visible)
+            {
+                VerticalCanvas.Invalidate();
+            }
+        }
     }
 }
