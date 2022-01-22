@@ -94,7 +94,8 @@
                             CursorStartY="50"
                             BackgroundColor="Transparent" 
                             DividerColor="#1F1F1F"
-                            SubDividerColor="#0F0F0F" />
+                            SubDividerColor="#AFAFAF"
+                            IsHitTestVisible="False"/>
 
             </Grid>
 
