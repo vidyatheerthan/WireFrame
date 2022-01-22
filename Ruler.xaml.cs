@@ -291,28 +291,25 @@ namespace WireFrame
 
         private void DrawLines(CanvasDrawingSession session, float begin, float scale)
         {
-            if (scale > 5)
+            if (scale < 5) return;
+
+
+            int dividerLevel = GetDividerLevel(scale);
+
+            float offset = ScaleMarkPosition + begin;
+
+            DrawLine(session, offset, dividerLevel);
+
+            if (dividerLevel == 0)
             {
-                if (begin < RulerLength)
-                {
-                    int dividerLevel = GetDividerLevel(scale);
-
-                    float offset = ScaleMarkPosition + begin;
-
-                    DrawLine(session, offset, dividerLevel);
-
-                    if (dividerLevel == 0)
-                    {
-                        int value = (int)Math.Round(begin / this.zoom);
-                        DrawTextHorizontal(session, offset, value.ToString());
-                    }
-                }
-
-                float half = scale * 0.5f;
-
-                DrawLines(session, begin - half, half);
-                DrawLines(session, begin + half, half);
+                int value = (int)Math.Round(begin / this.zoom);
+                DrawTextHorizontal(session, offset, value.ToString());
             }
+
+            float half = scale * 0.5f;
+
+            DrawLines(session, begin - half, half);
+            DrawLines(session, begin + half, half);
         }
 
         private int GetDividerLevel(float scale)
