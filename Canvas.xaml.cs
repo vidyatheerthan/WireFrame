@@ -26,6 +26,8 @@ namespace WireFrame
             X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
             X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
 
+            X_Grid.Zoom(X_ScrollViewer.ZoomFactor);
+
             X_HorizontalRuler.Scroll(X_ScrollViewer.HorizontalOffset);
             X_VerticalRuler.Scroll(X_ScrollViewer.VerticalOffset);
 
@@ -39,6 +41,8 @@ namespace WireFrame
         {
             X_HorizontalRuler.Zoom(X_ScrollViewer.ZoomFactor);
             X_VerticalRuler.Zoom(X_ScrollViewer.ZoomFactor);
+
+            X_Grid.Zoom(X_ScrollViewer.ZoomFactor);
         }
 
         private void ViewChangeHandler(object sender, ScrollViewerViewChangedEventArgs e)

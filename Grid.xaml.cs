@@ -228,6 +228,10 @@ namespace WireFrame
 
         ////////////////////////////
 
+        private double zoom = 0.0;
+
+        ////////////////////////////
+
         public Grid()
         {
             Color WHITE = Color.FromArgb(255, 255, 255, 255);
@@ -277,30 +281,21 @@ namespace WireFrame
             var session = args.DrawingSession;
             session.Antialiasing = Microsoft.Graphics.Canvas.CanvasAntialiasing.Aliased;
 
-            for (int x = 0; x <= GridWidth; x += PixelsPerUnit)
-            {
-                if(x % (PixelsPerUnit * UnitsPerScale) == 0)
-                {
-                    session.DrawLine(x, 0, x, (int)GridHeight, DividerColor);
-                }
-                else
-                {
-                    session.DrawLine(x, 0, x, (int)GridHeight, SubDividerColor);
-                }                
-            }
+            float scale = (float)(1024.0f * this.zoom); // should be multiple of 8
+            DrawLines(session, (float)0, scale);
 
-            for (int y = 0; y <= GridHeight; y += PixelsPerUnit)
-            {
-                if (y % (PixelsPerUnit * UnitsPerScale) == 0)
-                {
-                    session.DrawLine(0, y, (int)GridWidth, y, DividerColor);
-                }
-                else
-                {
-                    session.DrawLine(0, y, (int)GridWidth, y, SubDividerColor);
-                }
-            }
+            DrawCursorLines(session);
+        }
 
+        public void Zoom(float zoom)
+        {
+            this.zoom = zoom;
+
+            GridCanvas.Invalidate();
+        }
+
+        private void DrawCursorLines(CanvasDrawingSession session)
+        {
             if (pointerKeyState == KeyState.Pressed || pointerState == PointerState.Entered)
             {
                 session.DrawLine((float)cursorLines[0].X1, (float)cursorLines[0].Y1, (float)cursorLines[0].X2, (float)cursorLines[0].Y2, Colors.Cyan);
@@ -317,6 +312,46 @@ namespace WireFrame
                 session.DrawLine((float)cursorLines[2].X1, (float)cursorLines[2].Y1, (float)cursorLines[2].X2, (float)cursorLines[2].Y2, Colors.Cyan);
                 session.DrawLine((float)cursorLines[3].X1, (float)cursorLines[3].Y1, (float)cursorLines[3].X2, (float)cursorLines[3].Y2, Colors.Cyan);
             }
+        }
+
+        private void DrawLines(CanvasDrawingSession session, float begin, float scale)
+        {
+            if (scale < 10) return;
+
+            if (begin > 0)
+            {
+                int value = (int)Math.Round(begin / this.zoom);
+                DrawHorizontalLine(session, begin, GetDividerLevel(value));
+                DrawVerticalLine(session, begin, GetDividerLevel(value));
+            }
+
+            float half = scale * 0.5f;
+
+            DrawLines(session, begin - half, half);
+            DrawLines(session, begin + half, half);
+        }
+
+        private void DrawHorizontalLine(CanvasDrawingSession session, float x, int dividerLevel)
+        {
+            Color color = dividerLevel == 0 ? DividerColor : SubDividerColor;
+
+            session.DrawLine(x, 0, x, (int)GridHeight, color);
+        }
+
+        private void DrawVerticalLine(CanvasDrawingSession session, float y, int dividerLevel)
+        {
+            Color color = dividerLevel == 0 ? DividerColor : SubDividerColor;
+
+            session.DrawLine(0, y, (int)GridWidth, y, color);
+        }
+
+        private int GetDividerLevel(int value)
+        {
+            int dividerLevel = 1;
+
+            if (value % 10 == 0) dividerLevel = 0;
+
+            return dividerLevel;
         }
 
         private void PointerEnteredGrid(object sender, PointerRoutedEventArgs args)

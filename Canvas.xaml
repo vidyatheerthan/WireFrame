@@ -77,7 +77,13 @@
 
                     <Canvas x:Name="X_Canvas" Width="1000" Height="1000" HorizontalAlignment="Left" VerticalAlignment="Top" Background="AliceBlue">
 
-                        <local:Grid
+                        <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
+
+                    </Canvas>
+
+                </ScrollViewer>
+
+                <local:Grid
                             x:Name="X_Grid"
                             GridWidth="1000" 
                             GridHeight="1000"
@@ -88,17 +94,7 @@
                             CursorStartY="50"
                             BackgroundColor="Transparent" 
                             DividerColor="#1F1F1F"
-                            SubDividerColor="#0F0F0F">
-
-                        </local:Grid>
-
-                        <local:Element Width="100" Height="100" Canvas.Left="500" Canvas.Top="500"/>
-
-                    </Canvas>
-
-                </ScrollViewer>
-
-                
+                            SubDividerColor="#0F0F0F" />
 
             </Grid>
 
