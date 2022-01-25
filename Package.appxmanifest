@@ -7,11 +7,11 @@
   IgnorableNamespaces="uap mp">
 
   <Identity
-    Name="ead3eb70-c71d-4a2a-8d09-ca574939c59e"
+    Name="d4a65ccc-2901-4f3b-9a52-2f4b46235acb"
     Publisher="CN=vidya"
     Version="1.0.0.0" />
 
-  <mp:PhoneIdentity PhoneProductId="ead3eb70-c71d-4a2a-8d09-ca574939c59e" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
+  <mp:PhoneIdentity PhoneProductId="d4a65ccc-2901-4f3b-9a52-2f4b46235acb" PhonePublisherId="00000000-0000-0000-0000-000000000000"/>
 
   <Properties>
     <DisplayName>WireFrame</DisplayName>
