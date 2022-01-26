@@ -8,13 +8,14 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer x:Name="_scrollViewer" ZoomMode="Enabled" MinZoomFactor="0.1" MaxZoomFactor="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" Background="Gray">
+    <Grid x:Name="_grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
 
-        <Border x:Name="_canvasBorder" HorizontalAlignment="Center" VerticalAlignment="Center" Width="602" Height="402" Background="DarkGray" BorderThickness="1" BorderBrush="Black">
-            
-            <local:WFCanvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="600" Height="400"/>
-            
-        </Border>
+        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled">
 
-    </ScrollViewer>
+            <local:WFCanvas x:Name="_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Width="0" Height="0" />
+
+        </ScrollViewer>
+
+    </Grid>
+    
 </Page>

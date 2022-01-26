@@ -22,27 +22,39 @@ namespace WireFrame
     /// </summary>
     public sealed partial class MainPage : Page
     {
+        private const double CANVAS_DIVISOR = 100;
+
+        private const double CANVAS_WIDTH = 6000;
+        private const double CANVAS_HEIGHT = 4000;
+
+        private double zoom = 1.0;
+
         public MainPage()
         {
             this.InitializeComponent();
+
+            PointerWheelChanged += OnPointerWheelChanged;
+            SizeChanged += OnSizeChanged;
         }
 
-        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
         {
-            base.OnNavigatedFrom(e);
+            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
 
-            _scrollViewer.UnregisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, 0);
+            zoom = Math.Max(1, Math.Min(100, zoom + delta));
+
+            UpdateCanvasSize();
         }
 
-        protected override void OnNavigatedTo(NavigationEventArgs e)
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            base.OnNavigatedTo(e);
-
-            _scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, _ScrollViewerZoomFactorChanged);
+            UpdateCanvasSize();
         }
 
-        private void _ScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)
+        private void UpdateCanvasSize()
         {
+            _canvas.Width = (CANVAS_WIDTH > CANVAS_DIVISOR ? (CANVAS_WIDTH / CANVAS_DIVISOR) : CANVAS_WIDTH) * this.zoom;
+            _canvas.Height = (CANVAS_HEIGHT > CANVAS_DIVISOR ? (CANVAS_HEIGHT / CANVAS_DIVISOR) : CANVAS_HEIGHT) * this.zoom;
         }
     }
 }
