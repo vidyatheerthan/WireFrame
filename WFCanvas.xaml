@@ -11,6 +11,10 @@
 
     <Canvas x:Name="_canvas" Background="White">
 
+        <Ellipse x:Name="_ellipse" Canvas.Left="10" Canvas.Top="10" Stroke="Orange" Fill="LightSalmon" Width="250" Height="250" />
+
+        <Rectangle x:Name="_rectangle" Canvas.Left="4740" Canvas.Top="3790" Stroke="Pink" Fill="LightPink" Width="1250" Height="200" />
+
     </Canvas>
 
 </UserControl>

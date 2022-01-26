@@ -27,11 +27,13 @@ namespace WireFrame
         private const double CANVAS_WIDTH = 6000;
         private const double CANVAS_HEIGHT = 4000;
 
-        private double zoom = 1.0;
+        private double zoom = 25.0;
 
         public MainPage()
         {
             this.InitializeComponent();
+
+            _canvas.SetCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
 
             PointerWheelChanged += OnPointerWheelChanged;
             SizeChanged += OnSizeChanged;
