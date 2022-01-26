@@ -8,11 +8,11 @@
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
-    <ScrollViewer ZoomMode="Enabled" MinZoomFactor="0.1" MaxZoomFactor="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" Background="LightGray">
+    <ScrollViewer x:Name="_scrollViewer" ZoomMode="Enabled" MinZoomFactor="0.1" MaxZoomFactor="100" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" Background="Gray">
 
-        <Border HorizontalAlignment="Center" VerticalAlignment="Center" Width="602" Height="402" Background="DarkGray" BorderThickness="1" BorderBrush="Aqua">
+        <Border x:Name="_canvasBorder" HorizontalAlignment="Center" VerticalAlignment="Center" Width="602" Height="402" Background="DarkGray" BorderThickness="1" BorderBrush="Black">
             
-            <Canvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="600" Height="400" Background="White" />
+            <local:WFCanvas HorizontalAlignment="Left" VerticalAlignment="Top" Width="600" Height="400"/>
             
         </Border>
 

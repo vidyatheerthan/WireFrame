@@ -26,5 +26,23 @@ namespace WireFrame
         {
             this.InitializeComponent();
         }
+
+        protected override void OnNavigatedFrom(NavigationEventArgs e)
+        {
+            base.OnNavigatedFrom(e);
+
+            _scrollViewer.UnregisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, 0);
+        }
+
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+            base.OnNavigatedTo(e);
+
+            _scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, _ScrollViewerZoomFactorChanged);
+        }
+
+        private void _ScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)
+        {
+        }
     }
 }
