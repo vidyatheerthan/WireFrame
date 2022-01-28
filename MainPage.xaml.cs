@@ -22,41 +22,13 @@ namespace WireFrame
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private const double CANVAS_DIVISOR = 100;
-
-        private const double CANVAS_WIDTH = 6000;
-        private const double CANVAS_HEIGHT = 4000;
-
         private double zoom = 25.0;
 
         public MainPage()
         {
             this.InitializeComponent();
 
-            _canvas.SetCanvasSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-
-            PointerWheelChanged += OnPointerWheelChanged;
-            SizeChanged += OnSizeChanged;
-        }
-
-        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
-        {
-            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
-
-            zoom = Math.Max(1, Math.Min(100, zoom + delta));
-
-            UpdateCanvasSize();
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            UpdateCanvasSize();
-        }
-
-        private void UpdateCanvasSize()
-        {
-            _canvas.Width = (CANVAS_WIDTH > CANVAS_DIVISOR ? (CANVAS_WIDTH / CANVAS_DIVISOR) : CANVAS_WIDTH) * this.zoom;
-            _canvas.Height = (CANVAS_HEIGHT > CANVAS_DIVISOR ? (CANVAS_HEIGHT / CANVAS_DIVISOR) : CANVAS_HEIGHT) * this.zoom;
+            _canvas.SetCanvasProfile(new CanvasProfile(1125.0, 2436.0));
         }
     }
 }

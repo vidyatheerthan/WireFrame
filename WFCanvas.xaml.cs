@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -19,54 +20,144 @@ namespace WireFrame
 {
     public sealed partial class WFCanvas : UserControl
     {
-        private Size size;
+        private CanvasProfile profile;
 
-        Size es, rs;
-        Point ep, rp;
+        private List<WFElement> elements;
+
+        private double zoom = 1.0;
+
+        //---------------------------------
+
+        public static readonly DependencyProperty GridWidthDependencyProperty = DependencyProperty.Register(
+            nameof(GridWidth),
+            typeof(double),
+            typeof(WFCanvas),
+            new PropertyMetadata(null)
+        );
+
+        public double GridWidth
+        {
+            get => (double)GetValue(GridWidthDependencyProperty);
+            set => SetValue(GridWidthDependencyProperty, value);
+        }
+
+        //---------------------------------
+
+        public static readonly DependencyProperty GridHeightDependencyProperty = DependencyProperty.Register(
+            nameof(GridHeight),
+            typeof(double),
+            typeof(WFCanvas),
+            new PropertyMetadata(null)
+        );
+
+        public double GridHeight
+        {
+            get => (double)GetValue(GridHeightDependencyProperty);
+            set => SetValue(GridHeightDependencyProperty, value);
+        }
+
+        //---------------------------------
+
+        public static readonly DependencyProperty CanvasWidthDependencyProperty = DependencyProperty.Register(
+            nameof(CanvasWidth),
+            typeof(double),
+            typeof(WFCanvas),
+            new PropertyMetadata(null)
+        );
+
+        public double CanvasWidth
+        {
+            get => (double)GetValue(CanvasWidthDependencyProperty);
+            set => SetValue(CanvasWidthDependencyProperty, value);
+        }
+
+        //---------------------------------
+
+        public static readonly DependencyProperty CanvasHeightDependencyProperty = DependencyProperty.Register(
+            nameof(CanvasHeight),
+            typeof(double),
+            typeof(WFCanvas),
+            new PropertyMetadata(null)
+        );
+
+        public double CanvasHeight
+        {
+            get => (double)GetValue(CanvasHeightDependencyProperty);
+            set => SetValue(CanvasHeightDependencyProperty, value);
+        }
+
+        //---------------------------------
 
         public WFCanvas()
         {
+            this.elements = new List<WFElement>();
+
             this.InitializeComponent();
 
-
-            
-            es.Width = _ellipse.Width;
-            es.Height = _ellipse.Height;
-
-            rs.Width = _rectangle.Width;
-            rs.Height = _rectangle.Height;
-
-            ep.X = Canvas.GetLeft(_ellipse);
-            ep.Y = Canvas.GetTop(_ellipse);
-
-            rp.X = Canvas.GetLeft(_rectangle);
-            rp.Y = Canvas.GetTop(_rectangle);
-
-            SizeChanged += OnSizeChanged;
+            this.Loaded += OnLoaded;
+            this.SizeChanged += OnSizeChanged;
+            _grid.PointerWheelChanged += OnPointerWheelChanged;
         }
 
-        public void SetCanvasSize(double width, double height)
+        private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            this.size.Width = width;
-            this.size.Height = height;
+            InitializeElements();
+        }
+
+        private void InitializeElements()
+        {
+            foreach(FrameworkElement element in _canvas.Children)
+            {
+                double left = Canvas.GetLeft(element);
+                double top = Canvas.GetTop(element);
+                double width = 500.0;//element.Width;
+                double height = 500.0;//element.Height;
+
+                var e = new WFElement(left, top, width, height, element);
+                this.elements.Add(e);
+            }
+        }
+
+        public void SetCanvasProfile(CanvasProfile profile)
+        {
+            this.profile = profile;
+
+            var gridSize = Utility.GetScreenResolution();
+
+            GridWidth = gridSize.Width;
+            GridHeight = gridSize.Height;
+
+            var canvasSize = this.profile.Resize(gridSize);
+
+            CanvasWidth = canvasSize.Width;
+            CanvasHeight = canvasSize.Height;
         }
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            double widthRatio = ActualWidth / this.size.Width;
-            double heightRatio = ActualHeight / this.size.Height;
+            double widthRatio = _canvas.ActualWidth / this.profile.Width;
+            double heightRatio = _canvas.ActualHeight / this.profile.Height;
 
-            _ellipse.Width = es.Width * widthRatio;
-            _ellipse.Height = es.Height * heightRatio;
+            AdjustElements(widthRatio, heightRatio);
+        }
 
-            _rectangle.Width = rs.Width * widthRatio;
-            _rectangle.Height = rs.Height * heightRatio;
+        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
 
-            Canvas.SetLeft(_ellipse, ep.X * widthRatio);
-            Canvas.SetTop(_ellipse, ep.Y * heightRatio);
+            zoom = Math.Max(1, Math.Min(100, zoom + delta));
+        }
 
-            Canvas.SetLeft(_rectangle, rp.X * widthRatio);
-            Canvas.SetTop(_rectangle, rp.Y * heightRatio);
+        private void AdjustElements(double widthRatio, double heightRatio)
+        {
+            foreach (WFElement element in this.elements)
+            {
+                element.Element.Width = element.Width * widthRatio;
+                element.Element.Height = element.Height * heightRatio;
+
+                Canvas.SetLeft(element.Element, element.Left * widthRatio);
+                Canvas.SetTop(element.Element, element.Top * heightRatio);
+            }
         }
     }
 }

@@ -10,11 +10,7 @@
 
     <Grid x:Name="_grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
 
-        <ScrollViewer HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled">
-
-            <local:WFCanvas x:Name="_canvas" HorizontalAlignment="Center" VerticalAlignment="Center" Width="0" Height="0" />
-
-        </ScrollViewer>
+        <local:WFCanvas x:Name="_canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
     </Grid>
     
