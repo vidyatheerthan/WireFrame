@@ -11,6 +11,7 @@ namespace WireFrame
     {
         private double width;
         private double height;
+        private double zoom;
 
         //-------------------------------
 
@@ -24,29 +25,35 @@ namespace WireFrame
             get => this.height;
         }
 
+        public double Zoom
+        {
+            get => this.zoom;
+        }
+
         //-------------------------------
 
-        public CanvasProfile(double width, double height)
+        public CanvasProfile(double width, double height, double zoom)
         {
             this.width = width;
             this.height = height;
+            this.zoom = zoom;
         }
 
-        public Size Resize(Size canvasSize)
+        public Size Resize(Size screenSize)
         {
             // Figure out the ratio
-            double ratioX = canvasSize.Width / width;
-            double ratioY = canvasSize.Height / height;
+            double ratioX = screenSize.Width / this.width;
+            double ratioY = screenSize.Height / this.height;
 
             // use whichever multiplier is smaller
             double ratio = ratioX < ratioY ? ratioX : ratioY;
 
-            // shrink it to 75% canvas size
-            ratio *= 0.75;
+            // shrink it to 75% screen size
+            ratio *= this.zoom / 100.0;
 
             // now we can get the new height and width
-            int newWidth = Convert.ToInt32(width * ratio);
-            int newHeight = Convert.ToInt32(height * ratio);
+            int newWidth = Convert.ToInt32(this.width * ratio);
+            int newHeight = Convert.ToInt32(this.height * ratio);
 
             return new Size(newWidth, newHeight);
         }

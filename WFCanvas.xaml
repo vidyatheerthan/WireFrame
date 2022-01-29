@@ -9,15 +9,15 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled">
+    <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Disabled" Background="Black">
 
-        <Grid x:Name="_grid" Width="{x:Bind GridWidth, Mode=OneWay}" Height="{x:Bind GridHeight, Mode=OneWay}" Background="Gray">
+        <Grid x:Name="_grid" Width="{x:Bind Path=GridWidth, Mode=OneWay}" Height="{x:Bind Path=GridHeight, Mode=OneWay}" Background="Gray">
 
-            <Canvas x:Name="_canvas" Width="{x:Bind CanvasWidth, Mode=OneWay}" Height="{x:Bind CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
+            <Canvas x:Name="_canvas" Width="{x:Bind Path=CanvasWidth, Mode=OneWay}" Height="{x:Bind Path=CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
 
                 <Ellipse x:Name="_ellipse" Canvas.Left="10" Canvas.Top="10" Stroke="Orange" Fill="LightSalmon" Width="250" Height="250" />
 
-                <Rectangle x:Name="_rectangle" Canvas.Left="4740" Canvas.Top="3790" Stroke="Pink" Fill="LightPink" Width="1250" Height="200" />
+                <Rectangle x:Name="_rectangle" Canvas.Left="340" Canvas.Top="379" Stroke="Pink" Fill="LightPink" Width="1250" Height="200" />
 
             </Canvas>
 

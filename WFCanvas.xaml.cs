@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -18,13 +19,19 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame
 {
-    public sealed partial class WFCanvas : UserControl
+    public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
+        private const double ZOOM_SPEED = 2.0;
+        private const double MIN_ZOOM_FACTOR = 0.90;
+        private const double MAX_ZOOM_FACTOR = 10.0;
+
         private CanvasProfile profile;
 
         private List<WFElement> elements;
 
         private double zoom = 1.0;
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         //---------------------------------
 
@@ -38,7 +45,11 @@ namespace WireFrame
         public double GridWidth
         {
             get => (double)GetValue(GridWidthDependencyProperty);
-            set => SetValue(GridWidthDependencyProperty, value);
+            set
+            {
+                SetValue(GridWidthDependencyProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         //---------------------------------
@@ -53,7 +64,11 @@ namespace WireFrame
         public double GridHeight
         {
             get => (double)GetValue(GridHeightDependencyProperty);
-            set => SetValue(GridHeightDependencyProperty, value);
+            set
+            {
+                SetValue(GridHeightDependencyProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         //---------------------------------
@@ -68,7 +83,11 @@ namespace WireFrame
         public double CanvasWidth
         {
             get => (double)GetValue(CanvasWidthDependencyProperty);
-            set => SetValue(CanvasWidthDependencyProperty, value);
+            set
+            {
+                SetValue(CanvasWidthDependencyProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         //---------------------------------
@@ -83,10 +102,21 @@ namespace WireFrame
         public double CanvasHeight
         {
             get => (double)GetValue(CanvasHeightDependencyProperty);
-            set => SetValue(CanvasHeightDependencyProperty, value);
+            set {
+                SetValue(CanvasHeightDependencyProperty, value);
+                OnPropertyChanged();
+            }
         }
 
         //---------------------------------
+
+
+        private double ZoomFactor
+        {
+            get => MIN_ZOOM_FACTOR + (MAX_ZOOM_FACTOR * (this.zoom / 100.0));
+        }
+
+        //--
 
         public WFCanvas()
         {
@@ -95,61 +125,85 @@ namespace WireFrame
             this.InitializeComponent();
 
             this.Loaded += OnLoaded;
-            this.SizeChanged += OnSizeChanged;
-            _grid.PointerWheelChanged += OnPointerWheelChanged;
+
+            _grid.PointerWheelChanged += OnGridPointerWheelChanged;
         }
+
+
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             InitializeElements();
         }
 
+        
+
+        public void SetCanvasProfile(CanvasProfile profile)
+        {
+            this.profile = profile;
+
+            UpdateGridAndCanvasSize();
+        }
+
+        private void OnGridPointerWheelChanged(object sender, PointerRoutedEventArgs e)
+        {
+            if(!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down)) { return; }
+
+            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
+
+            this.zoom = Math.Max(1, Math.Min(100.0, this.zoom + (ZOOM_SPEED * delta)));
+
+            //-----
+
+            UpdateGridAndCanvasSize();
+        }
+
+       
+
+        private void UpdateGridAndCanvasSize()
+        {
+            var screenSize = Utility.GetScreenResolution();
+
+            GridWidth = screenSize.Width * ZoomFactor;
+            GridHeight = screenSize.Height * ZoomFactor;
+
+            var canvasSize = this.profile.Resize(screenSize);
+
+            CanvasWidth = canvasSize.Width * ZoomFactor;
+            CanvasHeight = canvasSize.Height * ZoomFactor;
+
+            UpdateCanvasChildren();
+        }
+
+
+
+
+
+
         private void InitializeElements()
         {
-            foreach(FrameworkElement element in _canvas.Children)
+            foreach (FrameworkElement element in _canvas.Children)
             {
                 double left = Canvas.GetLeft(element);
                 double top = Canvas.GetTop(element);
-                double width = 500.0;//element.Width;
-                double height = 500.0;//element.Height;
+                double width = element.Width;
+                double height = element.Height;
 
                 var e = new WFElement(left, top, width, height, element);
                 this.elements.Add(e);
             }
         }
 
-        public void SetCanvasProfile(CanvasProfile profile)
+        private void UpdateCanvasChildren()
         {
-            this.profile = profile;
+            double widthRatio = CanvasWidth / this.profile.Width;
+            double heightRatio = CanvasHeight / this.profile.Height;
 
-            var gridSize = Utility.GetScreenResolution();
-
-            GridWidth = gridSize.Width;
-            GridHeight = gridSize.Height;
-
-            var canvasSize = this.profile.Resize(gridSize);
-
-            CanvasWidth = canvasSize.Width;
-            CanvasHeight = canvasSize.Height;
-        }
-
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            double widthRatio = _canvas.ActualWidth / this.profile.Width;
-            double heightRatio = _canvas.ActualHeight / this.profile.Height;
-
-            AdjustElements(widthRatio, heightRatio);
-        }
-
-        private void OnPointerWheelChanged(object sender, PointerRoutedEventArgs e)
-        {
-            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
-
-            zoom = Math.Max(1, Math.Min(100, zoom + delta));
-        }
-
-        private void AdjustElements(double widthRatio, double heightRatio)
-        {
             foreach (WFElement element in this.elements)
             {
                 element.Element.Width = element.Width * widthRatio;
