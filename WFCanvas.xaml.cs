@@ -33,6 +33,8 @@ namespace WireFrame
 
         private PointerState pointerState = PointerState.Released;
 
+        private MouseButton mouseButtonPressed = MouseButton.Left;
+
         private FrameworkElement activeElement;
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -189,12 +191,20 @@ namespace WireFrame
 
         private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            if (this.pointerState != PointerState.Dragging)
+            if (this.pointerState == PointerState.Dragging)
             {
-                this.pointerState = PointerState.Pressed;
+                return;
             }
 
-            DoAction(e.GetCurrentPoint(_canvas).Position);
+            this.pointerState = PointerState.Pressed;
+
+            var pointer = e.GetCurrentPoint(_canvas);
+
+            if(pointer.Properties.IsLeftButtonPressed) { this.mouseButtonPressed = MouseButton.Left; }
+            else if (pointer.Properties.IsMiddleButtonPressed) { this.mouseButtonPressed = MouseButton.Middle; }
+            else if (pointer.Properties.IsRightButtonPressed) { this.mouseButtonPressed = MouseButton.Right; }
+
+            DoAction(pointer.Position);
         }
 
         private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
@@ -221,17 +231,29 @@ namespace WireFrame
 
         private void DoAction(Point pointerPosition)
         {
-            if(this.pointerState == PointerState.Pressed && this.currentAction == Action.CreateNewEllipse)
+            if(this.pointerState == PointerState.Pressed)
             {
-                this.activeElement = AddNewEllipse(pointerPosition.X, pointerPosition.Y, 1, 1);
+                if (this.mouseButtonPressed == MouseButton.Left && this.currentAction == Action.CreateNewEllipse)
+                {
+                    this.activeElement = AddNewEllipse(pointerPosition.X, pointerPosition.Y, 1, 1);
+                }
             }
-            else if (this.pointerState == PointerState.Dragging && this.currentAction == Action.CreateNewEllipse)
+            else if (this.pointerState == PointerState.Dragging)
             {
-                double width = pointerPosition.X - Canvas.GetLeft(this.activeElement);
-                double height = pointerPosition.Y - Canvas.GetTop(this.activeElement);
+                if (this.mouseButtonPressed == MouseButton.Left && this.currentAction == Action.CreateNewEllipse)
+                {
+                    double width = pointerPosition.X - Canvas.GetLeft(this.activeElement);
+                    double height = pointerPosition.Y - Canvas.GetTop(this.activeElement);
 
-                this.activeElement.Width = width > 0 ? width : 1;
-                this.activeElement.Height = height > 0 ? height : 1;
+                    this.activeElement.Width = width > 0 ? width : 1;
+                    this.activeElement.Height = height > 0 ? height : 1;
+                }
+                else if (this.mouseButtonPressed == MouseButton.Middle)
+                {
+                    double x = _scrollViewer.ActualWidth - pointerPosition.X;
+                    double y = _scrollViewer.ActualHeight - pointerPosition.Y;
+                    _scrollViewer.ChangeView(x, y, null, true);
+                }
             }
         }
     }

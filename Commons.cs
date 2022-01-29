@@ -20,4 +20,11 @@ namespace WireFrame
         Dragging,
         Released
     }
+
+    enum MouseButton
+    {
+        Left,
+        Middle,
+        Right
+    }
 }
