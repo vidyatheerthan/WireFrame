@@ -191,7 +191,7 @@ namespace WireFrame
         {
             this.currentAction = Action.Panning;
 
-            var pos = e.GetCurrentPoint(this).Position;
+            var pos = e.GetCurrentPoint(_canvas).Position;
 
             AddNewEllipse(pos.X, pos.Y, 100, 100);
         }
