@@ -1,12 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
 using Windows.Graphics.Display;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -14,6 +16,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -21,46 +24,54 @@ namespace WireFrame
 {
     public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
+        enum Action
+        {
+            None,
+            Panning
+        }
+
         private CanvasProfile profile;
 
         private List<WFElement> elements;
+
+        private Action currentAction = Action.None;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         //---------------------------------
 
-        public static readonly DependencyProperty GridWidthDependencyProperty = DependencyProperty.Register(
-            nameof(GridWidth),
+        public static readonly DependencyProperty FrameWidthDependencyProperty = DependencyProperty.Register(
+            nameof(FrameWidth),
             typeof(double),
             typeof(WFCanvas),
             new PropertyMetadata(null)
         );
 
-        public double GridWidth
+        public double FrameWidth
         {
-            get => (double)GetValue(GridWidthDependencyProperty);
+            get => (double)GetValue(FrameWidthDependencyProperty);
             set
             {
-                SetValue(GridWidthDependencyProperty, value);
+                SetValue(FrameWidthDependencyProperty, value);
                 OnPropertyChanged();
             }
         }
 
         //---------------------------------
 
-        public static readonly DependencyProperty GridHeightDependencyProperty = DependencyProperty.Register(
-            nameof(GridHeight),
+        public static readonly DependencyProperty FrameHeightDependencyProperty = DependencyProperty.Register(
+            nameof(FrameHeight),
             typeof(double),
             typeof(WFCanvas),
             new PropertyMetadata(null)
         );
 
-        public double GridHeight
+        public double FrameHeight
         {
-            get => (double)GetValue(GridHeightDependencyProperty);
+            get => (double)GetValue(FrameHeightDependencyProperty);
             set
             {
-                SetValue(GridHeightDependencyProperty, value);
+                SetValue(FrameHeightDependencyProperty, value);
                 OnPropertyChanged();
             }
         }
@@ -112,6 +123,10 @@ namespace WireFrame
             this.InitializeComponent();
 
             this.Loaded += OnLoaded;
+
+            this._canvas.PointerPressed += OnPointerPressedOnCanvas;
+            this._canvas.PointerMoved += OnPointerMovedOnCanvas;
+            this._canvas.PointerReleased += OnPointerReleasedOnCanvas;
         }
 
 
@@ -123,9 +138,7 @@ namespace WireFrame
 
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
-            InitializeElements();
-
-            UpdateGridAndCanvasSize();
+            UpdateCanvasAndFrameSize();
         }
 
         
@@ -137,50 +150,60 @@ namespace WireFrame
 
        
 
-        private void UpdateGridAndCanvasSize()
+        private void UpdateCanvasAndFrameSize()
         {
-            var screenSize = Utility.GetScreenResolution();
-
-            GridWidth = screenSize.Width;
-            GridHeight = screenSize.Height;
-
-            var canvasSize = this.profile.Resize(screenSize);
+            var canvasSize = Utility.GetScreenResolution();
 
             CanvasWidth = canvasSize.Width;
             CanvasHeight = canvasSize.Height;
 
-            UpdateCanvasChildren();
+            var frameSize = this.profile.ResizeFrame(canvasSize);
+
+            FrameWidth = frameSize.Width;
+            FrameHeight = frameSize.Height;
+
+            double frameX = (CanvasWidth - FrameWidth) * 0.5;
+            double frameY = (CanvasHeight - FrameHeight) * 0.5;
+
+            Canvas.SetLeft(_frame, frameX);
+            Canvas.SetTop(_frame, frameY);
         }
 
 
 
-        private void InitializeElements()
+        private void AddNewEllipse(double left, double top, double width, double height)
         {
-            foreach (FrameworkElement element in _canvas.Children)
-            {
-                double left = Canvas.GetLeft(element);
-                double top = Canvas.GetTop(element);
-                double width = element.Width;
-                double height = element.Height;
+            Ellipse ellipse = new Ellipse();
+            ellipse.Width = width;
+            ellipse.Height = height;
+            Canvas.SetLeft(ellipse, left);
+            Canvas.SetTop(ellipse, top);
+            ellipse.Stroke = new SolidColorBrush(Colors.Red);
+            ellipse.Fill = new SolidColorBrush(Colors.Orange);
 
-                var e = new WFElement(left, top, width, height, element);
-                this.elements.Add(e);
-            }
+            var e = new WFElement(left, top, width, height, ellipse);
+            this.elements.Add(e);
+
+            _canvas.Children.Insert(0, ellipse);
         }
 
-        private void UpdateCanvasChildren()
+        private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            double widthRatio = CanvasWidth / this.profile.Width;
-            double heightRatio = CanvasHeight / this.profile.Height;
+            this.currentAction = Action.Panning;
 
-            foreach (WFElement element in this.elements)
-            {
-                element.Element.Width = element.Width * widthRatio;
-                element.Element.Height = element.Height * heightRatio;
+            var pos = e.GetCurrentPoint(this).Position;
 
-                Canvas.SetLeft(element.Element, element.Left * widthRatio);
-                Canvas.SetTop(element.Element, element.Top * heightRatio);
-            }
+            AddNewEllipse(pos.X, pos.Y, 100, 100);
+        }
+
+        private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
+        private void OnPointerReleasedOnCanvas(object sender, PointerRoutedEventArgs e)
+        {
+            this.currentAction = Action.None;
         }
     }
 }

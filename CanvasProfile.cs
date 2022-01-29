@@ -9,20 +9,20 @@ namespace WireFrame
 {
     public class CanvasProfile
     {
-        private double width;
-        private double height;
+        private double frameWidth;
+        private double frameHeight;
         private double zoom;
 
         //-------------------------------
 
-        public double Width
+        public double FrameWidth
         {
-            get => this.width;
+            get => this.frameWidth;
         }
 
-        public double Height
+        public double FrameHeight
         {
-            get => this.height;
+            get => this.frameHeight;
         }
 
         public double Zoom
@@ -32,28 +32,39 @@ namespace WireFrame
 
         //-------------------------------
 
-        public CanvasProfile(double width, double height, double zoom)
+        public CanvasProfile(double frameWidth, double frameHeight, double zoom)
         {
-            this.width = width;
-            this.height = height;
+            this.frameWidth = frameWidth;
+            this.frameHeight = frameHeight;
             this.zoom = zoom;
         }
 
-        public Size Resize(Size screenSize)
+        public Size ResizeFrame(Size canvasSize)
         {
             // Figure out the ratio
-            double ratioX = screenSize.Width / this.width;
-            double ratioY = screenSize.Height / this.height;
+            double ratioX = canvasSize.Width / this.frameWidth;
+            double ratioY = canvasSize.Height / this.frameHeight;
 
             // use whichever multiplier is smaller
             double ratio = ratioX < ratioY ? ratioX : ratioY;
 
-            // shrink it to 75% screen size
+            // shrink it to 75% canvas size
             ratio *= this.zoom / 100.0;
 
             // now we can get the new height and width
-            int newWidth = Convert.ToInt32(this.width * ratio);
-            int newHeight = Convert.ToInt32(this.height * ratio);
+            int newWidth = Convert.ToInt32(this.frameWidth * ratio);
+            int newHeight = Convert.ToInt32(this.frameHeight * ratio);
+
+            return new Size(newWidth, newHeight);
+        }
+
+        public Size ResizeToFrame(Size frameDisplaySize, Size size)
+        {
+            double widthRatio = frameDisplaySize.Width / this.FrameWidth;
+            double heightRatio = frameDisplaySize.Height / this.FrameHeight;
+
+            int newWidth = Convert.ToInt32(size.Width * widthRatio);
+            int newHeight = Convert.ToInt32(size.Height * heightRatio);
 
             return new Size(newWidth, newHeight);
         }
