@@ -21,15 +21,9 @@ namespace WireFrame
 {
     public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
-        private const double ZOOM_SPEED = 2.0;
-        private const double MIN_ZOOM_FACTOR = 0.90;
-        private const double MAX_ZOOM_FACTOR = 10.0;
-
         private CanvasProfile profile;
 
         private List<WFElement> elements;
-
-        private double zoom = 1.0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -111,13 +105,6 @@ namespace WireFrame
         //---------------------------------
 
 
-        private double ZoomFactor
-        {
-            get => MIN_ZOOM_FACTOR + (MAX_ZOOM_FACTOR * (this.zoom / 100.0));
-        }
-
-        //--
-
         public WFCanvas()
         {
             this.elements = new List<WFElement>();
@@ -125,8 +112,6 @@ namespace WireFrame
             this.InitializeComponent();
 
             this.Loaded += OnLoaded;
-
-            _grid.PointerWheelChanged += OnGridPointerWheelChanged;
         }
 
 
@@ -139,6 +124,8 @@ namespace WireFrame
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             InitializeElements();
+
+            UpdateGridAndCanvasSize();
         }
 
         
@@ -146,21 +133,6 @@ namespace WireFrame
         public void SetCanvasProfile(CanvasProfile profile)
         {
             this.profile = profile;
-
-            UpdateGridAndCanvasSize();
-        }
-
-        private void OnGridPointerWheelChanged(object sender, PointerRoutedEventArgs e)
-        {
-            if(!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(Windows.UI.Core.CoreVirtualKeyStates.Down)) { return; }
-
-            double delta = e.GetCurrentPoint(this).Properties.MouseWheelDelta / 120.0;
-
-            this.zoom = Math.Max(1, Math.Min(100.0, this.zoom + (ZOOM_SPEED * delta)));
-
-            //-----
-
-            UpdateGridAndCanvasSize();
         }
 
        
@@ -169,19 +141,16 @@ namespace WireFrame
         {
             var screenSize = Utility.GetScreenResolution();
 
-            GridWidth = screenSize.Width * ZoomFactor;
-            GridHeight = screenSize.Height * ZoomFactor;
+            GridWidth = screenSize.Width;
+            GridHeight = screenSize.Height;
 
             var canvasSize = this.profile.Resize(screenSize);
 
-            CanvasWidth = canvasSize.Width * ZoomFactor;
-            CanvasHeight = canvasSize.Height * ZoomFactor;
+            CanvasWidth = canvasSize.Width;
+            CanvasHeight = canvasSize.Height;
 
             UpdateCanvasChildren();
         }
-
-
-
 
 
 
