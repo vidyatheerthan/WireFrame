@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using Point = Windows.Foundation.Point;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -24,17 +25,15 @@ namespace WireFrame
 {
     public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
-        enum Action
-        {
-            None,
-            Panning
-        }
-
         private CanvasProfile profile;
 
         private List<WFElement> elements;
 
-        private Action currentAction = Action.None;
+        private Action currentAction = Action.CreateNewEllipse;
+
+        private PointerState pointerState = PointerState.Released;
+
+        private FrameworkElement activeElement;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -171,7 +170,7 @@ namespace WireFrame
 
 
 
-        private void AddNewEllipse(double left, double top, double width, double height)
+        private FrameworkElement AddNewEllipse(double left, double top, double width, double height)
         {
             Ellipse ellipse = new Ellipse();
             ellipse.Width = width;
@@ -185,25 +184,55 @@ namespace WireFrame
             this.elements.Add(e);
 
             _canvas.Children.Insert(0, ellipse);
+            return ellipse;
         }
 
         private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            this.currentAction = Action.Panning;
+            if (this.pointerState != PointerState.Dragging)
+            {
+                this.pointerState = PointerState.Pressed;
+            }
 
-            var pos = e.GetCurrentPoint(_canvas).Position;
-
-            AddNewEllipse(pos.X, pos.Y, 100, 100);
+            DoAction(e.GetCurrentPoint(_canvas).Position);
         }
 
         private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-
+            if (this.pointerState == PointerState.Pressed)
+            {
+                this.pointerState = PointerState.Dragging;
+            }
+            else if (this.pointerState == PointerState.Released)
+            {
+                this.pointerState = PointerState.Moving;
+            }
+               
+            DoAction(e.GetCurrentPoint(_canvas).Position);
         }
 
         private void OnPointerReleasedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            this.currentAction = Action.None;
+            this.pointerState = PointerState.Released;
+
+            DoAction(e.GetCurrentPoint(_canvas).Position);
+        }
+
+
+        private void DoAction(Point pointerPosition)
+        {
+            if(this.pointerState == PointerState.Pressed && this.currentAction == Action.CreateNewEllipse)
+            {
+                this.activeElement = AddNewEllipse(pointerPosition.X, pointerPosition.Y, 1, 1);
+            }
+            else if (this.pointerState == PointerState.Dragging && this.currentAction == Action.CreateNewEllipse)
+            {
+                double width = pointerPosition.X - Canvas.GetLeft(this.activeElement);
+                double height = pointerPosition.Y - Canvas.GetTop(this.activeElement);
+
+                this.activeElement.Width = width > 0 ? width : 1;
+                this.activeElement.Height = height > 0 ? height : 1;
+            }
         }
     }
 }
