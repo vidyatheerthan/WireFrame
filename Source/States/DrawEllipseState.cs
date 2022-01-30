@@ -10,13 +10,14 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using WireFrame.Source.Controls;
 
 namespace WireFrame.Source.States
 {
     class DrawEllipseState : FiniteStateMachine
     {
         private FrameworkElement activeElement = null;
-        //private WFTitleBox sizeBox = null;
+        private WFSizeBox sizeBox = null;
         private bool tracking = false;
 
 
@@ -46,7 +47,7 @@ namespace WireFrame.Source.States
             else if (pointerState == PointerState.Moved && tracking)
             {
                 ResizeEllipse(pointer.Position.X, pointer.Position.Y);
-                ResizeSizeBox(pointer.Position.X, pointer.Position.Y);
+                UpdateSizeBox(pointer.Position.X, pointer.Position.Y);
             }
             else if (pointerState == PointerState.Released)
             {
@@ -89,28 +90,25 @@ namespace WireFrame.Source.States
 
         private void AddNewSizeBox(Panel parent, double left, double top)
         {
-            //this.sizeBox = new WFTitleBox();
-            //Canvas.SetLeft(this.sizeBox, left);
-            //Canvas.SetTop(this.sizeBox, top);
+            this.sizeBox = new WFSizeBox();
 
-            //parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
+            Canvas.SetLeft(this.sizeBox, left);
+            Canvas.SetTop(this.sizeBox, top);
+
+            parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
         }
 
         private void RemoveSizeBox(Panel parent)
         {
-            //parent.Children.Remove(this.sizeBox);
+            parent.Children.Remove(this.sizeBox);
         }
 
-        private void ResizeSizeBox(double x, double y)
+        private void UpdateSizeBox(double left, double top)
         {
-            //double left = Canvas.GetLeft(this.sizeBox);
-            //double top = Canvas.GetTop(this.sizeBox);
+            Canvas.SetLeft(this.sizeBox, left);
+            Canvas.SetTop(this.sizeBox, top);
 
-            //double width = x - left;
-            //double height = y - top;
-
-            //this.sizeBox.Width = width > 0 ? width : 1;
-            //this.sizeBox.Height = height > 0 ? height : 1;
+            this.sizeBox.SetSize(this.activeElement.Width, this.activeElement.Height);
         }
     }
 }

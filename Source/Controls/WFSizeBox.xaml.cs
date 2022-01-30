@@ -15,32 +15,18 @@ using Windows.UI.Xaml.Navigation;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace WireFrame
+namespace WireFrame.Source.Controls
 {
-    public sealed partial class WFTitleBox : UserControl
+    public sealed partial class WFSizeBox : UserControl
     {
-        public WFTitleBox()
+        public WFSizeBox()
         {
             this.InitializeComponent();
-
-            this.SizeChanged += OnSizeChanged;
         }
 
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        public void SetSize(double width, double height)
         {
-            if(e.NewSize.Width < _textBlock.Width || e.NewSize.Height < _textBlock.Height)
-            {
-                _textBlock.Visibility = Visibility.Collapsed;
-            }
-            else
-            {
-                _textBlock.Visibility = Visibility.Visible;
-            }
-        }
-
-        public void SetTitle(string title)
-        {
-            _text.Text = title;
+            _text.Text = "Width: " + ((int)width).ToString() + "\n" + "Height: " + ((int)height).ToString();
         }
     }
 }

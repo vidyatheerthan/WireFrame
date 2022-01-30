@@ -1,0 +1,19 @@
+﻿<UserControl
+    x:Class="WireFrame.Source.Controls.WFSizeBox"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:WireFrame.Source.Controls"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="300"
+    d:DesignWidth="400">
+
+    <Canvas>
+
+        <Border x:Name="_textBlock" Canvas.Left="20" Canvas.Top="0" MinWidth="50" MinHeight="20" HorizontalAlignment="Left" VerticalAlignment="Top" Background="#CC000000" CornerRadius="5" BorderBrush="#CCFFFFFF" BorderThickness="1">
+            <TextBlock x:Name="_text" Text="0x0" Foreground="#CCFFFFFF" FontSize="12" FontFamily="Courier New" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="5" />
+        </Border>
+
+    </Canvas>
+</UserControl>
