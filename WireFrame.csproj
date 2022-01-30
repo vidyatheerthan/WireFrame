@@ -132,7 +132,6 @@
     <Compile Include="Source\Controls\WFCanvas.xaml.cs">
       <DependentUpon>WFCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Element.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
