@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame
 {
-    public sealed partial class WFSizeBox : UserControl
+    public sealed partial class WFTitleBox : UserControl
     {
-        public WFSizeBox()
+        public WFTitleBox()
         {
             this.InitializeComponent();
 

@@ -16,7 +16,7 @@ namespace WireFrame.Source.States
     class DrawEllipseState : FiniteStateMachine
     {
         private FrameworkElement activeElement = null;
-        private WFSizeBox sizeBox = null;
+        //private WFTitleBox sizeBox = null;
         private bool tracking = false;
 
 
@@ -89,28 +89,28 @@ namespace WireFrame.Source.States
 
         private void AddNewSizeBox(Panel parent, double left, double top)
         {
-            this.sizeBox = new WFSizeBox();
-            Canvas.SetLeft(this.sizeBox, left);
-            Canvas.SetTop(this.sizeBox, top);
+            //this.sizeBox = new WFTitleBox();
+            //Canvas.SetLeft(this.sizeBox, left);
+            //Canvas.SetTop(this.sizeBox, top);
 
-            parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
+            //parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
         }
 
         private void RemoveSizeBox(Panel parent)
         {
-            parent.Children.Remove(this.sizeBox);
+            //parent.Children.Remove(this.sizeBox);
         }
 
         private void ResizeSizeBox(double x, double y)
         {
-            double left = Canvas.GetLeft(this.sizeBox);
-            double top = Canvas.GetTop(this.sizeBox);
+            //double left = Canvas.GetLeft(this.sizeBox);
+            //double top = Canvas.GetTop(this.sizeBox);
 
-            double width = x - left;
-            double height = y - top;
+            //double width = x - left;
+            //double height = y - top;
 
-            this.sizeBox.Width = width > 0 ? width : 1;
-            this.sizeBox.Height = height > 0 ? height : 1;
+            //this.sizeBox.Width = width > 0 ? width : 1;
+            //this.sizeBox.Height = height > 0 ? height : 1;
         }
     }
 }
