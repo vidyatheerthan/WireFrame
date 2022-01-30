@@ -10,20 +10,18 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using WireFrame.Source.Controls;
 
 namespace WireFrame.Source.States
 {
     abstract class DrawPrimitiveState : FiniteStateMachine
     {
         private FrameworkElement activeElement = null;
-        private WFSizeBox sizeBox = null;
         private bool tracking = false;
 
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is Panel))
+            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFSizeBox))
             {
                 return true;
             }
@@ -39,54 +37,45 @@ namespace WireFrame.Source.States
             }
 
             var canvas = objects[0] as Panel;
-            var hud = objects[1] as Panel;
+            var sizeBox = objects[1] as WFSizeBox;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
                 this.activeElement = AddNewPrimitive(canvas, pointer.Position.X, pointer.Position.Y, 1, 1);
-                AddNewSizeBox(hud, pointer.Position.X, pointer.Position.Y);
+                ShowSizeBox(sizeBox, true, pointer.Position.X, pointer.Position.Y);
                 this.tracking = true;
             }
             else if (pointerState == PointerState.Moved && tracking)
             {
                 ResizePrimitive(this.activeElement, pointer.Position.X, pointer.Position.Y);
-                UpdateSizeBox(pointer.Position.X, pointer.Position.Y);
+                UpdateSizeBox(sizeBox, pointer.Position.X, pointer.Position.Y);
             }
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
                 this.tracking = false;
-                RemoveSizeBox(hud);
+                ShowSizeBox(sizeBox, false, pointer.Position.X, pointer.Position.Y);
                 return null;
             }
 
             return this;
         }
 
-
-        private void AddNewSizeBox(Panel hud, double left, double top)
+        private void ShowSizeBox(WFSizeBox sizeBox, bool show, double left, double top)
         {
-            this.sizeBox = new WFSizeBox();
+            sizeBox.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
 
-            Canvas.SetLeft(this.sizeBox, left);
-            Canvas.SetTop(this.sizeBox, top);
-
-            hud.Children.Add(this.sizeBox);
+            Canvas.SetLeft(sizeBox, left);
+            Canvas.SetTop(sizeBox, top);
         }
 
-        private void RemoveSizeBox(Panel parent)
+        private void UpdateSizeBox(WFSizeBox sizeBox, double left, double top)
         {
-            parent.Children.Remove(this.sizeBox);
+            Canvas.SetLeft(sizeBox, left);
+            Canvas.SetTop(sizeBox, top);
+
+            sizeBox.SetSize(this.activeElement.Width, this.activeElement.Height);
         }
-
-        private void UpdateSizeBox(double left, double top)
-        {
-            Canvas.SetLeft(this.sizeBox, left);
-            Canvas.SetTop(this.sizeBox, top);
-
-            this.sizeBox.SetSize(this.activeElement.Width, this.activeElement.Height);
-        }
-
 
         protected abstract FrameworkElement AddNewPrimitive(Panel canvas, double left, double top, double width, double height);
 

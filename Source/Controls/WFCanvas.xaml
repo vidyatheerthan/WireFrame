@@ -19,6 +19,10 @@
 
                 <Rectangle x:Name="_frame" Width="{x:Bind Path=FrameWidth, Mode=OneWay}" Height="{x:Bind Path=FrameHeight, Mode=OneWay}" Stroke="Black" Fill="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="2" />
 
+                <local:WFTitleBox x:Name="_titleBox" Visibility="Collapsed" />
+
+                <local:WFSizeBox x:Name="_sizeBox" Visibility="Collapsed" />
+
             </Canvas>
 
         </Canvas>

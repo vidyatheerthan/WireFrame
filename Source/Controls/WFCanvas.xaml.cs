@@ -121,7 +121,7 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            this.drawPrimitiveStateRefs = new List<object>() { _container, _HUD };
+            this.drawPrimitiveStateRefs = new List<object>() { _container, _sizeBox };
             this.panStateRefs = new List<object>() { _scrollViewer };
 
             this.Loaded += OnLoaded;
