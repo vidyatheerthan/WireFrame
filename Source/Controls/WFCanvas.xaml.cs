@@ -107,11 +107,11 @@ namespace WireFrame
 
         private CanvasProfile profile;
 
-        private FiniteStateMachine state = new DrawEllipseState();
+        private FiniteStateMachine state = new DrawRectangleState();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private List<object> drawEllipseStateRefs, panStateRefs;
+        private List<object> drawPrimitiveStateRefs, panStateRefs;
 
         
         //====================================================================================================
@@ -121,7 +121,7 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            this.drawEllipseStateRefs = new List<object>() { _container, _HUD };
+            this.drawPrimitiveStateRefs = new List<object>() { _container, _HUD };
             this.panStateRefs = new List<object>() { _scrollViewer };
 
             this.Loaded += OnLoaded;
@@ -177,9 +177,9 @@ namespace WireFrame
 
             List<object> refs = null;
 
-            if (this.state is DrawEllipseState)
+            if (this.state is DrawPrimitiveState)
             {
-                refs = this.drawEllipseStateRefs;
+                refs = this.drawPrimitiveStateRefs;
             }
             else if (this.state is PanState)
             {
@@ -195,9 +195,9 @@ namespace WireFrame
 
             List<object> refs = null;
 
-            if (this.state is DrawEllipseState)
+            if (this.state is DrawPrimitiveState)
             {
-                refs = this.drawEllipseStateRefs;
+                refs = this.drawPrimitiveStateRefs;
             }
             else if (this.state is PanState)
             {
@@ -213,9 +213,9 @@ namespace WireFrame
 
             List<object> refs = null;
 
-            if (this.state is DrawEllipseState)
+            if (this.state is DrawPrimitiveState)
             {
-                refs = this.drawEllipseStateRefs;
+                refs = this.drawPrimitiveStateRefs;
             }
             else if (this.state is PanState)
             {

@@ -14,17 +14,17 @@ using WireFrame.Source.Controls;
 
 namespace WireFrame.Source.States
 {
-    class DrawEllipseState : DrawPrimitiveState
+    class DrawRectangleState : DrawPrimitiveState
     {
         protected override FrameworkElement AddNewPrimitive(Panel canvas, double left, double top, double width, double height)
         {
-            Ellipse ellipse = new Ellipse();
+            Rectangle ellipse = new Rectangle();
             ellipse.Width = width;
             ellipse.Height = height;
             Canvas.SetLeft(ellipse, left);
             Canvas.SetTop(ellipse, top);
-            ellipse.Stroke = new SolidColorBrush(Colors.Orange);
-            ellipse.Fill = new SolidColorBrush(Colors.LightGoldenrodYellow);
+            ellipse.Stroke = new SolidColorBrush(Colors.Blue);
+            ellipse.Fill = new SolidColorBrush(Colors.AliceBlue);
 
             canvas.Children.Insert(canvas.Children.Count, ellipse);
             return ellipse;

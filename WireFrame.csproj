@@ -136,6 +136,8 @@
       <DependentUpon>WFCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\States\DrawEllipseState.cs" />
+    <Compile Include="Source\States\DrawPrimitiveState.cs" />
+    <Compile Include="Source\States\DrawRectangleState.cs" />
     <Compile Include="Source\States\FiniteStateMachine.cs" />
     <Compile Include="Source\States\PanState.cs" />
   </ItemGroup>
