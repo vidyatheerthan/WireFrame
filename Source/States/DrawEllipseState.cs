@@ -23,7 +23,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            if (objects != null && objects.Count > 0 && (objects[0] is Panel))
+            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is Panel))
             {
                 return true;
             }
@@ -38,10 +38,13 @@ namespace WireFrame.Source.States
                 return null;
             }
 
+            var canvas = objects[0] as Panel;
+            var hud = objects[1] as Panel;
+
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                AddNewEllipse(objects[0] as Panel, pointer.Position.X, pointer.Position.Y, 1, 1);
-                AddNewSizeBox(objects[0] as Panel, pointer.Position.X, pointer.Position.Y);
+                AddNewEllipse(canvas, pointer.Position.X, pointer.Position.Y, 1, 1);
+                AddNewSizeBox(hud, pointer.Position.X, pointer.Position.Y);
                 this.tracking = true;
             }
             else if (pointerState == PointerState.Moved && tracking)
@@ -53,7 +56,7 @@ namespace WireFrame.Source.States
             {
                 this.activeElement = null;
                 this.tracking = false;
-                RemoveSizeBox(objects[0] as Panel);
+                RemoveSizeBox(hud);
                 return null;
             }
 
@@ -62,17 +65,17 @@ namespace WireFrame.Source.States
 
         
 
-        private void AddNewEllipse(Panel parent, double left, double top, double width, double height)
+        private void AddNewEllipse(Panel canvas, double left, double top, double width, double height)
         {
             Ellipse ellipse = new Ellipse();
             ellipse.Width = width;
             ellipse.Height = height;
             Canvas.SetLeft(ellipse, left);
             Canvas.SetTop(ellipse, top);
-            ellipse.Stroke = new SolidColorBrush(Colors.Red);
-            ellipse.Fill = new SolidColorBrush(Colors.Orange);
+            ellipse.Stroke = new SolidColorBrush(Colors.Orange);
+            ellipse.Fill = new SolidColorBrush(Colors.LightGoldenrodYellow);
 
-            parent.Children.Insert(parent.Children.Count - 1, ellipse);
+            canvas.Children.Insert(canvas.Children.Count, ellipse);
             this.activeElement = ellipse;
         }
 
@@ -88,14 +91,14 @@ namespace WireFrame.Source.States
             this.activeElement.Height = height > 0 ? height : 1;
         }
 
-        private void AddNewSizeBox(Panel parent, double left, double top)
+        private void AddNewSizeBox(Panel hud, double left, double top)
         {
             this.sizeBox = new WFSizeBox();
 
             Canvas.SetLeft(this.sizeBox, left);
             Canvas.SetTop(this.sizeBox, top);
 
-            parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
+            hud.Children.Add(this.sizeBox);
         }
 
         private void RemoveSizeBox(Panel parent)

@@ -121,7 +121,7 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            this.drawEllipseStateRefs = new List<object>() { _canvas };
+            this.drawEllipseStateRefs = new List<object>() { _container, _HUD };
             this.panStateRefs = new List<object>() { _scrollViewer };
 
             this.Loaded += OnLoaded;
