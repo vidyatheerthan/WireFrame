@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Core;
 using Windows.UI.Input;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 
 namespace WireFrame.Source.States
@@ -14,6 +16,9 @@ namespace WireFrame.Source.States
         private bool tracking = false;
 
         private Point clickedPosition;
+
+        CoreCursor handCursor = new CoreCursor(CoreCursorType.SizeAll, 1);
+        CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
 
         public bool ReferenceObjectsAccepted(List<object> objects)
@@ -33,14 +38,15 @@ namespace WireFrame.Source.States
                 return null;
             }
 
-            if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
+            if (Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
-                this.clickedPosition = pointer.Position;
-                this.tracking = true;
-            }
-            else if (pointerState == PointerState.Moved && tracking)
-            {
-                if (objects[0] is ScrollViewer)
+                if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
+                {
+                    this.clickedPosition = pointer.Position;
+                    this.tracking = true;
+                    Window.Current.CoreWindow.PointerCursor = this.handCursor;
+                }
+                else if (pointerState == PointerState.Moved && tracking)
                 {
                     var sv = objects[0] as ScrollViewer;
 
@@ -49,11 +55,16 @@ namespace WireFrame.Source.States
 
                     sv.ChangeView(x, y, null, true);
                 }
+                else if (pointerState == PointerState.Released)
+                {
+                    this.tracking = false;
+                    Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+                }
             }
-            else if (pointerState == PointerState.Released)
+            else
             {
                 this.tracking = false;
-                return null;
+                Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
             }
 
             return this;
