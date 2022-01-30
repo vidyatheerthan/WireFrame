@@ -132,6 +132,9 @@
     <Compile Include="Source\Controls\WFCanvas.xaml.cs">
       <DependentUpon>WFCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\States\DrawEllipseState.cs" />
+    <Compile Include="Source\States\FiniteStateMachine.cs" />
+    <Compile Include="Source\States\PanState.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

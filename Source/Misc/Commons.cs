@@ -6,25 +6,10 @@ using System.Threading.Tasks;
 
 namespace WireFrame
 {
-    enum Action
-    {
-        None,
-        Pan,
-        CreateNewEllipse
-    }
-
     enum PointerState
     {
         Pressed,
-        Moving,
-        Dragging,
+        Moved,
         Released
-    }
-
-    enum MouseButton
-    {
-        Left,
-        Middle,
-        Right
     }
 }

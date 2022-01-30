@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using WireFrame.Source.States;
 using Point = Windows.Foundation.Point;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -25,18 +26,6 @@ namespace WireFrame
 {
     public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
-        private CanvasProfile profile;
-
-        private Action currentAction = Action.CreateNewEllipse;
-
-        private PointerState pointerState = PointerState.Released;
-
-        private MouseButton mouseButtonPressed = MouseButton.Left;
-
-        private FrameworkElement activeElement;
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
         //---------------------------------
 
         public static readonly DependencyProperty FrameWidthDependencyProperty = DependencyProperty.Register(
@@ -112,12 +101,28 @@ namespace WireFrame
             }
         }
 
-        //---------------------------------
+        //====================================================================================================
+
+
+
+        private CanvasProfile profile;
+
+        private FiniteStateMachine state = new PanState();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private List<object> drawEllipseStateRefs, panStateRefs;
+
+        
+        //====================================================================================================
 
 
         public WFCanvas()
         {
             this.InitializeComponent();
+
+            this.drawEllipseStateRefs = new List<object>() { _canvas };
+            this.panStateRefs = new List<object>() { _scrollViewer };
 
             this.Loaded += OnLoaded;
 
@@ -166,88 +171,58 @@ namespace WireFrame
             Canvas.SetTop(_frame, frameY);
         }
 
-
-
-        private FrameworkElement AddNewEllipse(double left, double top, double width, double height)
-        {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Width = width;
-            ellipse.Height = height;
-            Canvas.SetLeft(ellipse, left);
-            Canvas.SetTop(ellipse, top);
-            ellipse.Stroke = new SolidColorBrush(Colors.Red);
-            ellipse.Fill = new SolidColorBrush(Colors.Orange);
-
-            _canvas.Children.Insert(0, ellipse);
-            return ellipse;
-        }
-
         private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            if (this.pointerState == PointerState.Dragging)
-            {
-                return;
-            }
-
-            this.pointerState = PointerState.Pressed;
-
             var pointer = e.GetCurrentPoint(_canvas);
 
-            if(pointer.Properties.IsLeftButtonPressed) { this.mouseButtonPressed = MouseButton.Left; }
-            else if (pointer.Properties.IsMiddleButtonPressed) { this.mouseButtonPressed = MouseButton.Middle; }
-            else if (pointer.Properties.IsRightButtonPressed) { this.mouseButtonPressed = MouseButton.Right; }
+            List<object> refs = null;
 
-            DoAction(pointer.Position);
+            if (this.state is DrawEllipseState)
+            {
+                refs = this.drawEllipseStateRefs;
+            }
+            else if (this.state is PanState)
+            {
+                refs = this.panStateRefs;
+            }
+
+            this.state.HandleInput(refs, PointerState.Pressed, pointer);
         }
 
         private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            if (this.pointerState == PointerState.Pressed)
+            var pointer = e.GetCurrentPoint(_canvas);
+
+            List<object> refs = null;
+
+            if (this.state is DrawEllipseState)
             {
-                this.pointerState = PointerState.Dragging;
+                refs = this.drawEllipseStateRefs;
             }
-            else if (this.pointerState == PointerState.Released)
+            else if (this.state is PanState)
             {
-                this.pointerState = PointerState.Moving;
+                refs = this.panStateRefs;
             }
-               
-            DoAction(e.GetCurrentPoint(_canvas).Position);
+
+            this.state.HandleInput(refs, PointerState.Moved, pointer);
         }
 
         private void OnPointerReleasedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
-            this.pointerState = PointerState.Released;
+            var pointer = e.GetCurrentPoint(_canvas);
 
-            DoAction(e.GetCurrentPoint(_canvas).Position);
-        }
+            List<object> refs = null;
 
-
-        private void DoAction(Point pointerPosition)
-        {
-            if(this.pointerState == PointerState.Pressed)
+            if (this.state is DrawEllipseState)
             {
-                if (this.mouseButtonPressed == MouseButton.Left && this.currentAction == Action.CreateNewEllipse)
-                {
-                    this.activeElement = AddNewEllipse(pointerPosition.X, pointerPosition.Y, 1, 1);
-                }
+                refs = this.drawEllipseStateRefs;
             }
-            else if (this.pointerState == PointerState.Dragging)
+            else if (this.state is PanState)
             {
-                if (this.mouseButtonPressed == MouseButton.Left && this.currentAction == Action.CreateNewEllipse)
-                {
-                    double width = pointerPosition.X - Canvas.GetLeft(this.activeElement);
-                    double height = pointerPosition.Y - Canvas.GetTop(this.activeElement);
-
-                    this.activeElement.Width = width > 0 ? width : 1;
-                    this.activeElement.Height = height > 0 ? height : 1;
-                }
-                else if (this.mouseButtonPressed == MouseButton.Middle)
-                {
-                    double x = _scrollViewer.ActualWidth - pointerPosition.X;
-                    double y = _scrollViewer.ActualHeight - pointerPosition.Y;
-                    _scrollViewer.ChangeView(x, y, null, true);
-                }
+                refs = this.panStateRefs;
             }
+
+            this.state.HandleInput(refs, PointerState.Released, pointer);
         }
     }
 }
