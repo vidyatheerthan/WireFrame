@@ -17,7 +17,7 @@ namespace WireFrame.Source.States
 
         private Point clickedPosition;
 
-        CoreCursor handCursor = new CoreCursor(CoreCursorType.SizeAll, 1);
+        CoreCursor handCursor = new CoreCursor(CoreCursorType.Hand, 1);
         CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
 
