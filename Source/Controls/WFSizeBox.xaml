@@ -11,5 +11,11 @@
 
     <Grid>
 
+        <Rectangle Stroke="LightGray" Fill="Transparent" />
+
+        <Border x:Name="_textBlock" Background="LightGray" Width="75" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="0, 0, 5, 0">
+            <TextBlock x:Name="_text" Text="0x0" Foreground="Black" FontSize="12" FontFamily="Courier New" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        </Border>
+
     </Grid>
 </UserControl>

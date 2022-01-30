@@ -22,6 +22,22 @@ namespace WireFrame
         public WFSizeBox()
         {
             this.InitializeComponent();
+
+            this.SizeChanged += OnSizeChanged;
+        }
+
+        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            if(e.NewSize.Width < _textBlock.Width || e.NewSize.Height < _textBlock.Height)
+            {
+                _textBlock.Visibility = Visibility.Collapsed;
+            }
+            else
+            {
+                _textBlock.Visibility = Visibility.Visible;
+            }
+
+            _text.Text = e.NewSize.Width.ToString() + "x" + e.NewSize.Height.ToString();
         }
     }
 }

@@ -107,7 +107,7 @@ namespace WireFrame
 
         private CanvasProfile profile;
 
-        private FiniteStateMachine state = new PanState();
+        private FiniteStateMachine state = new DrawEllipseState();
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -16,6 +16,7 @@ namespace WireFrame.Source.States
     class DrawEllipseState : FiniteStateMachine
     {
         private FrameworkElement activeElement = null;
+        private WFSizeBox sizeBox = null;
         private bool tracking = false;
 
 
@@ -38,21 +39,20 @@ namespace WireFrame.Source.States
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                this.activeElement = AddNewEllipse(objects[0] as Panel, pointer.Position.X, pointer.Position.Y, 1, 1);
+                AddNewEllipse(objects[0] as Panel, pointer.Position.X, pointer.Position.Y, 1, 1);
+                AddNewSizeBox(objects[0] as Panel, pointer.Position.X, pointer.Position.Y);
                 this.tracking = true;
             }
             else if (pointerState == PointerState.Moved && tracking)
             {
-                double width = pointer.Position.X - Canvas.GetLeft(this.activeElement);
-                double height = pointer.Position.Y - Canvas.GetTop(this.activeElement);
-
-                this.activeElement.Width = width > 0 ? width : 1;
-                this.activeElement.Height = height > 0 ? height : 1;
+                ResizeEllipse(pointer.Position.X, pointer.Position.Y);
+                ResizeSizeBox(pointer.Position.X, pointer.Position.Y);
             }
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
                 this.tracking = false;
+                RemoveSizeBox(objects[0] as Panel);
                 return null;
             }
 
@@ -61,7 +61,7 @@ namespace WireFrame.Source.States
 
         
 
-        private FrameworkElement AddNewEllipse(Panel parent, double left, double top, double width, double height)
+        private void AddNewEllipse(Panel parent, double left, double top, double width, double height)
         {
             Ellipse ellipse = new Ellipse();
             ellipse.Width = width;
@@ -71,8 +71,46 @@ namespace WireFrame.Source.States
             ellipse.Stroke = new SolidColorBrush(Colors.Red);
             ellipse.Fill = new SolidColorBrush(Colors.Orange);
 
-            parent.Children.Insert(0, ellipse);
-            return ellipse;
+            parent.Children.Insert(parent.Children.Count - 1, ellipse);
+            this.activeElement = ellipse;
+        }
+
+        private void ResizeEllipse(double x, double y)
+        {
+            double left = Canvas.GetLeft(this.activeElement);
+            double top = Canvas.GetTop(this.activeElement);
+
+            double width = x - left;
+            double height = y - top;
+
+            this.activeElement.Width = width > 0 ? width : 1;
+            this.activeElement.Height = height > 0 ? height : 1;
+        }
+
+        private void AddNewSizeBox(Panel parent, double left, double top)
+        {
+            this.sizeBox = new WFSizeBox();
+            Canvas.SetLeft(this.sizeBox, left);
+            Canvas.SetTop(this.sizeBox, top);
+
+            parent.Children.Insert(parent.Children.Count - 1, this.sizeBox);
+        }
+
+        private void RemoveSizeBox(Panel parent)
+        {
+            parent.Children.Remove(this.sizeBox);
+        }
+
+        private void ResizeSizeBox(double x, double y)
+        {
+            double left = Canvas.GetLeft(this.sizeBox);
+            double top = Canvas.GetTop(this.sizeBox);
+
+            double width = x - left;
+            double height = y - top;
+
+            this.sizeBox.Width = width > 0 ? width : 1;
+            this.sizeBox.Height = height > 0 ? height : 1;
         }
     }
 }
