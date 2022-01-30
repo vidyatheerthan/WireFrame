@@ -42,32 +42,44 @@ namespace WireFrame.Source.States
             {
                 if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
                 {
-                    this.clickedPosition = pointer.Position;
-                    this.tracking = true;
-                    Window.Current.CoreWindow.PointerCursor = this.handCursor;
+                    StartPanning(pointer.Position);
                 }
                 else if (pointerState == PointerState.Moved && tracking)
                 {
-                    var sv = objects[0] as ScrollViewer;
-
-                    double x = sv.HorizontalOffset + this.clickedPosition.X - pointer.Position.X;
-                    double y = sv.VerticalOffset + this.clickedPosition.Y - pointer.Position.Y;
-
-                    sv.ChangeView(x, y, null, true);
+                    PanScrollViewer(objects[0] as ScrollViewer, pointer.Position);
                 }
                 else if (pointerState == PointerState.Released)
                 {
-                    this.tracking = false;
-                    Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+                    EndPanning();
                 }
             }
             else
             {
-                this.tracking = false;
-                Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+                EndPanning();
             }
 
             return this;
+        }
+
+        private void StartPanning(Point pos)
+        {
+            this.clickedPosition = pos;
+            Window.Current.CoreWindow.PointerCursor = this.handCursor;
+            this.tracking = true;
+        }
+
+        private void PanScrollViewer(ScrollViewer scrollViewer, Point pointerPos)
+        {
+            double x = scrollViewer.HorizontalOffset + this.clickedPosition.X - pointerPos.X;
+            double y = scrollViewer.VerticalOffset + this.clickedPosition.Y - pointerPos.Y;
+
+            scrollViewer.ChangeView(x, y, null, true);
+        }
+
+        private void EndPanning()
+        {
+            this.tracking = false;
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
     }
 }
