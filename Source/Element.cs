@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 
 namespace WireFrame
 {
-    public class WFElement
+    public class Element
     {
         private double left;
         private double top;
@@ -15,7 +15,7 @@ namespace WireFrame
         private double width;
         private double height;
 
-        private FrameworkElement element;
+        private FrameworkElement frameworkElement;
 
         //-------------------------------
 
@@ -39,20 +39,20 @@ namespace WireFrame
             get => this.height;
         }
 
-        public FrameworkElement Element
+        public FrameworkElement FrameworkElement
         {
-            get => this.element;
+            get => this.frameworkElement;
         }
 
         //-------------------------------
 
-        public WFElement(double left, double top, double width, double height, FrameworkElement element)
+        public Element(double left, double top, double width, double height, FrameworkElement frameworkElement)
         {
             this.left = left;
             this.top = top;
             this.width = width;
             this.height = height;
-            this.element = element;
+            this.frameworkElement = frameworkElement;
         }
     }
 }

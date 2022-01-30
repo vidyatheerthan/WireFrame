@@ -27,7 +27,7 @@ namespace WireFrame
     {
         private CanvasProfile profile;
 
-        private List<WFElement> elements;
+        private List<Element> elements;
 
         private Action currentAction = Action.CreateNewEllipse;
 
@@ -119,7 +119,7 @@ namespace WireFrame
 
         public WFCanvas()
         {
-            this.elements = new List<WFElement>();
+            this.elements = new List<Element>();
 
             this.InitializeComponent();
 
@@ -182,7 +182,7 @@ namespace WireFrame
             ellipse.Stroke = new SolidColorBrush(Colors.Red);
             ellipse.Fill = new SolidColorBrush(Colors.Orange);
 
-            var e = new WFElement(left, top, width, height, ellipse);
+            var e = new Element(left, top, width, height, ellipse);
             this.elements.Add(e);
 
             _canvas.Children.Insert(0, ellipse);

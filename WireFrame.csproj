@@ -119,20 +119,20 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="CanvasProfile.cs" />
-    <Compile Include="Commons.cs" />
-    <Compile Include="MainPage.xaml.cs">
+    <Compile Include="Source\CanvasProfile.cs" />
+    <Compile Include="Source\Misc\Commons.cs" />
+    <Compile Include="Source\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="SizeBox.xaml.cs">
-      <DependentUpon>SizeBox.xaml</DependentUpon>
+    <Compile Include="Source\Controls\WFSizeBox.xaml.cs">
+      <DependentUpon>WFSizeBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Utility.cs" />
-    <Compile Include="WFCanvas.xaml.cs">
+    <Compile Include="Source\Misc\Utility.cs" />
+    <Compile Include="Source\Controls\WFCanvas.xaml.cs">
       <DependentUpon>WFCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="WFElement.cs" />
+    <Compile Include="Source\Element.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
@@ -154,15 +154,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="MainPage.xaml">
+    <Page Include="Source\Pages\MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="SizeBox.xaml">
+    <Page Include="Source\Controls\WFSizeBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="WFCanvas.xaml">
+    <Page Include="Source\Controls\WFCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
