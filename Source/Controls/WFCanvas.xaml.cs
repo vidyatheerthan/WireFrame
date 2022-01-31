@@ -107,7 +107,7 @@ namespace WireFrame
 
         private CanvasProfile profile;
 
-        private FiniteStateMachine state = new HighLightElementState();
+        private FiniteStateMachine state = new DrawEllipseState();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -168,8 +168,13 @@ namespace WireFrame
             double frameX = (CanvasWidth - FrameWidth) * 0.5;
             double frameY = (CanvasHeight - FrameHeight) * 0.5;
 
-            Canvas.SetLeft(_frame, frameX);
-            Canvas.SetTop(_frame, frameY);
+            //-- 
+
+            Canvas.SetLeft(_frameBackground, frameX);
+            Canvas.SetTop(_frameBackground, frameY);
+
+            Canvas.SetLeft(_frameBorder, frameX);
+            Canvas.SetTop(_frameBorder, frameY);
         }
 
         private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
