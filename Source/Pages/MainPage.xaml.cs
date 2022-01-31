@@ -22,8 +22,6 @@ namespace WireFrame
     /// </summary>
     public sealed partial class MainPage : Page
     {
-        private double zoom = 25.0;
-
         public MainPage()
         {
             this.InitializeComponent();
