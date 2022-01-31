@@ -123,7 +123,7 @@ namespace WireFrame
 
             this.drawPrimitiveStateRefs = new List<object>() { _container, _sizeBox };
             this.panStateRefs = new List<object>() { _scrollViewer };
-            this.highlightElementStateRefs = new List<object>() { _canvas, _container, _titleBox };
+            this.highlightElementStateRefs = new List<object>() { _scrollViewer, _container, _titleBox };
 
             this.Loaded += OnLoaded;
 

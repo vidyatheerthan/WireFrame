@@ -19,7 +19,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            if (objects != null && objects.Count >= 3 && (objects[0] is Panel) && (objects[1] is Panel) && (objects[2] is WFTitleBox))
+            if (objects != null && objects.Count >= 3 && (objects[0] is ScrollViewer) && (objects[1] is Panel) && (objects[2] is WFTitleBox))
             {
                 return true;
             }
@@ -34,33 +34,33 @@ namespace WireFrame.Source.States
                 return null;
             }
 
-            var canvas = objects[0] as Panel;
+            var scrollViewer = objects[0] as ScrollViewer;
             var container = objects[1] as Panel; // _container panel where all elements reside
             var titleBox = objects[2] as WFTitleBox;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                DrawHighLightBox(canvas, container, titleBox, pointer.Position);
+                DrawHighLightBox(scrollViewer, container, titleBox, pointer.Position);
             }
             else if (pointerState == PointerState.Moved)
             {
-                HighlightElement(canvas, container, pointer.Position);
+                HighlightElement(scrollViewer, container, pointer.Position);
             }
 
             return this;
         }
 
-        private IEnumerable<UIElement> GetElementsUnderPointer(Panel canvas, Panel container, Point position)
+        private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
         {
-            GeneralTransform transform = container.TransformToVisual(canvas);
+            GeneralTransform transform = container.TransformToVisual(scrollViewer);
             Point transformedPoint = transform.TransformPoint(position);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
             return elements;
         }
 
-        private void DrawHighLightBox(Panel canvas, Panel container, WFTitleBox titleBox, Point position)
+        private void DrawHighLightBox(ScrollViewer scrollViewer, Panel container, WFTitleBox titleBox, Point position)
         {
-            var elements = GetElementsUnderPointer(canvas, container, position);
+            var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
             {
                 var element = elements.First() as FrameworkElement;
@@ -77,9 +77,9 @@ namespace WireFrame.Source.States
             }
         }
 
-        private void HighlightElement(Panel canvas, Panel container, Point position)
+        private void HighlightElement(ScrollViewer scrollViewer, Panel container, Point position)
         {
-            var elements = GetElementsUnderPointer(canvas, container, position);
+            var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
             {
                 this.activeElement = elements.First() as FrameworkElement;
