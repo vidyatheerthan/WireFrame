@@ -13,6 +13,6 @@ namespace WireFrame.Source.States
     interface FiniteStateMachine
     {
         bool ReferenceObjectsAccepted(List<object> objects);
-        FiniteStateMachine HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer);
+        bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer);
     }
 }

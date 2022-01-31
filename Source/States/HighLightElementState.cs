@@ -19,6 +19,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
+            // _scrollViewer, _container, _titleBox
             if (objects != null && objects.Count >= 3 && (objects[0] is ScrollViewer) && (objects[1] is Panel) && (objects[2] is WFTitleBox))
             {
                 return true;
@@ -27,15 +28,15 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public FiniteStateMachine HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
-                return null;
+                return false;
             }
 
             var scrollViewer = objects[0] as ScrollViewer;
-            var container = objects[1] as Panel; // _container panel where all elements reside
+            var container = objects[1] as Panel;
             var titleBox = objects[2] as WFTitleBox;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
@@ -47,7 +48,7 @@ namespace WireFrame.Source.States
                 HighlightElement(scrollViewer, container, pointer.Position);
             }
 
-            return this;
+            return false;
         }
 
         private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)

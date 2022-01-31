@@ -13,7 +13,7 @@ namespace WireFrame.Source.States
 {
     class PanState : FiniteStateMachine
     {
-        private bool tracking = false;
+        private bool isTracking = false;
 
         private Point clickedPosition;
 
@@ -23,6 +23,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
+            // _scrollViewer
             if (objects != null && objects.Count > 0 && (objects[0] is ScrollViewer))
             {
                 return true;
@@ -31,11 +32,11 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public FiniteStateMachine HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
-                return null;
+                return false;
             }
 
             if (Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
@@ -44,7 +45,7 @@ namespace WireFrame.Source.States
                 {
                     StartPanning(pointer.Position);
                 }
-                else if (pointerState == PointerState.Moved && tracking)
+                else if (pointerState == PointerState.Moved && isTracking)
                 {
                     PanScrollViewer(objects[0] as ScrollViewer, pointer.Position);
                 }
@@ -58,14 +59,14 @@ namespace WireFrame.Source.States
                 EndPanning();
             }
 
-            return this;
+            return this.isTracking;
         }
 
         private void StartPanning(Point pos)
         {
             this.clickedPosition = pos;
             Window.Current.CoreWindow.PointerCursor = this.handCursor;
-            this.tracking = true;
+            this.isTracking = true;
         }
 
         private void PanScrollViewer(ScrollViewer scrollViewer, Point pointerPos)
@@ -78,7 +79,7 @@ namespace WireFrame.Source.States
 
         private void EndPanning()
         {
-            this.tracking = false;
+            this.isTracking = false;
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
     }

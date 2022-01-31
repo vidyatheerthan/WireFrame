@@ -107,11 +107,9 @@ namespace WireFrame
 
         private CanvasProfile profile;
 
-        private FiniteStateMachine state = new DrawEllipseState();
+        private StateExecutor stateExecutor;
 
         public event PropertyChangedEventHandler PropertyChanged;
-
-        private List<object> drawPrimitiveStateRefs, panStateRefs, highlightElementStateRefs;
 
         
         //====================================================================================================
@@ -121,12 +119,15 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            this.drawPrimitiveStateRefs = new List<object>() { _container, _sizeBox };
-            this.panStateRefs = new List<object>() { _scrollViewer };
-            this.highlightElementStateRefs = new List<object>() { _scrollViewer, _container, _titleBox };
+            // --
+            StateExecutor.State panState = new StateExecutor.State(new PanState(), new List<object>() { _scrollViewer });
+            StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _scrollViewer, _container, _titleBox });
+            this.stateExecutor = new StateExecutor(new List<StateExecutor.State>() { panState, highlightState });
 
+            // --
             this.Loaded += OnLoaded;
 
+            // --
             this._canvas.PointerPressed += OnPointerPressedOnCanvas;
             this._canvas.PointerMoved += OnPointerMovedOnCanvas;
             this._canvas.PointerReleased += OnPointerReleasedOnCanvas;
@@ -181,66 +182,21 @@ namespace WireFrame
         {
             var pointer = e.GetCurrentPoint(_canvas);
 
-            List<object> refs = null;
-
-            if (this.state is DrawPrimitiveState)
-            {
-                refs = this.drawPrimitiveStateRefs;
-            }
-            else if (this.state is PanState)
-            {
-                refs = this.panStateRefs;
-            }
-            else if (this.state is HighLightElementState)
-            {
-                refs = this.highlightElementStateRefs;
-            }
-
-            this.state.HandleInput(refs, PointerState.Pressed, pointer);
+            this.stateExecutor.HandleInput(PointerState.Pressed, pointer);
         }
 
         private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
             var pointer = e.GetCurrentPoint(_canvas);
 
-            List<object> refs = null;
-
-            if (this.state is DrawPrimitiveState)
-            {
-                refs = this.drawPrimitiveStateRefs;
-            }
-            else if (this.state is PanState)
-            {
-                refs = this.panStateRefs;
-            }
-            else if (this.state is HighLightElementState)
-            {
-                refs = this.highlightElementStateRefs;
-            }
-
-            this.state.HandleInput(refs, PointerState.Moved, pointer);
+            this.stateExecutor.HandleInput(PointerState.Moved, pointer);
         }
 
         private void OnPointerReleasedOnCanvas(object sender, PointerRoutedEventArgs e)
         {
             var pointer = e.GetCurrentPoint(_canvas);
 
-            List<object> refs = null;
-
-            if (this.state is DrawPrimitiveState)
-            {
-                refs = this.drawPrimitiveStateRefs;
-            }
-            else if (this.state is PanState)
-            {
-                refs = this.panStateRefs;
-            }
-            else if (this.state is HighLightElementState)
-            {
-                refs = this.highlightElementStateRefs;
-            }
-
-            this.state.HandleInput(refs, PointerState.Released, pointer);
+            this.stateExecutor.HandleInput(PointerState.Released, pointer);
         }
     }
 }

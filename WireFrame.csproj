@@ -141,6 +141,7 @@
     <Compile Include="Source\States\FiniteStateMachine.cs" />
     <Compile Include="Source\States\HighLightElementState.cs" />
     <Compile Include="Source\States\PanState.cs" />
+    <Compile Include="Source\States\StateExecutor.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">

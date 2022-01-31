@@ -16,11 +16,12 @@ namespace WireFrame.Source.States
     abstract class DrawPrimitiveState : FiniteStateMachine
     {
         private FrameworkElement activeElement = null;
-        private bool tracking = false;
+        private bool isTracking = false;
 
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
+            // _container, _sizeBox
             if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFSizeBox))
             {
                 return true;
@@ -29,11 +30,11 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public FiniteStateMachine HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
-                return null;
+                return false;
             }
 
             var canvas = objects[0] as Panel;
@@ -43,9 +44,9 @@ namespace WireFrame.Source.States
             {
                 this.activeElement = AddNewPrimitive(canvas, pointer.Position.X, pointer.Position.Y, 1, 1);
                 ShowSizeBox(sizeBox, true, pointer.Position.X, pointer.Position.Y);
-                this.tracking = true;
+                this.isTracking = true;
             }
-            else if (pointerState == PointerState.Moved && tracking)
+            else if (pointerState == PointerState.Moved && isTracking)
             {
                 ResizePrimitive(this.activeElement, pointer.Position.X, pointer.Position.Y);
                 UpdateSizeBox(sizeBox, pointer.Position.X, pointer.Position.Y);
@@ -53,12 +54,11 @@ namespace WireFrame.Source.States
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
-                this.tracking = false;
+                this.isTracking = false;
                 ShowSizeBox(sizeBox, false, pointer.Position.X, pointer.Position.Y);
-                return null;
             }
 
-            return this;
+            return this.isTracking;
         }
 
         private void ShowSizeBox(WFSizeBox sizeBox, bool show, double left, double top)
