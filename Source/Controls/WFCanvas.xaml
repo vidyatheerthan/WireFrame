@@ -13,7 +13,11 @@
 
         <Canvas x:Name="_canvas" Width="{x:Bind Path=CanvasWidth, Mode=OneWay}" Height="{x:Bind Path=CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="White">
 
-            <Canvas x:Name="_container" />
+            <Canvas x:Name="_container">
+
+                <Ellipse Stroke="BlueViolet" Fill="Violet" Width="100" Height="100" Canvas.Left="100" Canvas.Top="100"/>
+
+            </Canvas>
 
             <Canvas x:Name="_HUD">
 

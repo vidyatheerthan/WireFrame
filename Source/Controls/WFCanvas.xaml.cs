@@ -107,11 +107,11 @@ namespace WireFrame
 
         private CanvasProfile profile;
 
-        private FiniteStateMachine state = new DrawRectangleState();
+        private FiniteStateMachine state = new HighLightElementState();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private List<object> drawPrimitiveStateRefs, panStateRefs;
+        private List<object> drawPrimitiveStateRefs, panStateRefs, highlightElementStateRefs;
 
         
         //====================================================================================================
@@ -123,6 +123,7 @@ namespace WireFrame
 
             this.drawPrimitiveStateRefs = new List<object>() { _container, _sizeBox };
             this.panStateRefs = new List<object>() { _scrollViewer };
+            this.highlightElementStateRefs = new List<object>() { _canvas, _container, _titleBox };
 
             this.Loaded += OnLoaded;
 
@@ -185,6 +186,10 @@ namespace WireFrame
             {
                 refs = this.panStateRefs;
             }
+            else if (this.state is HighLightElementState)
+            {
+                refs = this.highlightElementStateRefs;
+            }
 
             this.state.HandleInput(refs, PointerState.Pressed, pointer);
         }
@@ -203,6 +208,10 @@ namespace WireFrame
             {
                 refs = this.panStateRefs;
             }
+            else if (this.state is HighLightElementState)
+            {
+                refs = this.highlightElementStateRefs;
+            }
 
             this.state.HandleInput(refs, PointerState.Moved, pointer);
         }
@@ -220,6 +229,10 @@ namespace WireFrame
             else if (this.state is PanState)
             {
                 refs = this.panStateRefs;
+            }
+            else if (this.state is HighLightElementState)
+            {
+                refs = this.highlightElementStateRefs;
             }
 
             this.state.HandleInput(refs, PointerState.Released, pointer);
