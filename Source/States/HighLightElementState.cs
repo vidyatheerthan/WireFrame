@@ -9,11 +9,14 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
+using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Source.States
 {
     class HighLightElementState : FiniteStateMachine
     {
+        private FrameworkElement activeElement = null;
+
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
             if (objects != null && objects.Count >= 3 && (objects[0] is Panel) && (objects[1] is Panel) && (objects[2] is WFTitleBox))
@@ -37,32 +40,65 @@ namespace WireFrame.Source.States
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
+                DrawHighLightBox(canvas, container, titleBox, pointer.Position);
             }
             else if (pointerState == PointerState.Moved)
             {
-                GeneralTransform transform = container.TransformToVisual(canvas);
-                Point transformedPoint = transform.TransformPoint(pointer.Position);
-                var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
-                if(elements != null && elements.Count() > 0)
-                {
-                    var element = elements.First() as FrameworkElement;
-                    titleBox.Visibility = Visibility.Visible;
-                    Canvas.SetLeft(titleBox, Canvas.GetLeft(element));
-                    Canvas.SetTop(titleBox, Canvas.GetTop(element));
-                    titleBox.Width = element.Width;
-                    titleBox.Height = element.Height;
-                    titleBox.SetTitle(element.GetType().Name);
-                }
-                else
-                {
-                    titleBox.Visibility = Visibility.Collapsed;
-                }
-            }
-            else if (pointerState == PointerState.Released)
-            {
+                HighlightElement(canvas, container, pointer.Position);
             }
 
             return this;
+        }
+
+        private IEnumerable<UIElement> GetElementsUnderPointer(Panel canvas, Panel container, Point position)
+        {
+            GeneralTransform transform = container.TransformToVisual(canvas);
+            Point transformedPoint = transform.TransformPoint(position);
+            var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
+            return elements;
+        }
+
+        private void DrawHighLightBox(Panel canvas, Panel container, WFTitleBox titleBox, Point position)
+        {
+            var elements = GetElementsUnderPointer(canvas, container, position);
+            if (elements != null && elements.Count() > 0)
+            {
+                var element = elements.First() as FrameworkElement;
+                titleBox.Visibility = Visibility.Visible;
+                Canvas.SetLeft(titleBox, Canvas.GetLeft(element));
+                Canvas.SetTop(titleBox, Canvas.GetTop(element));
+                titleBox.Width = element.Width;
+                titleBox.Height = element.Height;
+                titleBox.SetTitle(element.GetType().Name);
+            }
+            else
+            {
+                titleBox.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        private void HighlightElement(Panel canvas, Panel container, Point position)
+        {
+            var elements = GetElementsUnderPointer(canvas, container, position);
+            if (elements != null && elements.Count() > 0)
+            {
+                this.activeElement = elements.First() as FrameworkElement;
+                HighlightShape(this.activeElement, true);
+            }
+            else
+            {
+                HighlightShape(this.activeElement, false);
+            }
+        }
+
+        private void HighlightShape(FrameworkElement element, bool highlight)
+        {
+            if (element != null && element is Shape)
+            {
+                var shape = element as Shape;
+                shape.StrokeThickness = highlight ? 3.0 : 1.0;
+                shape.StrokeDashArray = highlight ? new DoubleCollection() { 1.0, 2.0, 0.0 } : null;
+            }
         }
     }
 }
