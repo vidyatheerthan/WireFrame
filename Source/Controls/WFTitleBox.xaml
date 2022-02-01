@@ -9,13 +9,14 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
+    <Canvas x:Name="_canvas">
 
-        <Rectangle Stroke="LightGray" Fill="Transparent" />
+        <Rectangle x:Name="_box" Stroke="#CCD3D3D3" Fill="Transparent" />
 
-        <Border x:Name="_textBlock" Background="LightGray" Width="75" Height="18" HorizontalAlignment="Left" VerticalAlignment="Top" CornerRadius="0, 0, 5, 0">
-            <TextBlock x:Name="_text" Text="0x0" Foreground="Black" FontSize="12" FontFamily="Courier New" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
+        <Border x:Name="_textBlock" Background="#CCD3D3D3" Width="75" Height="18" CornerRadius="5, 5, 0, 0">
+            <TextBlock x:Name="_text" Text="0x0" Foreground="#CC000000" FontSize="12" FontFamily="Courier New" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
 
-    </Grid>
+    </Canvas>
+    
 </UserControl>

@@ -35,7 +35,15 @@ namespace WireFrame
             else
             {
                 _textBlock.Visibility = Visibility.Visible;
+
+                Canvas.SetLeft(_textBlock, 0);
+                Canvas.SetTop(_textBlock, Canvas.GetTop(_canvas) - _textBlock.Height);
             }
+
+            Canvas.SetLeft(_box, 0);
+            Canvas.SetTop(_box, 0);
+            _box.Width = e.NewSize.Width;
+            _box.Height = e.NewSize.Height;
         }
 
         public void SetTitle(string title)

@@ -131,7 +131,7 @@ namespace WireFrame
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<StateExecutor.State>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawEllipse);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.HighLight_Pan);
 
             // --
             this.Loaded += OnLoaded;
