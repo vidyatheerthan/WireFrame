@@ -122,7 +122,16 @@ namespace WireFrame
             // --
             StateExecutor.State panState = new StateExecutor.State(new PanState(), new List<object>() { _scrollViewer });
             StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _scrollViewer, _container, _titleBox });
-            this.stateExecutor = new StateExecutor(new List<StateExecutor.State>() { panState, highlightState });
+            StateExecutor.State drawEllipseState = new StateExecutor.State(new DrawEllipseState(), new List<object>() { _container, _actionTip });
+            StateExecutor.State drawRectangleState = new StateExecutor.State(new DrawRectangleState(), new List<object>() { _container, _actionTip });
+
+            var stateGroups = new Dictionary<StateExecutor.StateGroup, List<StateExecutor.State>>();
+            stateGroups.Add(StateExecutor.StateGroup.HighLight_Pan, new List<StateExecutor.State>() { highlightState, panState });
+            stateGroups.Add(StateExecutor.StateGroup.DrawEllipse, new List<StateExecutor.State>() { drawEllipseState });
+            stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<StateExecutor.State>() { drawRectangleState });
+
+            this.stateExecutor = new StateExecutor(stateGroups);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawEllipse);
 
             // --
             this.Loaded += OnLoaded;

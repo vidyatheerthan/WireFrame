@@ -21,12 +21,36 @@ namespace WireFrame.Source.States
             }
         }
 
-        private List<State> states;
+        public enum StateGroup
+        {
+            HighLight_Pan,
+            DrawEllipse,
+            DrawRectangle
+        }
+
+        private Dictionary<StateGroup, List<State>> stateGroups;
+        private List<State> activeStates = null;
         State activeState = null;
 
         public StateExecutor(List<State> states)
         {
-            this.states = states;
+            this.activeStates = states;
+        }
+
+        public StateExecutor(Dictionary<StateGroup, List<State>> stateGroups)
+        {
+            this.stateGroups = stateGroups;
+        }
+
+        public bool SelectStateGroup(StateGroup stateGroup)
+        {
+            if(this.stateGroups != null && this.stateGroups.ContainsKey(stateGroup) && this.stateGroups[stateGroup] != null && this.stateGroups[stateGroup].Count > 0)
+            {
+                this.activeStates = this.stateGroups[stateGroup];
+                return true;
+            }
+
+            return false;
         }
 
         public void HandleInput (PointerState pointerState, PointerPoint pointer)
@@ -41,9 +65,9 @@ namespace WireFrame.Source.States
                     this.activeState = null;
                 }
             }
-            else
+            else if(this.activeStates != null)
             {
-                foreach (State state in this.states)
+                foreach (State state in this.activeStates)
                 {
                     handle = state.fsm.HandleInput(state.args, pointerState, pointer);
                     if (handle)

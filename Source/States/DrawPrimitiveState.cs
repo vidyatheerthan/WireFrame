@@ -21,7 +21,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            // _container, _sizeBox
+            // _container, _actionTip
             if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFActionTip))
             {
                 return true;
