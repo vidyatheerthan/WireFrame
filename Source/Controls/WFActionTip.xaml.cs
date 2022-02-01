@@ -17,16 +17,16 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame
 {
-    public sealed partial class WFSizeBox : UserControl
+    public sealed partial class WFActionTip : UserControl
     {
-        public WFSizeBox()
+        public WFActionTip()
         {
             this.InitializeComponent();
         }
 
-        public void SetSize(double width, double height)
+        public void SetTip(string tip)
         {
-            _text.Text = "Width: " + ((int)width).ToString() + "\n" + "Height: " + ((int)height).ToString();
+            _text.Text = tip;
         }
     }
 }

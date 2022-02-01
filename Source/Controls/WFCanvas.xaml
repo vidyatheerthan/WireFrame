@@ -31,7 +31,7 @@
 
                 <local:WFTitleBox x:Name="_titleBox" Visibility="Collapsed" />
 
-                <local:WFSizeBox x:Name="_sizeBox" Visibility="Collapsed" />
+                <local:WFActionTip x:Name="_sizeBox" Visibility="Collapsed" />
 
             </Canvas>
 

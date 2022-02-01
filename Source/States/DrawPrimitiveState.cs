@@ -22,7 +22,7 @@ namespace WireFrame.Source.States
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
             // _container, _sizeBox
-            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFSizeBox))
+            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFActionTip))
             {
                 return true;
             }
@@ -38,43 +38,44 @@ namespace WireFrame.Source.States
             }
 
             var canvas = objects[0] as Panel;
-            var sizeBox = objects[1] as WFSizeBox;
+            var actionTip = objects[1] as WFActionTip;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
                 this.activeElement = AddNewPrimitive(canvas, pointer.Position.X, pointer.Position.Y, 1, 1);
-                ShowSizeBox(sizeBox, true, pointer.Position.X, pointer.Position.Y);
+                ShowActionTip(actionTip, true, pointer.Position.X, pointer.Position.Y);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
                 ResizePrimitive(this.activeElement, pointer.Position.X, pointer.Position.Y);
-                UpdateSizeBox(sizeBox, pointer.Position.X, pointer.Position.Y);
+                UpdateActionTip(actionTip, pointer.Position.X, pointer.Position.Y);
             }
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
                 this.isTracking = false;
-                ShowSizeBox(sizeBox, false, pointer.Position.X, pointer.Position.Y);
+                ShowActionTip(actionTip, false, pointer.Position.X, pointer.Position.Y);
             }
 
             return this.isTracking;
         }
 
-        private void ShowSizeBox(WFSizeBox sizeBox, bool show, double left, double top)
+        private void ShowActionTip(WFActionTip actionTip, bool show, double left, double top)
         {
-            sizeBox.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            actionTip.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
 
-            Canvas.SetLeft(sizeBox, left);
-            Canvas.SetTop(sizeBox, top);
+            Canvas.SetLeft(actionTip, left);
+            Canvas.SetTop(actionTip, top);
         }
 
-        private void UpdateSizeBox(WFSizeBox sizeBox, double left, double top)
+        private void UpdateActionTip(WFActionTip actionTip, double left, double top)
         {
-            Canvas.SetLeft(sizeBox, left);
-            Canvas.SetTop(sizeBox, top);
+            Canvas.SetLeft(actionTip, left);
+            Canvas.SetTop(actionTip, top);
 
-            sizeBox.SetSize(this.activeElement.Width, this.activeElement.Height);
+            string tip = "Width: " + ((int)this.activeElement.Width).ToString() + "\n" + "Height: " + ((int)this.activeElement.Height).ToString();
+            actionTip.SetTip(tip);
         }
 
         protected abstract FrameworkElement AddNewPrimitive(Panel canvas, double left, double top, double width, double height);

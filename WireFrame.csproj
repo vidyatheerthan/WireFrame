@@ -120,8 +120,8 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\CanvasProfile.cs" />
-    <Compile Include="Source\Controls\WFSizeBox.xaml.cs">
-      <DependentUpon>WFSizeBox.xaml</DependentUpon>
+    <Compile Include="Source\Controls\WFActionTip.xaml.cs">
+      <DependentUpon>WFActionTip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\Commons.cs" />
     <Compile Include="Source\Pages\MainPage.xaml.cs">
@@ -163,7 +163,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Source\Controls\WFSizeBox.xaml">
+    <Page Include="Source\Controls\WFActionTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
