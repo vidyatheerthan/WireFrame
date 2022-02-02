@@ -48,7 +48,7 @@ namespace WireFrame
 
         public void SetTitle(string title)
         {
-            _text.Text = title;
+            _textBlock.Text = title;
         }
     }
 }
