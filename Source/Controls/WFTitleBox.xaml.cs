@@ -28,16 +28,16 @@ namespace WireFrame
 
         private void OnSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            if(e.NewSize.Width < _textBlock.Width || e.NewSize.Height < _textBlock.Height)
+            if(e.NewSize.Width < _textBorder.Width || e.NewSize.Height < _textBorder.Height)
             {
-                _textBlock.Visibility = Visibility.Collapsed;
+                _textBorder.Visibility = Visibility.Collapsed;
             }
             else
             {
-                _textBlock.Visibility = Visibility.Visible;
+                _textBorder.Visibility = Visibility.Visible;
 
-                Canvas.SetLeft(_textBlock, 0);
-                Canvas.SetTop(_textBlock, Canvas.GetTop(_canvas) - _textBlock.Height);
+                Canvas.SetLeft(_textBorder, 0);
+                Canvas.SetTop(_textBorder, Canvas.GetTop(_canvas) - _textBorder.Height);
             }
 
             Canvas.SetLeft(_box, 0);

@@ -13,7 +13,7 @@
 
         <Rectangle x:Name="_box" Stroke="#CCD3D3D3" Fill="Transparent" />
 
-        <Border x:Name="_textBlock" Background="#CCD3D3D3" Width="75" Height="18" CornerRadius="5, 5, 0, 0">
+        <Border x:Name="_textBorder" Background="#CCD3D3D3" Width="75" Height="18" CornerRadius="5, 5, 0, 0">
             <TextBlock x:Name="_text" Text="0x0" Foreground="#CC000000" FontSize="12" FontFamily="Courier New" TextAlignment="Center" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Border>
 
