@@ -124,6 +124,7 @@
       <DependentUpon>WFActionTip.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\Commons.cs" />
+    <Compile Include="Source\Misc\PropertyStore.cs" />
     <Compile Include="Source\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
