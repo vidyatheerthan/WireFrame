@@ -187,6 +187,7 @@ namespace WireFrame
 
             //-- 
 
+            this._scrollViewer.MinZoomFactor = (float)(this.profile.Zoom * 0.9);
             this._scrollViewer.ChangeView(0, 0, (float)this.profile.Zoom, true);
         }
 
