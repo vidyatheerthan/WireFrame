@@ -131,7 +131,7 @@ namespace WireFrame
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<StateExecutor.State>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.HighLight_Pan);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawEllipse);
 
             // --
             this.Loaded += OnLoaded;
@@ -165,26 +165,29 @@ namespace WireFrame
 
         private void UpdateCanvasAndFrameSize()
         {
-            var canvasSize = Utility.GetScreenResolution();
+            var screenSize = Utility.GetScreenResolution();
+            var canvasSize = this.profile.GetCanvas(screenSize);
 
             CanvasWidth = canvasSize.Width;
             CanvasHeight = canvasSize.Height;
 
-            var frameSize = this.profile.ResizeFrame(canvasSize);
+            FrameWidth = this.profile.FrameWidth;
+            FrameHeight = this.profile.FrameHeight;
 
-            FrameWidth = frameSize.Width;
-            FrameHeight = frameSize.Height;
+            //-- 
 
             double frameX = (CanvasWidth - FrameWidth) * 0.5;
             double frameY = (CanvasHeight - FrameHeight) * 0.5;
-
-            //-- 
 
             Canvas.SetLeft(_frameBackground, frameX);
             Canvas.SetTop(_frameBackground, frameY);
 
             Canvas.SetLeft(_frameBorder, frameX);
             Canvas.SetTop(_frameBorder, frameY);
+
+            //-- 
+
+            this._scrollViewer.ChangeView(0, 0, (float)this.profile.Zoom, true);
         }
 
         private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)

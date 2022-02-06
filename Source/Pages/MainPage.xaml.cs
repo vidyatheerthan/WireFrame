@@ -26,7 +26,7 @@ namespace WireFrame
         {
             this.InitializeComponent();
 
-            _canvas.SetCanvasProfile(new CanvasProfile(1125.0, 2436.0, 75.0));
+            _canvas.SetCanvasProfile(new CanvasProfile(4000.0, 4000.0));
         }
     }
 }

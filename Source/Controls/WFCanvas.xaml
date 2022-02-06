@@ -9,7 +9,7 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" Background="LightGray">
+    <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" MaxZoomFactor="100.0" Background="LightGray">
 
         <Canvas x:Name="_canvas" Width="{x:Bind Path=CanvasWidth, Mode=OneWay}" Height="{x:Bind Path=CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="WhiteSmoke">
 

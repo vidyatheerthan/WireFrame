@@ -74,7 +74,8 @@ namespace WireFrame.Source.States
             double x = scrollViewer.HorizontalOffset + this.clickedPosition.X - pointerPos.X;
             double y = scrollViewer.VerticalOffset + this.clickedPosition.Y - pointerPos.Y;
 
-            scrollViewer.ChangeView(x, y, null, true);
+            scrollViewer.ChangeView(x, y, null, false);
+            scrollViewer.UpdateLayout();
         }
 
         private void EndPanning()
