@@ -85,8 +85,8 @@ namespace WireFrame.Source.States
                 Canvas.SetLeft(titleBox, ePoint.X);
                 Canvas.SetTop(titleBox, ePoint.Y);
 
-                titleBox.Width = element.Width * scrollViewer.ZoomFactor;
-                titleBox.Height = element.Height * scrollViewer.ZoomFactor;
+                titleBox.Width = element.ActualWidth * scrollViewer.ZoomFactor;
+                titleBox.Height = element.ActualHeight * scrollViewer.ZoomFactor;
 
                 titleBox.SetTitle(element.GetType().Name);
             }
