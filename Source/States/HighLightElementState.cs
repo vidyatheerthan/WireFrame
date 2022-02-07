@@ -53,7 +53,7 @@ namespace WireFrame.Source.States
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                DrawHighLightBox(scrollViewer, container, titleBox, pointer.Position);
+                DrawHighLightBox(grid, scrollViewer, container, titleBox, pointer.Position);
             }
             else if (pointerState == PointerState.Moved)
             {
@@ -71,7 +71,7 @@ namespace WireFrame.Source.States
             return elements;
         }
 
-        private void DrawHighLightBox(ScrollViewer scrollViewer, Canvas container, WFTitleBox titleBox, Point position)
+        private void DrawHighLightBox(Grid grid, ScrollViewer scrollViewer, Canvas container, WFTitleBox titleBox, Point position)
         {
             var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
@@ -79,10 +79,14 @@ namespace WireFrame.Source.States
                 var element = elements.First() as FrameworkElement;
                 titleBox.Visibility = Visibility.Visible;
 
-                Canvas.SetLeft(titleBox, Canvas.GetLeft(element));
-                Canvas.SetTop(titleBox, Canvas.GetTop(element));
-                titleBox.Width = element.Width;
-                titleBox.Height = element.Height;
+                var transform = element.TransformToVisual(grid);
+                var ePoint = transform.TransformPoint(new Point(0, 0));
+
+                Canvas.SetLeft(titleBox, ePoint.X);
+                Canvas.SetTop(titleBox, ePoint.Y);
+
+                titleBox.Width = element.Width * scrollViewer.ZoomFactor;
+                titleBox.Height = element.Height * scrollViewer.ZoomFactor;
 
                 titleBox.SetTitle(element.GetType().Name);
             }
