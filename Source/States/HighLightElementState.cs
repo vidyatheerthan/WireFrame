@@ -52,16 +52,18 @@ namespace WireFrame.Source.States
 
             PointerPoint pointer = e.GetCurrentPoint(canvas);
 
-            if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
+            if (!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
-                DrawHighLightBox(grid, scrollViewer, container, titleBox, pointer.Position);
+                if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
+                {
+                    DrawHighLightBox(grid, scrollViewer, container, titleBox, pointer.Position);
+                }
+                else if (pointerState == PointerState.Moved)
+                {
+                    HighlightElement(scrollViewer, container, pointer.Position);
+                    UpdateHighLightBox(grid, scrollViewer, titleBox);
+                }
             }
-            else if (pointerState == PointerState.Moved)
-            {
-                HighlightElement(scrollViewer, container, pointer.Position);
-                UpdateHighLightBox(grid, scrollViewer, titleBox);
-            }
-
             return false;
         }
 
