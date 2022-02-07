@@ -15,7 +15,7 @@ namespace WireFrame.Source.States
 {
     class DrawRectangleState : DrawPrimitiveState
     {
-        protected override FrameworkElement AddNewPrimitive(Panel canvas, double left, double top, double width, double height)
+        protected override FrameworkElement AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
             Rectangle ellipse = new Rectangle();
             ellipse.Width = width;
@@ -25,7 +25,7 @@ namespace WireFrame.Source.States
             ellipse.Stroke = new SolidColorBrush(Colors.Blue);
             ellipse.Fill = new SolidColorBrush(Colors.AliceBlue);
 
-            canvas.Children.Insert(canvas.Children.Count, ellipse);
+            container.Children.Insert(container.Children.Count, ellipse);
             return ellipse;
         }
 

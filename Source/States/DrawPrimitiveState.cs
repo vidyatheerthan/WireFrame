@@ -8,6 +8,7 @@ using Windows.UI;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -21,8 +22,14 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            // _container, _actionTip
-            if (objects != null && objects.Count >= 2 && (objects[0] is Panel) && (objects[1] is WFActionTip))
+            if (objects != null && 
+                objects.Count == 6 && 
+                (objects[0] is Grid) && 
+                (objects[1] is ScrollViewer) && 
+                (objects[2] is Canvas) && 
+                (objects[3] is Canvas) &&
+                (objects[4] is Canvas) && 
+                (objects[5] is WFActionTip))
             {
                 return true;
             }
@@ -30,32 +37,41 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
                 return false;
             }
 
-            var canvas = objects[0] as Panel;
-            var actionTip = objects[1] as WFActionTip;
+            Grid grid = objects[0] as Grid;
+            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
+            Canvas canvas = objects[2] as Canvas;
+            Canvas container = objects[3] as Canvas;
+            Canvas hud = objects[4] as Canvas;
+            WFActionTip actionTip = objects[5] as WFActionTip;
+
+            PointerPoint pointer = e.GetCurrentPoint(grid);
+
+            Point canvasPoint = e.GetCurrentPoint(canvas).Position;
+            Point hudPoint = e.GetCurrentPoint(hud).Position;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                this.activeElement = AddNewPrimitive(canvas, pointer.Position.X, pointer.Position.Y, 1, 1);
-                ShowActionTip(actionTip, true, pointer.Position.X, pointer.Position.Y);
+                this.activeElement = AddNewPrimitive(container, canvasPoint.X, canvasPoint.Y, 1, 1);
+                ShowActionTip(actionTip, true, hudPoint.X, hudPoint.Y);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
-                ResizePrimitive(this.activeElement, pointer.Position.X, pointer.Position.Y);
-                UpdateActionTip(actionTip, pointer.Position.X, pointer.Position.Y);
+                ResizePrimitive(this.activeElement, canvasPoint.X, canvasPoint.Y);
+                UpdateActionTip(actionTip, hudPoint.X, hudPoint.Y);
             }
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
                 this.isTracking = false;
-                ShowActionTip(actionTip, false, pointer.Position.X, pointer.Position.Y);
+                ShowActionTip(actionTip, false, hudPoint.X, hudPoint.Y);
             }
 
             return this.isTracking;
@@ -78,7 +94,7 @@ namespace WireFrame.Source.States
             actionTip.SetTip(tip);
         }
 
-        protected abstract FrameworkElement AddNewPrimitive(Panel canvas, double left, double top, double width, double height);
+        protected abstract FrameworkElement AddNewPrimitive(Canvas container, double left, double top, double width, double height);
 
         protected abstract void ResizePrimitive(FrameworkElement element, double x, double y);
     }

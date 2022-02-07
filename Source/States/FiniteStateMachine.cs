@@ -7,12 +7,13 @@ using Windows.Foundation;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace WireFrame.Source.States
 {
     interface FiniteStateMachine
     {
         bool ReferenceObjectsAccepted(List<object> objects);
-        bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer);
+        bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e);
     }
 }

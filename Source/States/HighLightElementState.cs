@@ -8,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -19,8 +20,14 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            // _scrollViewer, _container, _titleBox
-            if (objects != null && objects.Count >= 3 && (objects[0] is ScrollViewer) && (objects[1] is Panel) && (objects[2] is WFTitleBox))
+            if (objects != null &&
+                objects.Count == 6 &&
+                (objects[0] is Grid) &&
+                (objects[1] is ScrollViewer) &&
+                (objects[2] is Canvas) &&
+                (objects[3] is Canvas) &&
+                (objects[4] is Canvas) &&
+                (objects[5] is WFTitleBox))
             {
                 return true;
             }
@@ -28,16 +35,21 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
                 return false;
             }
 
-            var scrollViewer = objects[0] as ScrollViewer;
-            var container = objects[1] as Panel;
-            var titleBox = objects[2] as WFTitleBox;
+            Grid grid = objects[0] as Grid;
+            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
+            Canvas canvas = objects[2] as Canvas;
+            Canvas container = objects[3] as Canvas;
+            Canvas hud = objects[4] as Canvas;
+            WFTitleBox titleBox = objects[5] as WFTitleBox;
+
+            PointerPoint pointer = e.GetCurrentPoint(canvas);
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
@@ -59,17 +71,19 @@ namespace WireFrame.Source.States
             return elements;
         }
 
-        private void DrawHighLightBox(ScrollViewer scrollViewer, Panel container, WFTitleBox titleBox, Point position)
+        private void DrawHighLightBox(ScrollViewer scrollViewer, Canvas container, WFTitleBox titleBox, Point position)
         {
             var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
             {
                 var element = elements.First() as FrameworkElement;
                 titleBox.Visibility = Visibility.Visible;
+
                 Canvas.SetLeft(titleBox, Canvas.GetLeft(element));
                 Canvas.SetTop(titleBox, Canvas.GetTop(element));
                 titleBox.Width = element.Width;
                 titleBox.Height = element.Height;
+
                 titleBox.SetTitle(element.GetType().Name);
             }
             else

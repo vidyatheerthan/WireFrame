@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
+using Windows.UI.Xaml;
+using Size = Windows.Foundation.Size;
 
 namespace WireFrame
 {
@@ -17,6 +19,14 @@ namespace WireFrame
                                       (int)displayInformation.ScreenHeightInRawPixels);
 
             return screenSize;
+        }
+
+        public static Size GetSizeRelativeTo(Size size, FrameworkElement source, FrameworkElement destination)
+        {
+            double widthRatio = size.Width / source.ActualWidth;
+            double heightRatio = size.Height / source.ActualHeight;
+
+            return new Size(destination.ActualWidth * widthRatio, destination.ActualHeight * heightRatio);
         }
     }
 }

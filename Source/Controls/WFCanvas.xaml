@@ -9,38 +9,40 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" MaxZoomFactor="100.0" Background="LightGray">
+    <Grid x:Name="_grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
 
-        <Canvas x:Name="_canvas" Width="{x:Bind Path=CanvasWidth, Mode=OneWay}" Height="{x:Bind Path=CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="WhiteSmoke">
+        <ScrollViewer x:Name="_scrollViewer" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" HorizontalScrollBarVisibility="Auto" ZoomMode="Enabled" MaxZoomFactor="10.0" Background="LightGray">
 
-            <Canvas>
+            <Canvas x:Name="_canvas" Width="{x:Bind Path=CanvasWidth, Mode=OneWay}" Height="{x:Bind Path=CanvasHeight, Mode=OneWay}" HorizontalAlignment="Center" VerticalAlignment="Center" Background="WhiteSmoke">
 
-                <Rectangle x:Name="_frameBackground" Width="{x:Bind Path=FrameWidth, Mode=OneWay}" Height="{x:Bind Path=FrameHeight, Mode=OneWay}" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="2" />
+                <Canvas>
 
-            </Canvas>
+                    <Rectangle x:Name="_frame" Width="{x:Bind Path=FrameWidth, Mode=OneWay}" Height="{x:Bind Path=FrameHeight, Mode=OneWay}" Fill="White" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="2" />
 
-            <Canvas x:Name="_container">
+                </Canvas>
 
-                <Ellipse Stroke="BlueViolet" Fill="Violet" Width="80" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
-                <Ellipse Stroke="DarkOrange" Fill="Orange" Width="30" Height="50" Canvas.Left="1500" Canvas.Top="200"/>
-                <Ellipse Stroke="DeepPink" Fill="Pink" Width="120" Height="60" Canvas.Left="1200" Canvas.Top="800"/>
-                <Ellipse Stroke="Coral" Fill="DarkKhaki" Width="30" Height="30" Canvas.Left="1800" Canvas.Top="500"/>
-                <Ellipse Stroke="Cyan" Fill="DarkCyan" Width="60" Height="100" Canvas.Left="700" Canvas.Top="700"/>
+                <Canvas x:Name="_container">
 
-            </Canvas>
+                    <Ellipse Stroke="BlueViolet" Fill="Violet" Width="80" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
+                    <Ellipse Stroke="DarkOrange" Fill="Orange" Width="30" Height="50" Canvas.Left="1500" Canvas.Top="200"/>
+                    <Ellipse Stroke="DeepPink" Fill="Pink" Width="120" Height="60" Canvas.Left="1200" Canvas.Top="800"/>
+                    <Ellipse Stroke="Coral" Fill="DarkKhaki" Width="30" Height="30" Canvas.Left="1800" Canvas.Top="500"/>
+                    <Ellipse Stroke="Cyan" Fill="DarkCyan" Width="60" Height="100" Canvas.Left="700" Canvas.Top="700"/>
 
-            <Canvas x:Name="_HUD">
-
-                <Rectangle x:Name="_frameBorder" Width="{x:Bind Path=FrameWidth, Mode=OneWay}" Height="{x:Bind Path=FrameHeight, Mode=OneWay}" Stroke="Black" Fill="Transparent" HorizontalAlignment="Center" VerticalAlignment="Center" StrokeThickness="1" />
-
-                <local:WFTitleBox x:Name="_titleBox" Visibility="Collapsed" />
-
-                <local:WFActionTip x:Name="_actionTip" Visibility="Collapsed" />
+                </Canvas>
 
             </Canvas>
+
+        </ScrollViewer>
+
+        <Canvas x:Name="_HUD" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+            
+            <local:WFTitleBox x:Name="_titleBox" Visibility="Collapsed" />
+
+            <local:WFActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
         </Canvas>
 
-    </ScrollViewer>
+    </Grid>
 
 </UserControl>

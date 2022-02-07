@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Input;
+using Windows.UI.Xaml.Input;
 
 namespace WireFrame.Source.States
 {
@@ -53,13 +54,13 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public void HandleInput (PointerState pointerState, PointerPoint pointer)
+        public void HandleInput (PointerState pointerState, PointerRoutedEventArgs e)
         {
             bool handle = false;
 
             if(this.activeState != null)
             {
-                handle = this.activeState.fsm.HandleInput(this.activeState.args, pointerState, pointer);
+                handle = this.activeState.fsm.HandleInput(this.activeState.args, pointerState, e);
                 if(!handle)
                 {
                     this.activeState = null;
@@ -69,7 +70,7 @@ namespace WireFrame.Source.States
             {
                 foreach (State state in this.activeStates)
                 {
-                    handle = state.fsm.HandleInput(state.args, pointerState, pointer);
+                    handle = state.fsm.HandleInput(state.args, pointerState, e);
                     if (handle)
                     {
                         this.activeState = state;

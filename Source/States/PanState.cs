@@ -8,6 +8,7 @@ using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 
 namespace WireFrame.Source.States
 {
@@ -23,8 +24,7 @@ namespace WireFrame.Source.States
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
-            // _scrollViewer
-            if (objects != null && objects.Count > 0 && (objects[0] is ScrollViewer))
+            if (objects != null && objects.Count == 3 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas))
             {
                 return true;
             }
@@ -32,12 +32,18 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerPoint pointer)
+        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
         {
             if (!ReferenceObjectsAccepted(objects))
             {
                 return false;
             }
+
+            Grid grid = objects[0] as Grid;
+            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
+            Canvas canvas = objects[2] as Canvas;
+
+            PointerPoint pointer = e.GetCurrentPoint(canvas);
 
             if (Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
@@ -47,7 +53,7 @@ namespace WireFrame.Source.States
                 }
                 else if (pointerState == PointerState.Moved && isTracking)
                 {
-                    PanScrollViewer(objects[0] as ScrollViewer, pointer.Position);
+                    PanScrollViewer(scrollViewer, pointer.Position);
                 }
                 else if (pointerState == PointerState.Released)
                 {
@@ -74,8 +80,7 @@ namespace WireFrame.Source.States
             double x = scrollViewer.HorizontalOffset + this.clickedPosition.X - pointerPos.X;
             double y = scrollViewer.VerticalOffset + this.clickedPosition.Y - pointerPos.Y;
 
-            scrollViewer.ChangeView(x, y, null, false);
-            scrollViewer.UpdateLayout();
+            scrollViewer.ChangeView(x, y, null, true);
         }
 
         private void EndPanning()

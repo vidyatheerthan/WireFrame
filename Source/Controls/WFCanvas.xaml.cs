@@ -18,7 +18,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Source.States;
-using Point = Windows.Foundation.Point;
+using Size = Windows.Foundation.Size;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -120,10 +120,10 @@ namespace WireFrame
             this.InitializeComponent();
 
             // --
-            StateExecutor.State panState = new StateExecutor.State(new PanState(), new List<object>() { _scrollViewer });
-            StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _scrollViewer, _container, _titleBox });
-            StateExecutor.State drawEllipseState = new StateExecutor.State(new DrawEllipseState(), new List<object>() { _container, _actionTip });
-            StateExecutor.State drawRectangleState = new StateExecutor.State(new DrawRectangleState(), new List<object>() { _container, _actionTip });
+            StateExecutor.State panState = new StateExecutor.State(new PanState(), new List<object>() { _grid, _scrollViewer, _canvas });
+            StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _titleBox });
+            StateExecutor.State drawEllipseState = new StateExecutor.State(new DrawEllipseState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
+            StateExecutor.State drawRectangleState = new StateExecutor.State(new DrawRectangleState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
             var stateGroups = new Dictionary<StateExecutor.StateGroup, List<StateExecutor.State>>();
             stateGroups.Add(StateExecutor.StateGroup.HighLight_Pan, new List<StateExecutor.State>() { highlightState, panState });
@@ -131,15 +131,15 @@ namespace WireFrame
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<StateExecutor.State>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawEllipse);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.HighLight_Pan);
 
             // --
             this.Loaded += OnLoaded;
 
             // --
-            this._canvas.PointerPressed += OnPointerPressedOnCanvas;
-            this._canvas.PointerMoved += OnPointerMovedOnCanvas;
-            this._canvas.PointerReleased += OnPointerReleasedOnCanvas;
+            this._grid.PointerPressed += OnPointerPressedOnGrid;
+            this._grid.PointerMoved += OnPointerMovedOnGrid;
+            this._grid.PointerReleased += OnPointerReleasedOnGrid;
         }
 
 
@@ -179,11 +179,8 @@ namespace WireFrame
             double frameX = (CanvasWidth - FrameWidth) * 0.5;
             double frameY = (CanvasHeight - FrameHeight) * 0.5;
 
-            Canvas.SetLeft(_frameBackground, frameX);
-            Canvas.SetTop(_frameBackground, frameY);
-
-            Canvas.SetLeft(_frameBorder, frameX);
-            Canvas.SetTop(_frameBorder, frameY);
+            Canvas.SetLeft(_frame, frameX);
+            Canvas.SetTop(_frame, frameY);
 
             //-- 
 
@@ -191,25 +188,19 @@ namespace WireFrame
             this._scrollViewer.ChangeView(0, 0, (float)this.profile.Zoom, true);
         }
 
-        private void OnPointerPressedOnCanvas(object sender, PointerRoutedEventArgs e)
+        private void OnPointerPressedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            var pointer = e.GetCurrentPoint(_canvas);
-
-            this.stateExecutor.HandleInput(PointerState.Pressed, pointer);
+            this.stateExecutor.HandleInput(PointerState.Pressed, e);
         }
 
-        private void OnPointerMovedOnCanvas(object sender, PointerRoutedEventArgs e)
+        private void OnPointerMovedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            var pointer = e.GetCurrentPoint(_canvas);
-
-            this.stateExecutor.HandleInput(PointerState.Moved, pointer);
+            this.stateExecutor.HandleInput(PointerState.Moved, e);
         }
 
-        private void OnPointerReleasedOnCanvas(object sender, PointerRoutedEventArgs e)
+        private void OnPointerReleasedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            var pointer = e.GetCurrentPoint(_canvas);
-
-            this.stateExecutor.HandleInput(PointerState.Released, pointer);
+            this.stateExecutor.HandleInput(PointerState.Released, e);
         }
     }
 }
