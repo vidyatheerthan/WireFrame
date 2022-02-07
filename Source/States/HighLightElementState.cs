@@ -16,7 +16,8 @@ namespace WireFrame.Source.States
 {
     class HighLightElementState : FiniteStateMachine
     {
-        private FrameworkElement activeElement = null;
+        private FrameworkElement elementUnderCursor = null;
+        private FrameworkElement elementSelected = null;
 
         public bool ReferenceObjectsAccepted(List<object> objects)
         {
@@ -58,6 +59,7 @@ namespace WireFrame.Source.States
             else if (pointerState == PointerState.Moved)
             {
                 HighlightElement(scrollViewer, container, pointer.Position);
+                UpdateHighLightBox(grid, scrollViewer, titleBox);
             }
 
             return false;
@@ -76,19 +78,29 @@ namespace WireFrame.Source.States
             var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
             {
-                var element = elements.First() as FrameworkElement;
+                this.elementSelected = elements.First() as FrameworkElement;
+            }
+            else
+            {
+                this.elementSelected = null;
+            }
+        }
+
+        private void UpdateHighLightBox(Grid grid, ScrollViewer scrollViewer, WFTitleBox titleBox) { 
+            if(this.elementSelected != null) 
+            { 
                 titleBox.Visibility = Visibility.Visible;
 
-                var transform = element.TransformToVisual(grid);
+                var transform = this.elementSelected.TransformToVisual(grid);
                 var ePoint = transform.TransformPoint(new Point(0, 0));
 
                 Canvas.SetLeft(titleBox, ePoint.X);
                 Canvas.SetTop(titleBox, ePoint.Y);
 
-                titleBox.Width = element.ActualWidth * scrollViewer.ZoomFactor;
-                titleBox.Height = element.ActualHeight * scrollViewer.ZoomFactor;
+                titleBox.Width = this.elementSelected.ActualWidth * scrollViewer.ZoomFactor;
+                titleBox.Height = this.elementSelected.ActualHeight * scrollViewer.ZoomFactor;
 
-                titleBox.SetTitle(element.GetType().Name);
+                titleBox.SetTitle(this.elementSelected.GetType().Name);
             }
             else
             {
@@ -96,17 +108,18 @@ namespace WireFrame.Source.States
             }
         }
 
-        private void HighlightElement(ScrollViewer scrollViewer, Panel container, Point position)
+        private void HighlightElement(ScrollViewer scrollViewer, Canvas container, Point position)
         {
             var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
             {
-                this.activeElement = elements.First() as FrameworkElement;
-                HighlightShape(this.activeElement, true);
+                this.elementUnderCursor = elements.First() as FrameworkElement;
+                HighlightShape(this.elementUnderCursor, true);
             }
             else
             {
-                HighlightShape(this.activeElement, false);
+                HighlightShape(this.elementUnderCursor, false);
+                this.elementUnderCursor = null;
             }
         }
 
