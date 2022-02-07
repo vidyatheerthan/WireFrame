@@ -61,10 +61,26 @@ namespace WireFrame.Source.States
                 else if (pointerState == PointerState.Moved)
                 {
                     HighlightElement(scrollViewer, container, pointer.Position);
-                    UpdateHighLightBox(grid, scrollViewer, titleBox);
                 }
             }
             return false;
+        }
+
+        public void HandleZoom(List<object> objects)
+        {
+            if (!ReferenceObjectsAccepted(objects))
+            {
+                return;
+            }
+
+            Grid grid = objects[0] as Grid;
+            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
+            Canvas canvas = objects[2] as Canvas;
+            Canvas container = objects[3] as Canvas;
+            Canvas hud = objects[4] as Canvas;
+            WFTitleBox titleBox = objects[5] as WFTitleBox;
+
+            UpdateHighLightBox(grid, scrollViewer, titleBox);
         }
 
         private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
@@ -86,6 +102,8 @@ namespace WireFrame.Source.States
             {
                 this.elementSelected = null;
             }
+
+            UpdateHighLightBox(grid, scrollViewer, titleBox);
         }
 
         private void UpdateHighLightBox(Grid grid, ScrollViewer scrollViewer, WFTitleBox titleBox) { 

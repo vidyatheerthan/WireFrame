@@ -140,6 +140,9 @@ namespace WireFrame
             this._grid.PointerPressed += OnPointerPressedOnGrid;
             this._grid.PointerMoved += OnPointerMovedOnGrid;
             this._grid.PointerReleased += OnPointerReleasedOnGrid;
+
+            // --
+            this._scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, OnScrollViewerZoomFactorChanged);
         }
 
 
@@ -201,6 +204,11 @@ namespace WireFrame
         private void OnPointerReleasedOnGrid(object sender, PointerRoutedEventArgs e)
         {
             this.stateExecutor.HandleInput(PointerState.Released, e);
+        }
+
+        private void OnScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)
+        {
+            this.stateExecutor.HandleZoom();
         }
     }
 }

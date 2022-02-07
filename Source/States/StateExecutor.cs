@@ -78,7 +78,14 @@ namespace WireFrame.Source.States
                     }
                 }
             }
-            
+        }
+
+        public void HandleZoom()
+        {
+            foreach (State state in this.activeStates)
+            {
+                state.fsm.HandleZoom(state.args);
+            }
         }
     }
 }

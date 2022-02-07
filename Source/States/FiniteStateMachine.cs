@@ -15,5 +15,6 @@ namespace WireFrame.Source.States
     {
         bool ReferenceObjectsAccepted(List<object> objects);
         bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e);
+        void HandleZoom(List<object> objects);
     }
 }

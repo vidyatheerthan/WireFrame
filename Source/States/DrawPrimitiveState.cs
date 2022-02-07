@@ -97,5 +97,9 @@ namespace WireFrame.Source.States
         protected abstract FrameworkElement AddNewPrimitive(Canvas container, double left, double top, double width, double height);
 
         protected abstract void ResizePrimitive(FrameworkElement element, double x, double y);
+
+        public void HandleZoom(List<object> objects)
+        {
+        }
     }
 }

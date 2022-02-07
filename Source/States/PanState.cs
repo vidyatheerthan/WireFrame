@@ -68,6 +68,10 @@ namespace WireFrame.Source.States
             return this.isTracking;
         }
 
+        public void HandleZoom(List<object> objects)
+        {
+        }
+
         private void StartPanning(Point pos)
         {
             this.clickedPosition = pos;
