@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Source.States
 {
-    class HighLightElementState : FiniteStateMachine
+    class HighLightElementState : IFiniteStateMachine
     {
         private FrameworkElement elementUnderCursor = null;
         private FrameworkElement elementSelected = null;
@@ -28,7 +28,7 @@ namespace WireFrame.Source.States
                 (objects[2] is Canvas) &&
                 (objects[3] is Canvas) &&
                 (objects[4] is Canvas) &&
-                (objects[5] is WFTitleBox))
+                (objects[5] is IElementSelector))
             {
                 return true;
             }
@@ -48,7 +48,7 @@ namespace WireFrame.Source.States
             Canvas canvas = objects[2] as Canvas;
             Canvas container = objects[3] as Canvas;
             Canvas hud = objects[4] as Canvas;
-            WFTitleBox titleBox = objects[5] as WFTitleBox;
+            IElementSelector selector = objects[5] as IElementSelector;
 
             PointerPoint pointer = e.GetCurrentPoint(canvas);
 
@@ -56,7 +56,7 @@ namespace WireFrame.Source.States
             {
                 if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
                 {
-                    DrawHighLightBox(grid, scrollViewer, container, titleBox, pointer.Position);
+                    DrawHighLightBox(grid, scrollViewer, container, selector, pointer.Position);
                 }
                 else if (pointerState == PointerState.Moved)
                 {
@@ -78,9 +78,9 @@ namespace WireFrame.Source.States
             Canvas canvas = objects[2] as Canvas;
             Canvas container = objects[3] as Canvas;
             Canvas hud = objects[4] as Canvas;
-            WFTitleBox titleBox = objects[5] as WFTitleBox;
+            IElementSelector selector = objects[5] as IElementSelector;
 
-            UpdateHighLightBox(grid, scrollViewer, titleBox);
+            UpdateHighLightBox(grid, scrollViewer, selector);
         }
 
         private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
@@ -91,7 +91,7 @@ namespace WireFrame.Source.States
             return elements;
         }
 
-        private void DrawHighLightBox(Grid grid, ScrollViewer scrollViewer, Canvas container, WFTitleBox titleBox, Point position)
+        private void DrawHighLightBox(Grid grid, ScrollViewer scrollViewer, Canvas container, IElementSelector selector, Point position)
         {
             var elements = GetElementsUnderPointer(scrollViewer, container, position);
             if (elements != null && elements.Count() > 0)
@@ -103,20 +103,20 @@ namespace WireFrame.Source.States
                 this.elementSelected = null;
             }
 
-            UpdateHighLightBox(grid, scrollViewer, titleBox);
+            UpdateHighLightBox(grid, scrollViewer, selector);
         }
 
-        private void UpdateHighLightBox(Grid grid, ScrollViewer scrollViewer, WFTitleBox titleBox) { 
+        private void UpdateHighLightBox(Grid grid, ScrollViewer scrollViewer, IElementSelector selector) { 
             if(this.elementSelected != null) 
-            { 
-                titleBox.Visibility = Visibility.Visible;
+            {
+                selector.Show(true);
 
-                titleBox.SetTrackingElement(this.elementSelected, grid, scrollViewer.ZoomFactor);
-                titleBox.SetTitle(this.elementSelected.GetType().Name);
+                selector.SetSelectedElement(this.elementSelected, grid, scrollViewer.ZoomFactor);
+                //selector.SetTitle(this.elementSelected.GetType().Name);
             }
             else
             {
-                titleBox.Visibility = Visibility.Collapsed;
+                selector.Show(false);
             }
         }
 

@@ -12,10 +12,10 @@ namespace WireFrame.Source.States
     {
         public class State
         {
-            public FiniteStateMachine fsm;
+            public IFiniteStateMachine fsm;
             public List<object> args;
 
-            public State(FiniteStateMachine fsm, List<object> args)
+            public State(IFiniteStateMachine fsm, List<object> args)
             {
                 this.fsm = fsm;
                 this.args = args;

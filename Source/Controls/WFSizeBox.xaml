@@ -11,8 +11,8 @@
 
     <Canvas x:Name="_canvas">
 
-        <Rectangle x:Name="_box" Width="100" Height="100" Stroke="#FF011B8D" Fill="Transparent" />
-        <Rectangle x:Name="_hit_box" Canvas.Left="-5" Canvas.Top="-5" Width="110" Height="110" Stroke="Red" Fill="Transparent" StrokeThickness="10" />
+        <Rectangle x:Name="_box" Width="100" Height="100" Stroke="#FF011B8D" StrokeThickness="1" Fill="Transparent" />
+        <Rectangle x:Name="_hit_box" Canvas.Left="-5" Canvas.Top="-5" Width="110" Height="110" Stroke="#7FFF0000" StrokeThickness="10" Fill="Transparent" />
 
         <Ellipse x:Name="_top_left_circle" Canvas.Left="-5" Canvas.Top="-5" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
         <Ellipse x:Name="_top_right_circle" Canvas.Left="95" Canvas.Top="-5" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>

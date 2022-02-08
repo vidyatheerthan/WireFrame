@@ -17,14 +17,14 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame
 {
-    public sealed partial class WFTitleBox : UserControl
+    public sealed partial class WFTitleBox : UserControl, IElementSelector
     {
         public WFTitleBox()
         {
             this.InitializeComponent();
         }
 
-        public void SetTrackingElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
         {
             var transform = element.TransformToVisual(parent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
@@ -55,6 +55,11 @@ namespace WireFrame
         public void SetTitle(string title)
         {
             _textBlock.Text = title;
+        }
+
+        public void Show(bool show)
+        {
+            Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
     }
 }

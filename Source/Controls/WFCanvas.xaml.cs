@@ -121,7 +121,7 @@ namespace WireFrame
 
             // --
             StateExecutor.State panState = new StateExecutor.State(new PanState(), new List<object>() { _grid, _scrollViewer, _canvas });
-            StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _titleBox });
+            StateExecutor.State highlightState = new StateExecutor.State(new HighLightElementState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _sizeBox });
             StateExecutor.State drawEllipseState = new StateExecutor.State(new DrawEllipseState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             StateExecutor.State drawRectangleState = new StateExecutor.State(new DrawRectangleState(), new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 

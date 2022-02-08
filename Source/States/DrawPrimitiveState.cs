@@ -14,7 +14,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Source.States
 {
-    abstract class DrawPrimitiveState : FiniteStateMachine
+    abstract class DrawPrimitiveState : IFiniteStateMachine
     {
         private FrameworkElement activeElement = null;
         private bool isTracking = false;

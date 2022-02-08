@@ -41,6 +41,8 @@
 
             <local:WFActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
+            <local:WFSizeBox x:Name="_sizeBox" Visibility="Collapsed" />
+
         </Canvas>
 
     </Grid>

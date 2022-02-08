@@ -11,7 +11,7 @@ using Windows.UI.Xaml.Input;
 
 namespace WireFrame.Source.States
 {
-    interface FiniteStateMachine
+    interface IFiniteStateMachine
     {
         bool ReferenceObjectsAccepted(List<object> objects);
         bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e);

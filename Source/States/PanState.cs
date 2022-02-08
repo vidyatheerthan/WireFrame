@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Input;
 
 namespace WireFrame.Source.States
 {
-    class PanState : FiniteStateMachine
+    class PanState : IFiniteStateMachine
     {
         private bool isTracking = false;
 
