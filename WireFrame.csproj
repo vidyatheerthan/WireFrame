@@ -123,6 +123,9 @@
     <Compile Include="Source\Controls\WFActionTip.xaml.cs">
       <DependentUpon>WFActionTip.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Controls\WFSizeBox.xaml.cs">
+      <DependentUpon>WFSizeBox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Misc\Commons.cs" />
     <Compile Include="Source\Misc\PropertyStore.cs" />
     <Compile Include="Source\Pages\MainPage.xaml.cs">
@@ -165,6 +168,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Source\Controls\WFActionTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Controls\WFSizeBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
