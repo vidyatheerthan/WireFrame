@@ -5,6 +5,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
@@ -20,13 +21,27 @@ namespace WireFrame
 {
     public sealed partial class WFSizeBox : UserControl, IElementSelector
     {
-        const double STROKE_THICKNESS = 10.0;
+        const double HITBOX_SIZE = 10.0;
+
+        CoreCursor westEastCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
+        CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
+        CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
         public WFSizeBox()
         {
             this.InitializeComponent();
 
-            _hit_box.StrokeThickness = STROKE_THICKNESS;
+            _left_box.PointerEntered += OnPointerEnterLeftHitBox;
+            _left_box.PointerExited += OnPointerExitedLeftHitBox;
+
+            _right_box.PointerEntered += OnPointerEnterRightHitBox;
+            _right_box.PointerExited += OnPointerExitedRightHitBox;
+
+            _top_box.PointerEntered += OnPointerEnterTopHitBox;
+            _top_box.PointerExited += OnPointerExitedTopHitBox;
+
+            _bottom_box.PointerEntered += OnPointerEnterBottomHitBox;
+            _bottom_box.PointerExited += OnPointerExitedBottomHitBox;
         }
 
         public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
@@ -54,17 +69,32 @@ namespace WireFrame
 
         private void UpdateHitBox()
         {
-            const double HALF = STROKE_THICKNESS * 0.5;
+            const double HALF = HITBOX_SIZE * 0.5;
 
-            Canvas.SetLeft(_hit_box, Canvas.GetLeft(_box) - HALF);
-            Canvas.SetTop(_hit_box, Canvas.GetTop(_box) - HALF);
-            _hit_box.Width = _box.ActualWidth + STROKE_THICKNESS;
-            _hit_box.Height = _box.ActualHeight + STROKE_THICKNESS;
+            Canvas.SetLeft(_left_box, Canvas.GetLeft(_box) - HALF);
+            Canvas.SetTop(_left_box, Canvas.GetTop(_box));
+            _left_box.Width = HITBOX_SIZE;
+            _left_box.Height = _box.ActualHeight;
+
+            Canvas.SetLeft(_right_box, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
+            Canvas.SetTop(_right_box, Canvas.GetTop(_box));
+            _right_box.Width = HITBOX_SIZE;
+            _right_box.Height = _box.ActualHeight;
+
+            Canvas.SetLeft(_top_box, Canvas.GetLeft(_box));
+            Canvas.SetTop(_top_box, Canvas.GetTop(_box) - HALF);
+            _top_box.Width = _box.ActualWidth;
+            _top_box.Height = HITBOX_SIZE;
+
+            Canvas.SetLeft(_bottom_box, Canvas.GetLeft(_box));
+            Canvas.SetTop(_bottom_box, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            _bottom_box.Width = _box.ActualWidth;
+            _bottom_box.Height = HITBOX_SIZE;
         }
 
         private void UpdateCircles()
         {
-            const double HALF = STROKE_THICKNESS * 0.5;
+            const double HALF = HITBOX_SIZE * 0.5;
 
             // top left
             Canvas.SetLeft(_top_left_circle, Canvas.GetLeft(_box) - HALF);
@@ -81,6 +111,47 @@ namespace WireFrame
             // bottom right
             Canvas.SetLeft(_bottom_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
             Canvas.SetTop(_bottom_right_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+        }
+
+        //
+        private void OnPointerEnterLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+        }
+
+        private void OnPointerExitedLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+        //
+        private void OnPointerEnterRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+        }
+
+        private void OnPointerExitedRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+        //
+        private void OnPointerEnterTopHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+        }
+
+        private void OnPointerExitedTopHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+        //
+        private void OnPointerEnterBottomHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+        }
+
+        private void OnPointerExitedBottomHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
     }
 }

@@ -60,10 +60,6 @@ namespace WireFrame.Source.States
                     EndPanning();
                 }
             }
-            else
-            {
-                EndPanning();
-            }
 
             return this.isTracking;
         }
