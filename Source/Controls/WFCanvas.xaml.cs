@@ -168,8 +168,10 @@ namespace WireFrame
 
         private void UpdateCanvasAndFrameSize()
         {
+            float zoomFactor = 0.0f;
+
             var screenSize = Utility.GetScreenResolution();
-            var canvasSize = this.profile.GetCanvas(screenSize);
+            var canvasSize = this.profile.GetCanvas(screenSize, out zoomFactor);
 
             CanvasWidth = canvasSize.Width;
             CanvasHeight = canvasSize.Height;
@@ -187,8 +189,8 @@ namespace WireFrame
 
             //-- 
 
-            this._scrollViewer.MinZoomFactor = (float)(this.profile.Zoom * 0.9);
-            this._scrollViewer.ChangeView(0, 0, (float)this.profile.Zoom, true);
+            this._scrollViewer.MinZoomFactor = zoomFactor * 0.9f;
+            this._scrollViewer.ChangeView(0, 0, zoomFactor, true);
         }
 
         private void OnPointerPressedOnGrid(object sender, PointerRoutedEventArgs e)
