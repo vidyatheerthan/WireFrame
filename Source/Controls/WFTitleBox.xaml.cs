@@ -22,13 +22,24 @@ namespace WireFrame
         public WFTitleBox()
         {
             this.InitializeComponent();
-
-            this.SizeChanged += OnSizeChanged;
         }
 
-        private void OnSizeChanged(object sender, SizeChangedEventArgs e)
+        public void SetTrackingElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
         {
-            if(e.NewSize.Width < _textBorder.Width || e.NewSize.Height < _textBorder.Height)
+            var transform = element.TransformToVisual(parent);
+            var ePoint = transform.TransformPoint(new Point(0, 0));
+
+            Canvas.SetLeft(_box, ePoint.X);
+            Canvas.SetTop(_box, ePoint.Y);
+            _box.Width = element.ActualWidth * zoomFactor;
+            _box.Height = element.ActualHeight * zoomFactor;
+
+            UpdateTextBoxSize();
+        }
+
+        private void UpdateTextBoxSize()
+        {
+            if (_box.ActualWidth < _textBorder.Width || _box.ActualHeight < _textBorder.Height)
             {
                 _textBorder.Visibility = Visibility.Collapsed;
             }
@@ -36,14 +47,9 @@ namespace WireFrame
             {
                 _textBorder.Visibility = Visibility.Visible;
 
-                Canvas.SetLeft(_textBorder, 0);
-                Canvas.SetTop(_textBorder, Canvas.GetTop(_canvas) - _textBorder.Height);
+                Canvas.SetLeft(_textBorder, Canvas.GetLeft(_box));
+                Canvas.SetTop(_textBorder, Canvas.GetTop(_box) - _textBorder.Height);
             }
-
-            Canvas.SetLeft(_box, 0);
-            Canvas.SetTop(_box, 0);
-            _box.Width = e.NewSize.Width;
-            _box.Height = e.NewSize.Height;
         }
 
         public void SetTitle(string title)

@@ -111,15 +111,7 @@ namespace WireFrame.Source.States
             { 
                 titleBox.Visibility = Visibility.Visible;
 
-                var transform = this.elementSelected.TransformToVisual(grid);
-                var ePoint = transform.TransformPoint(new Point(0, 0));
-
-                Canvas.SetLeft(titleBox, ePoint.X);
-                Canvas.SetTop(titleBox, ePoint.Y);
-
-                titleBox.Width = this.elementSelected.ActualWidth * scrollViewer.ZoomFactor;
-                titleBox.Height = this.elementSelected.ActualHeight * scrollViewer.ZoomFactor;
-
+                titleBox.SetTrackingElement(this.elementSelected, grid, scrollViewer.ZoomFactor);
                 titleBox.SetTitle(this.elementSelected.GetType().Name);
             }
             else
