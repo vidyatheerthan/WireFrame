@@ -113,18 +113,26 @@ namespace WireFrame
             // top left
             Canvas.SetLeft(_top_left_circle, Canvas.GetLeft(_box) - HALF);
             Canvas.SetTop(_top_left_circle, Canvas.GetTop(_box) - HALF);
+            _top_left_circle.Width = HITBOX_SIZE;
+            _top_left_circle.Height = HITBOX_SIZE;
 
             // top right
             Canvas.SetLeft(_top_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
             Canvas.SetTop(_top_right_circle, Canvas.GetTop(_box) - HALF);
+            _top_right_circle.Width = HITBOX_SIZE;
+            _top_right_circle.Height = HITBOX_SIZE;
 
             // bottom left
             Canvas.SetLeft(_bottom_left_circle, Canvas.GetLeft(_box) - HALF);
             Canvas.SetTop(_bottom_left_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            _bottom_left_circle.Width = HITBOX_SIZE;
+            _bottom_left_circle.Height = HITBOX_SIZE;
 
             // bottom right
             Canvas.SetLeft(_bottom_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
             Canvas.SetTop(_bottom_right_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            _bottom_right_circle.Width = HITBOX_SIZE;
+            _bottom_right_circle.Height = HITBOX_SIZE;
         }
 
         //
