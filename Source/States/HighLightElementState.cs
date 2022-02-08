@@ -16,6 +16,25 @@ namespace WireFrame.Source.States
 {
     class HighLightElementState : IFiniteStateMachine
     {
+        private struct Data {
+            public Grid grid;
+            public ScrollViewer scrollViewer;
+            public Canvas canvas;
+            public Canvas container;
+            public Canvas hud;
+            public IElementSelector selector;
+
+            public Data(List<object> objects)
+            {
+                this.grid = objects[0] as Grid;
+                this.scrollViewer = objects[1] as ScrollViewer;
+                this.canvas = objects[2] as Canvas;
+                this.container = objects[3] as Canvas;
+                this.hud = objects[4] as Canvas;
+                this.selector = objects[5] as IElementSelector;
+            }
+        }
+
         private FrameworkElement elementUnderCursor = null;
         private FrameworkElement elementSelected = null;
 
@@ -43,24 +62,19 @@ namespace WireFrame.Source.States
                 return false;
             }
 
-            Grid grid = objects[0] as Grid;
-            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
-            Canvas canvas = objects[2] as Canvas;
-            Canvas container = objects[3] as Canvas;
-            Canvas hud = objects[4] as Canvas;
-            IElementSelector selector = objects[5] as IElementSelector;
+            Data data = new Data(objects);
 
-            PointerPoint pointer = e.GetCurrentPoint(canvas);
+            PointerPoint pointer = e.GetCurrentPoint(data.canvas);
 
             if (!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
                 if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
                 {
-                    DrawHighLightBox(grid, scrollViewer, container, selector, pointer.Position);
+                    DrawHighLightBox(data.grid, data.scrollViewer, data.container, data.selector, pointer.Position);
                 }
                 else if (pointerState == PointerState.Moved)
                 {
-                    HighlightElement(scrollViewer, container, pointer.Position);
+                    HighlightElement(data.scrollViewer, data.container, pointer.Position);
                 }
             }
             return false;
@@ -73,14 +87,9 @@ namespace WireFrame.Source.States
                 return;
             }
 
-            Grid grid = objects[0] as Grid;
-            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
-            Canvas canvas = objects[2] as Canvas;
-            Canvas container = objects[3] as Canvas;
-            Canvas hud = objects[4] as Canvas;
-            IElementSelector selector = objects[5] as IElementSelector;
+            Data data = new Data(objects);
 
-            UpdateHighLightBox(grid, scrollViewer, selector);
+            UpdateHighLightBox(data.grid, data.scrollViewer, data.selector);
         }
 
         private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
@@ -142,6 +151,21 @@ namespace WireFrame.Source.States
                 var shape = element as Shape;
                 shape.StrokeThickness = highlight ? 3.0 : 1.0;
                 shape.StrokeDashArray = highlight ? new DoubleCollection() { 1.0, 2.0, 0.0 } : null;
+            }
+        }
+
+        public void ActiveState(List<object> objects, IFiniteStateMachine state)
+        {
+            if (state is PanState)
+            {
+                if (!ReferenceObjectsAccepted(objects))
+                {
+                    return;
+                }
+
+                Data data = new Data(objects);
+
+                UpdateHighLightBox(data.grid, data.scrollViewer, data.selector);
             }
         }
     }

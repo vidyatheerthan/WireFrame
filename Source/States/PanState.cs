@@ -68,6 +68,10 @@ namespace WireFrame.Source.States
         {
         }
 
+        public void ActiveState(List<object> objects, IFiniteStateMachine state)
+        {
+        }
+
         private void StartPanning(Point pos)
         {
             this.clickedPosition = pos;

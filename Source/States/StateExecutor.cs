@@ -60,10 +60,20 @@ namespace WireFrame.Source.States
 
             if(this.activeState != null)
             {
-                handle = this.activeState.fsm.HandleInput(this.activeState.args, pointerState, e);
-                if(!handle)
+                foreach (State state in this.activeStates)
                 {
-                    this.activeState = null;
+                    if (state == this.activeState)
+                    {
+                        handle = this.activeState.fsm.HandleInput(this.activeState.args, pointerState, e);
+                        if (!handle)
+                        {
+                            this.activeState = null;
+                        }
+                    }
+                    else
+                    {
+                        state.fsm.ActiveState(state.args, this.activeState.fsm);
+                    }
                 }
             }
             else if(this.activeStates != null)
