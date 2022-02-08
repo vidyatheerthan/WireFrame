@@ -25,6 +25,8 @@ namespace WireFrame
 
         CoreCursor westEastCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
         CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
+        CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
+        CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
         CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
         public WFSizeBox()
@@ -42,6 +44,18 @@ namespace WireFrame
 
             _bottom_box.PointerEntered += OnPointerEnterBottomHitBox;
             _bottom_box.PointerExited += OnPointerExitedBottomHitBox;
+
+            _top_left_circle.PointerEntered += OnPointerEnterTopLeftHitBox;
+            _top_left_circle.PointerExited += OnPointerExitedTopLeftHitBox;
+
+            _top_right_circle.PointerEntered += OnPointerEnterTopRightHitBox;
+            _top_right_circle.PointerExited += OnPointerExitedTopRightHitBox;
+
+            _bottom_left_circle.PointerEntered += OnPointerEnterBottomLeftHitBox;
+            _bottom_left_circle.PointerExited += OnPointerExitedBottomLeftHitBox;
+
+            _bottom_right_circle.PointerEntered += OnPointerEnterBottomRightHitBox;
+            _bottom_right_circle.PointerExited += OnPointerExitedBottomRightHitBox;
         }
 
         public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
@@ -123,6 +137,7 @@ namespace WireFrame
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+
         //
         private void OnPointerEnterRightHitBox(object sender, PointerRoutedEventArgs e)
         {
@@ -133,6 +148,7 @@ namespace WireFrame
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+
         //
         private void OnPointerEnterTopHitBox(object sender, PointerRoutedEventArgs e)
         {
@@ -143,6 +159,7 @@ namespace WireFrame
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+
         //
         private void OnPointerEnterBottomHitBox(object sender, PointerRoutedEventArgs e)
         {
@@ -150,6 +167,50 @@ namespace WireFrame
         }
 
         private void OnPointerExitedBottomHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+        }
+
+        private void OnPointerExitedTopLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+        }
+
+        private void OnPointerExitedTopRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+        }
+
+        private void OnPointerExitedBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+        }
+
+        private void OnPointerExitedBottomRightHitBox(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
