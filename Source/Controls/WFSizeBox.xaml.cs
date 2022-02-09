@@ -23,11 +23,19 @@ namespace WireFrame
     {
         const double HITBOX_SIZE = 10.0;
 
-        CoreCursor westEastCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
-        CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
-        CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
-        CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
-        CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+        private CoreCursor westEastCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
+        private CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
+        private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
+        private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
+        private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+
+        private FrameworkElement selectedElement;
+
+        // --
+
+        public FrameworkElement SelectedElement { get => this.selectedElement; }
+
+        // --
 
         public WFSizeBox()
         {
@@ -60,6 +68,8 @@ namespace WireFrame
 
         public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
         {
+            this.selectedElement = element;
+
             UpdateBox(element, parent, zoomFactor);
             UpdateHitBox();
             UpdateCircles();
