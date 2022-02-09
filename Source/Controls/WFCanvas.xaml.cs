@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using Windows.System;
 using Size = Windows.Foundation.Size;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -121,7 +122,7 @@ namespace WireFrame
             // --
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
             IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _sizeBox });
-            IFiniteStateMachine focusState = new FocusState(Windows.System.VirtualKey.F);
+            IFiniteStateMachine focusState = new FocusState(new List<object>() { _sizeBox, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 

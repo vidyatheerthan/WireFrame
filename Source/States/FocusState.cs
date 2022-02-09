@@ -9,16 +9,36 @@ using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
+using Windows.System;
 
 namespace WireFrame
 {
     class FocusState : IFiniteStateMachine
     {
-        private Windows.System.VirtualKey key;
-
-        public FocusState(Windows.System.VirtualKey key)
+        private class Data
         {
-            this.key = key;
+            public WFSizeBox sizeBox;
+            public VirtualKey key;
+            
+            public Data(WFSizeBox sizeBox, VirtualKey key)
+            {
+                this.sizeBox = sizeBox;
+                this.key = key;
+            }
+        }
+
+        // --
+
+        private Data data = null;
+
+        // --
+
+        public FocusState(List<object> objects)
+        {
+            if (objects != null && objects.Count == 2 && (objects[0] is WFSizeBox) && (objects[1].GetType().IsEnum))
+            {
+                this.data = new Data(objects[0] as WFSizeBox, (VirtualKey)objects[1]);
+            }
         }
 
         public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
@@ -28,11 +48,15 @@ namespace WireFrame
 
         public bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args)
         {
-            Windows.System.VirtualKey pressedKey = args.VirtualKey;
-
-            if(pressedKey == this.key)
+            if (this.data == null)
             {
-                
+                return false;
+            }
+
+            if(args.VirtualKey == this.data.key && this.data.sizeBox.SelectedElement != null)
+            {
+                double width = this.data.sizeBox.SelectedElement.Width;
+                double height = this.data.sizeBox.SelectedElement.Height;
             }
 
             return false;
