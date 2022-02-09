@@ -11,8 +11,9 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using Windows.UI.Core;
 
-namespace WireFrame.Source.States
+namespace WireFrame
 {
     class DrawEllipseState : IFiniteStateMachine
     {
@@ -92,7 +93,7 @@ namespace WireFrame.Source.States
             return this.isTracking;
         }
 
-        public bool HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args)
+        public bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args)
         {
             return false;
         }

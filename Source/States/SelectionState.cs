@@ -12,7 +12,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace WireFrame.Source.States
+namespace WireFrame
 {
     class SelectionState : IFiniteStateMachine
     {
@@ -81,7 +81,7 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public bool HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args)
+        public bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args)
         {
             return false;
         }

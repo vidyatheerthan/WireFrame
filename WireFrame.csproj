@@ -142,6 +142,7 @@
     </Compile>
     <Compile Include="Source\States\DrawEllipseState.cs" />
     <Compile Include="Source\States\DrawRectangleState.cs" />
+    <Compile Include="Source\States\FocusState.cs" />
     <Compile Include="Source\States\IFiniteStateMachine.cs" />
     <Compile Include="Source\States\SelectionState.cs" />
     <Compile Include="Source\States\PanState.cs" />

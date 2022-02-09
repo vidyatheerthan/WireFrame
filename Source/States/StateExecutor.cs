@@ -5,14 +5,15 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.UI.Input;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Core;
 
-namespace WireFrame.Source.States
+namespace WireFrame
 {
     class StateExecutor
     {
         public enum StateGroup
         {
-            Selection_Pan,
+            Selection_Pan_Focus,
             DrawEllipse,
             DrawRectangle
         }
@@ -83,7 +84,7 @@ namespace WireFrame.Source.States
             HandleInput((IFiniteStateMachine state) => { return state.HandleInput(pointerState, e); });
         }
 
-        public void HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args)
+        public void HandleInput(KeyBoardState keyboardState, KeyEventArgs args)
         {
             HandleInput((IFiniteStateMachine state) => { return state.HandleInput(keyboardState, args); });
         }

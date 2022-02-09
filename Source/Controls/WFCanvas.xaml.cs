@@ -17,7 +17,6 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
-using WireFrame.Source.States;
 using Size = Windows.Foundation.Size;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -122,16 +121,17 @@ namespace WireFrame
             // --
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
             IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _sizeBox });
+            IFiniteStateMachine focusState = new FocusState(Windows.System.VirtualKey.F);
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
             var stateGroups = new Dictionary<StateExecutor.StateGroup, List<IFiniteStateMachine>>();
-            stateGroups.Add(StateExecutor.StateGroup.Selection_Pan, new List<IFiniteStateMachine>() { selectionState, panState });
+            stateGroups.Add(StateExecutor.StateGroup.Selection_Pan_Focus, new List<IFiniteStateMachine>() { selectionState, panState, focusState });
             stateGroups.Add(StateExecutor.StateGroup.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.Selection_Pan);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.Selection_Pan_Focus);
 
             // --
             this.Loaded += OnLoaded;
