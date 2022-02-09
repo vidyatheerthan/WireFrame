@@ -16,11 +16,35 @@ namespace WireFrame.Source.States
 {
     class DrawRectangleState : IFiniteStateMachine
     {
+        private class Data
+        {
+            public Grid grid;
+            public ScrollViewer scrollViewer;
+            public Canvas canvas;
+            public Canvas container;
+            public Canvas hud;
+            public WFActionTip actionTip;
+
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, WFActionTip actionTip)
+            {
+                this.grid = grid;
+                this.scrollViewer = scrollViewer;
+                this.canvas = canvas;
+                this.container = container;
+                this.hud = hud;
+                this.actionTip = actionTip;
+            }
+        }
+
+        // --
+
+        private Data data = null;
         private FrameworkElement activeElement = null;
         private bool isTracking = false;
 
+        // --
 
-        public bool ReferenceObjectsAccepted(List<object> objects)
+        public DrawRectangleState(List<object> objects)
         {
             if (objects != null &&
                 objects.Count == 6 &&
@@ -31,57 +55,48 @@ namespace WireFrame.Source.States
                 (objects[4] is Canvas) &&
                 (objects[5] is WFActionTip))
             {
-                return true;
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as WFActionTip);
             }
-
-            return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
+        public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
         {
-            if (!ReferenceObjectsAccepted(objects))
+            if (this.data == null)
             {
                 return false;
             }
 
-            Grid grid = objects[0] as Grid;
-            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
-            Canvas canvas = objects[2] as Canvas;
-            Canvas container = objects[3] as Canvas;
-            Canvas hud = objects[4] as Canvas;
-            WFActionTip actionTip = objects[5] as WFActionTip;
+            PointerPoint pointer = e.GetCurrentPoint(this.data.grid);
 
-            PointerPoint pointer = e.GetCurrentPoint(grid);
-
-            Point canvasPoint = e.GetCurrentPoint(canvas).Position;
-            Point hudPoint = e.GetCurrentPoint(hud).Position;
+            Point canvasPoint = e.GetCurrentPoint(this.data.canvas).Position;
+            Point hudPoint = e.GetCurrentPoint(this.data.hud).Position;
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                this.activeElement = AddNewPrimitive(container, canvasPoint.X, canvasPoint.Y, 1, 1);
-                ShowActionTip(actionTip, true, hudPoint.X, hudPoint.Y);
+                this.activeElement = AddNewPrimitive(this.data.container, canvasPoint.X, canvasPoint.Y, 1, 1);
+                ShowActionTip(this.data.actionTip, true, hudPoint.X, hudPoint.Y);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
                 ResizePrimitive(this.activeElement, canvasPoint.X, canvasPoint.Y);
-                UpdateActionTip(actionTip, hudPoint.X, hudPoint.Y);
+                UpdateActionTip(this.data.actionTip, hudPoint.X, hudPoint.Y);
             }
             else if (pointerState == PointerState.Released)
             {
                 this.activeElement = null;
                 this.isTracking = false;
-                ShowActionTip(actionTip, false, hudPoint.X, hudPoint.Y);
+                ShowActionTip(this.data.actionTip, false, hudPoint.X, hudPoint.Y);
             }
 
             return this.isTracking;
         }
 
-        public void HandleZoom(List<object> objects)
+        public void HandleZoom()
         {
         }
 
-        public void ActiveState(List<object> objects, IFiniteStateMachine state)
+        public void ActiveState(IFiniteStateMachine state)
         {
         }
 

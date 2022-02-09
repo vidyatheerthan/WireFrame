@@ -16,7 +16,7 @@ namespace WireFrame.Source.States
 {
     class SelectionState : IFiniteStateMachine
     {
-        private struct Data {
+        private class Data {
             public Grid grid;
             public ScrollViewer scrollViewer;
             public Canvas canvas;
@@ -24,21 +24,26 @@ namespace WireFrame.Source.States
             public Canvas hud;
             public IElementSelector selector;
 
-            public Data(List<object> objects)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, IElementSelector selector)
             {
-                this.grid = objects[0] as Grid;
-                this.scrollViewer = objects[1] as ScrollViewer;
-                this.canvas = objects[2] as Canvas;
-                this.container = objects[3] as Canvas;
-                this.hud = objects[4] as Canvas;
-                this.selector = objects[5] as IElementSelector;
+                this.grid = grid;
+                this.scrollViewer = scrollViewer;
+                this.canvas = canvas;
+                this.container = container;
+                this.hud = hud;
+                this.selector = selector;
             }
         }
 
+        // --
+
+        private Data data = null;
         private FrameworkElement elementUnderCursor = null;
         private FrameworkElement elementSelected = null;
 
-        public bool ReferenceObjectsAccepted(List<object> objects)
+        // --
+
+        public SelectionState(List<object> objects)
         {
             if (objects != null &&
                 objects.Count == 6 &&
@@ -49,20 +54,16 @@ namespace WireFrame.Source.States
                 (objects[4] is Canvas) &&
                 (objects[5] is IElementSelector))
             {
-                return true;
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as IElementSelector);
             }
-
-            return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
+        public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
         {
-            if (!ReferenceObjectsAccepted(objects))
+            if (this.data == null)
             {
                 return false;
             }
-
-            Data data = new Data(objects);
 
             PointerPoint pointer = e.GetCurrentPoint(data.canvas);
 
@@ -80,16 +81,27 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public void HandleZoom(List<object> objects)
+        public void HandleZoom()
         {
-            if (!ReferenceObjectsAccepted(objects))
+            if (this.data == null)
             {
                 return;
             }
 
-            Data data = new Data(objects);
-
             UpdateSelectorBox(data.grid, data.scrollViewer, data.selector);
+        }
+
+        public void ActiveState(IFiniteStateMachine state)
+        {
+            if (state is PanState)
+            {
+                if (this.data == null)
+                {
+                    return;
+                }
+
+                UpdateSelectorBox(data.grid, data.scrollViewer, data.selector);
+            }
         }
 
         private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
@@ -151,21 +163,6 @@ namespace WireFrame.Source.States
                 var shape = element as Shape;
                 shape.StrokeThickness = highlight ? 3.0 : 1.0;
                 shape.StrokeDashArray = highlight ? new DoubleCollection() { 1.0, 2.0, 0.0 } : null;
-            }
-        }
-
-        public void ActiveState(List<object> objects, IFiniteStateMachine state)
-        {
-            if (state is PanState)
-            {
-                if (!ReferenceObjectsAccepted(objects))
-                {
-                    return;
-                }
-
-                Data data = new Data(objects);
-
-                UpdateSelectorBox(data.grid, data.scrollViewer, data.selector);
             }
         }
     }

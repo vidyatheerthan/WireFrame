@@ -13,9 +13,8 @@ namespace WireFrame
 {
     interface IFiniteStateMachine
     {
-        bool ReferenceObjectsAccepted(List<object> objects);
-        bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e);
-        void HandleZoom(List<object> objects);
-        void ActiveState(List<object> objects, IFiniteStateMachine state);
+        bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e);
+        void HandleZoom();
+        void ActiveState(IFiniteStateMachine state);
     }
 }

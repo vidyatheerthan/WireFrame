@@ -10,35 +10,23 @@ namespace WireFrame.Source.States
 {
     class StateExecutor
     {
-        public class State
-        {
-            public IFiniteStateMachine fsm;
-            public List<object> args;
-
-            public State(IFiniteStateMachine fsm, List<object> args)
-            {
-                this.fsm = fsm;
-                this.args = args;
-            }
-        }
-
         public enum StateGroup
         {
-            HighLight_Pan,
+            Selection_Pan,
             DrawEllipse,
             DrawRectangle
         }
 
-        private Dictionary<StateGroup, List<State>> stateGroups;
-        private List<State> activeStates = null;
-        State activeState = null;
+        private Dictionary<StateGroup, List<IFiniteStateMachine>> stateGroups;
+        private List<IFiniteStateMachine> activeStates = null;
+        IFiniteStateMachine activeState = null;
 
-        public StateExecutor(List<State> states)
+        public StateExecutor(List<IFiniteStateMachine> states)
         {
             this.activeStates = states;
         }
 
-        public StateExecutor(Dictionary<StateGroup, List<State>> stateGroups)
+        public StateExecutor(Dictionary<StateGroup, List<IFiniteStateMachine>> stateGroups)
         {
             this.stateGroups = stateGroups;
         }
@@ -60,11 +48,11 @@ namespace WireFrame.Source.States
 
             if(this.activeState != null)
             {
-                foreach (State state in this.activeStates)
+                foreach (IFiniteStateMachine state in this.activeStates)
                 {
                     if (state == this.activeState)
                     {
-                        handle = this.activeState.fsm.HandleInput(this.activeState.args, pointerState, e);
+                        handle = this.activeState.HandleInput(pointerState, e);
                         if (!handle)
                         {
                             this.activeState = null;
@@ -72,15 +60,15 @@ namespace WireFrame.Source.States
                     }
                     else
                     {
-                        state.fsm.ActiveState(state.args, this.activeState.fsm);
+                        state.ActiveState(this.activeState);
                     }
                 }
             }
             else if(this.activeStates != null)
             {
-                foreach (State state in this.activeStates)
+                foreach (IFiniteStateMachine state in this.activeStates)
                 {
-                    handle = state.fsm.HandleInput(state.args, pointerState, e);
+                    handle = state.HandleInput(pointerState, e);
                     if (handle)
                     {
                         this.activeState = state;
@@ -92,9 +80,9 @@ namespace WireFrame.Source.States
 
         public void HandleZoom()
         {
-            foreach (State state in this.activeStates)
+            foreach (IFiniteStateMachine state in this.activeStates)
             {
-                state.fsm.HandleZoom(state.args);
+                state.HandleZoom();
             }
         }
     }

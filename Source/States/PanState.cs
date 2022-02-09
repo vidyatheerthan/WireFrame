@@ -14,36 +14,48 @@ namespace WireFrame.Source.States
 {
     class PanState : IFiniteStateMachine
     {
-        private bool isTracking = false;
+        private class Data
+        {
+            public Grid grid;
+            public ScrollViewer scrollViewer;
+            public Canvas canvas;
 
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas)
+            {
+                this.grid = grid;
+                this.scrollViewer = scrollViewer;
+                this.canvas = canvas;
+            }
+        }
+
+        // --
+
+        private Data data = null;
+
+        private bool isTracking = false;
         private Point clickedPosition;
 
         CoreCursor handCursor = new CoreCursor(CoreCursorType.Hand, 1);
         CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
+        // --
 
-        public bool ReferenceObjectsAccepted(List<object> objects)
+        public PanState(List<object> objects)
         {
             if (objects != null && objects.Count == 3 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas))
             {
-                return true;
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas);
             }
-
-            return false;
         }
 
-        public bool HandleInput(List<object> objects, PointerState pointerState, PointerRoutedEventArgs e)
+        public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
         {
-            if (!ReferenceObjectsAccepted(objects))
+            if (this.data == null)
             {
                 return false;
             }
 
-            Grid grid = objects[0] as Grid;
-            ScrollViewer scrollViewer = objects[1] as ScrollViewer;
-            Canvas canvas = objects[2] as Canvas;
-
-            PointerPoint pointer = e.GetCurrentPoint(canvas);
+            PointerPoint pointer = e.GetCurrentPoint(this.data.canvas);
 
             if (Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
@@ -53,7 +65,7 @@ namespace WireFrame.Source.States
                 }
                 else if (pointerState == PointerState.Moved && isTracking)
                 {
-                    PanScrollViewer(scrollViewer, pointer.Position);
+                    PanScrollViewer(this.data.scrollViewer, pointer.Position);
                 }
                 else if (pointerState == PointerState.Released)
                 {
@@ -64,11 +76,11 @@ namespace WireFrame.Source.States
             return this.isTracking;
         }
 
-        public void HandleZoom(List<object> objects)
+        public void HandleZoom()
         {
         }
 
-        public void ActiveState(List<object> objects, IFiniteStateMachine state)
+        public void ActiveState(IFiniteStateMachine state)
         {
         }
 
