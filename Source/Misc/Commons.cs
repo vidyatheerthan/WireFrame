@@ -12,4 +12,10 @@ namespace WireFrame
         Moved,
         Released
     }
+
+    enum KeyBoardState
+    {
+        KeyDown,
+        KeyUp
+    }
 }

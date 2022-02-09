@@ -14,6 +14,7 @@ namespace WireFrame
     interface IFiniteStateMachine
     {
         bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e);
+        bool HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args);
         void HandleZoom();
         void ActiveState(IFiniteStateMachine state);
     }

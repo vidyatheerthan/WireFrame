@@ -142,6 +142,9 @@ namespace WireFrame
             this._grid.PointerReleased += OnPointerReleasedOnGrid;
 
             // --
+            Window.Current.CoreWindow.KeyDown += OnKeyDown;
+
+            // --
             this._scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, OnScrollViewerZoomFactorChanged);
         }
 
@@ -206,6 +209,11 @@ namespace WireFrame
         private void OnPointerReleasedOnGrid(object sender, PointerRoutedEventArgs e)
         {
             this.stateExecutor.HandleInput(PointerState.Released, e);
+        }
+
+        private void OnKeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
+        {
+            this.stateExecutor.HandleInput(KeyBoardState.KeyDown, args);
         }
 
         private void OnScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)

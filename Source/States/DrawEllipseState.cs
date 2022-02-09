@@ -92,6 +92,11 @@ namespace WireFrame.Source.States
             return this.isTracking;
         }
 
+        public bool HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args)
+        {
+            return false;
+        }
+
         public void HandleZoom()
         {
         }

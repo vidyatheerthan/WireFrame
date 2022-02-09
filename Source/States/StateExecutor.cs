@@ -42,7 +42,7 @@ namespace WireFrame.Source.States
             return false;
         }
 
-        public void HandleInput (PointerState pointerState, PointerRoutedEventArgs e)
+        private void HandleInput (Func<IFiniteStateMachine, bool> func)
         {
             bool handle = false;
 
@@ -52,7 +52,7 @@ namespace WireFrame.Source.States
                 {
                     if (state == this.activeState)
                     {
-                        handle = this.activeState.HandleInput(pointerState, e);
+                        handle = func(this.activeState);
                         if (!handle)
                         {
                             this.activeState = null;
@@ -68,7 +68,7 @@ namespace WireFrame.Source.States
             {
                 foreach (IFiniteStateMachine state in this.activeStates)
                 {
-                    handle = state.HandleInput(pointerState, e);
+                    handle = func(state);
                     if (handle)
                     {
                         this.activeState = state;
@@ -76,6 +76,16 @@ namespace WireFrame.Source.States
                     }
                 }
             }
+        }
+
+        public void HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
+        {
+            HandleInput((IFiniteStateMachine state) => { return state.HandleInput(pointerState, e); });
+        }
+
+        public void HandleInput(KeyBoardState keyboardState, Windows.UI.Core.KeyEventArgs args)
+        {
+            HandleInput((IFiniteStateMachine state) => { return state.HandleInput(keyboardState, args); });
         }
 
         public void HandleZoom()
