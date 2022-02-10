@@ -11,6 +11,23 @@
 
     <Canvas x:Name="_canvas">
 
+        <Path x:Name="_path" Stroke="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Path.Data>
+                <GeometryGroup>
+                    <PathGeometry x:Name="_pathGeometry">
+                        <PathFigure x:Name="_pathFigure" StartPoint="100, 50">
+                            <ArcSegment x:Name="_arcSegment" IsLargeArc="True"
+                                        Point="0, 100"
+                                        Size="10, 10"
+                                        SweepDirection="Clockwise" />
+                        </PathFigure>
+                    </PathGeometry>
+                    <LineGeometry x:Name="_line1" StartPoint="150, 100" EndPoint="100, 100" />
+                    <LineGeometry x:Name="_line2" StartPoint="150, 100" EndPoint="200, 100" />
+                </GeometryGroup>
+            </Path.Data>
+        </Path>
+
     </Canvas>
     
 </UserControl>

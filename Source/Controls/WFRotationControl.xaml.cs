@@ -25,16 +25,13 @@ namespace WireFrame.Controls
         {
             this.InitializeComponent();
 
-            DrawArc(new Point(100, 100), 50.0, 30.0, 60.0, _canvas);
+            DrawArc(new Point(100, 100), 100.0, 0.0, Math.PI * 1.99);
         }
 
-        public void DrawArc(Point center, double radius, double start_angle, double end_angle, Canvas canvas)
+        public void DrawArc(Point center, double radius, double start_angle, double end_angle)
         {
-            Path arc_path = new Path();
-            arc_path.Stroke = new SolidColorBrush(Colors.Black);
-            arc_path.StrokeThickness = 2;
-            Canvas.SetLeft(arc_path, 0);
-            Canvas.SetTop(arc_path, 0);
+            Canvas.SetLeft(_path, 0);
+            Canvas.SetTop(_path, 0);
 
             start_angle = ((start_angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
             end_angle = ((end_angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
@@ -45,21 +42,19 @@ namespace WireFrame.Controls
                 start_angle = temp_angle;
             }
             double angle_diff = end_angle - start_angle;
-            PathGeometry pathGeometry = new PathGeometry();
-            PathFigure pathFigure = new PathFigure();
-            ArcSegment arcSegment = new ArcSegment();
-            arcSegment.IsLargeArc = angle_diff >= Math.PI;
+            _arcSegment.IsLargeArc = angle_diff >= Math.PI;
             //Set start of arc
-            pathFigure.StartPoint = new Point(center.X + radius * Math.Cos(start_angle), center.Y + radius * Math.Sin(start_angle));
+            _pathFigure.StartPoint = new Point(center.X + radius * Math.Cos(start_angle), center.Y + radius * Math.Sin(start_angle));
             //set end point of arc.
-            arcSegment.Point = new Point(center.X + radius * Math.Cos(end_angle), center.Y + radius * Math.Sin(end_angle));
-            arcSegment.Size = new Size(radius, radius);
-            arcSegment.SweepDirection = SweepDirection.Clockwise;
+            _arcSegment.Point = new Point(center.X + radius * Math.Cos(end_angle), center.Y + radius * Math.Sin(end_angle));
+            _arcSegment.Size = new Size(radius, radius);
+            _arcSegment.SweepDirection = SweepDirection.Clockwise;
 
-            pathFigure.Segments.Add(arcSegment);
-            pathGeometry.Figures.Add(pathFigure);
-            arc_path.Data = pathGeometry;
-            canvas.Children.Add(arc_path);
+            _line1.StartPoint = center;
+            _line1.EndPoint = _pathFigure.StartPoint;
+
+            _line2.StartPoint = center;
+            _line2.EndPoint = _arcSegment.Point;
         }
     }
 }
