@@ -41,28 +41,40 @@ namespace WireFrame.Controls
             Canvas.SetLeft(_path, 0);
             Canvas.SetTop(_path, 0);
 
-            start_angle = ((start_angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-            end_angle = ((end_angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
+            start_angle = SanitizeAngle(start_angle);
+            end_angle = SanitizeAngle(end_angle);
+
             if (end_angle < start_angle)
             {
                 double temp_angle = end_angle;
                 end_angle = start_angle;
                 start_angle = temp_angle;
             }
+
             double angle_diff = Math.Abs(end_angle - start_angle) ;
+
             _arcSegment.IsLargeArc = angle_diff >= Math.PI;
-            //Set start of arc
-            _pathFigure.StartPoint = new Point(center.X + radius * Math.Cos(start_angle), center.Y + radius * Math.Sin(start_angle));
-            //set end point of arc.
-            _arcSegment.Point = new Point(center.X + radius * Math.Cos(end_angle), center.Y + radius * Math.Sin(end_angle));
+            _arcSegment.Point = PolarToCartesian(end_angle, radius, center);
             _arcSegment.Size = new Size(radius, radius);
             _arcSegment.SweepDirection = SweepDirection.Clockwise;
+
+            _pathFigure.StartPoint = PolarToCartesian(start_angle, radius, center);
 
             _line1.StartPoint = center;
             _line1.EndPoint = _pathFigure.StartPoint;
 
             _line2.StartPoint = center;
             _line2.EndPoint = _arcSegment.Point;
+        }
+
+        public static Point PolarToCartesian(double angle, double radius, Point center)
+        {
+            return new Point((center.X + (radius * Math.Cos(angle))), (center.Y + (radius * Math.Sin(angle))));
+        }
+
+        private static Double SanitizeAngle(double angle)
+        {
+            return ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
         }
     }
 }
