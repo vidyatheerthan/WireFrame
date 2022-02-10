@@ -7,7 +7,7 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Shapes;
 
-namespace WireFrame
+namespace WireFrame.Misc
 {
     class PropertyStore
     {

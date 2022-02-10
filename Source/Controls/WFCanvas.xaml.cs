@@ -19,10 +19,13 @@ using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using Windows.System;
 using Size = Windows.Foundation.Size;
+using WireFrame.States;
+using WireFrame.Misc;
+using FocusState = WireFrame.States.FocusState;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace WireFrame
+namespace WireFrame.Controls
 {
     public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
     {
@@ -132,7 +135,7 @@ namespace WireFrame
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.Selection_Pan_Focus);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawEllipse);
 
             // --
             this.Loaded += OnLoaded;

@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 using Windows.UI.Input;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Core;
+using WireFrame.Misc;
 
-namespace WireFrame
+namespace WireFrame.States
 {
     class StateExecutor
     {

@@ -17,7 +17,7 @@ using Path = Windows.UI.Xaml.Shapes.Path;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace WireFrame
+namespace WireFrame.Controls
 {
     public sealed partial class WFRotationControl : UserControl
     {

@@ -119,7 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\CanvasProfile.cs" />
+    <Compile Include="Source\Misc\CanvasProfile.cs" />
     <Compile Include="Source\Controls\IElementSelector.cs" />
     <Compile Include="Source\Controls\WFActionTip.xaml.cs">
       <DependentUpon>WFActionTip.xaml</DependentUpon>

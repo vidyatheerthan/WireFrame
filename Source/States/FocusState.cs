@@ -10,8 +10,10 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.System;
+using WireFrame.Controls;
+using WireFrame.Misc;
 
-namespace WireFrame
+namespace WireFrame.States
 {
     class FocusState : IFiniteStateMachine
     {

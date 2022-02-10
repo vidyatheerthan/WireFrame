@@ -8,7 +8,7 @@ using Windows.Graphics.Display;
 using Windows.UI.Xaml;
 using Size = Windows.Foundation.Size;
 
-namespace WireFrame
+namespace WireFrame.Misc
 {
     public static class Utility
     {

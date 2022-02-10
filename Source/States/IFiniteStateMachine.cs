@@ -9,8 +9,9 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Core;
+using WireFrame.Misc;
 
-namespace WireFrame
+namespace WireFrame.States
 {
     interface IFiniteStateMachine
     {

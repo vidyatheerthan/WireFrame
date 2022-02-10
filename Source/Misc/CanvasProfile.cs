@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Size = Windows.Foundation.Size;
 
-namespace WireFrame
+namespace WireFrame.Misc
 {
     public class CanvasProfile
     {
