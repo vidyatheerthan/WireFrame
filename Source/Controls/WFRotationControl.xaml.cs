@@ -21,14 +21,22 @@ namespace WireFrame.Controls
 {
     public sealed partial class WFRotationControl : UserControl
     {
+        private Point axisPoint = new Point(1000, 1000);
+
+        public Point AxisPoint { get => this.axisPoint; }
+
         public WFRotationControl()
         {
             this.InitializeComponent();
-
-            DrawArc(new Point(100, 100), 100.0, 0.0, Math.PI * 1.99);
         }
 
-        public void DrawArc(Point center, double radius, double start_angle, double end_angle)
+        public void Rotate(double startAngle, double endAngle)
+        {
+            DrawArc(this.axisPoint, 100.0, startAngle, endAngle);
+        }
+
+
+        private void DrawArc(Point center, double radius, double start_angle, double end_angle)
         {
             Canvas.SetLeft(_path, 0);
             Canvas.SetTop(_path, 0);
@@ -41,7 +49,7 @@ namespace WireFrame.Controls
                 end_angle = start_angle;
                 start_angle = temp_angle;
             }
-            double angle_diff = end_angle - start_angle;
+            double angle_diff = Math.Abs(end_angle - start_angle) ;
             _arcSegment.IsLargeArc = angle_diff >= Math.PI;
             //Set start of arc
             _pathFigure.StartPoint = new Point(center.X + radius * Math.Cos(start_angle), center.Y + radius * Math.Sin(start_angle));
