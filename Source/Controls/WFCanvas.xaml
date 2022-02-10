@@ -43,6 +43,8 @@
 
             <local:WFSizeBox x:Name="_sizeBox" Visibility="Collapsed" />
 
+            <local:WFRotationControl />
+
         </Canvas>
 
     </Grid>
