@@ -10,8 +10,8 @@
     d:DesignWidth="400">
 
     <Canvas x:Name="_canvas">
-
-        <Path x:Name="_path" Stroke="Black" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Ellipse x:Name="_ring" Stroke="#FF0169FD" StrokeThickness="2.0"/>
+        <Path x:Name="_path" Stroke="Aqua" StrokeThickness="2.0">
             <Path.Data>
                 <GeometryGroup>
                     <PathGeometry x:Name="_pathGeometry">

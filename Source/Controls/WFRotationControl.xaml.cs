@@ -22,17 +22,22 @@ namespace WireFrame.Controls
     public sealed partial class WFRotationControl : UserControl
     {
         private Point axisPoint = new Point(1000, 1000);
+        private double radius = 50.0;
 
         public Point AxisPoint { get => this.axisPoint; }
 
         public WFRotationControl()
         {
             this.InitializeComponent();
+
+            _ring.Width = _ring.Height = 2 * radius;
+            Canvas.SetLeft(_ring, axisPoint.X - radius);
+            Canvas.SetTop(_ring, axisPoint.Y - radius);
         }
 
         public void Rotate(double startAngle, double endAngle)
         {
-            DrawArc(this.axisPoint, 100.0, startAngle, endAngle);
+            DrawArc(this.axisPoint, this.radius, startAngle, endAngle);
         }
 
 
