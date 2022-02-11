@@ -10,9 +10,9 @@
     d:DesignWidth="400">
 
     <Canvas x:Name="_canvas">
-        <Ellipse x:Name="_outer_ring" Stroke="#FF00B9FF" Fill="#7F00B9FF" StrokeThickness="1.0"/>
+        <Ellipse x:Name="_outer_ring" Stroke="#FF011B8D" Fill="#33011B8D" StrokeThickness="1.0"/>
 
-        <Path x:Name="_path" Stroke="#FF0146FD" StrokeThickness="1.0">
+        <Path x:Name="_path" Fill="#C9011B8D" StrokeThickness="1.0">
             <Path.Data>
                 <GeometryGroup>
                     <PathGeometry x:Name="_pathGeometry">
@@ -21,15 +21,15 @@
                                         Point="0, 100"
                                         Size="10, 10"
                                         SweepDirection="Clockwise" />
+                            <LineSegment x:Name="_line1" Point="100, 50" />
+                            <LineSegment x:Name="_line2" Point="200, 100" />
                         </PathFigure>
                     </PathGeometry>
-                    <LineGeometry x:Name="_line1" StartPoint="150, 100" EndPoint="100, 100" />
-                    <LineGeometry x:Name="_line2" StartPoint="150, 100" EndPoint="200, 100" />
                 </GeometryGroup>
             </Path.Data>
         </Path>
 
-        <Ellipse x:Name="_inner_ring" Fill="#FF0146FD"/>
+        <Ellipse x:Name="_inner_ring" Fill="#FF011B8D"/>
         
     </Canvas>
     

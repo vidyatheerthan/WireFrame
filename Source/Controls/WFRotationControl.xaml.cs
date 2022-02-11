@@ -23,7 +23,7 @@ namespace WireFrame.Controls
     public sealed partial class WFRotationControl : UserControl
     {
         private Point axisPoint = new Point(1000, 1000);
-        private double innerRingRadius = 2.0;
+        private double innerRingRadius = 1.0;
         private double outerRingRadius = 50.0;
 
         public Point AxisPoint { get => this.axisPoint; }
@@ -73,11 +73,8 @@ namespace WireFrame.Controls
 
             _pathFigure.StartPoint = PolarToCartesian(start_angle, radius, center);
 
-            _line1.StartPoint = center;
-            _line1.EndPoint = _pathFigure.StartPoint;
-
-            _line2.StartPoint = center;
-            _line2.EndPoint = _arcSegment.Point;
+            _line1.Point = center;
+            _line2.Point = _pathFigure.StartPoint;
         }
 
         public static Point PolarToCartesian(double angle, double radius, Point center)
