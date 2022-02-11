@@ -127,8 +127,8 @@
     <Compile Include="Source\Controls\WFRotationControl.xaml.cs">
       <DependentUpon>WFRotationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Controls\WFSizeBox.xaml.cs">
-      <DependentUpon>WFSizeBox.xaml</DependentUpon>
+    <Compile Include="Source\Controls\WFSizeControl.xaml.cs">
+      <DependentUpon>WFSizeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\Commons.cs" />
     <Compile Include="Source\Misc\PropertyStore.cs" />
@@ -180,7 +180,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\WFSizeBox.xaml">
+    <Page Include="Source\Controls\WFSizeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

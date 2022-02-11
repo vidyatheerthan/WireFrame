@@ -124,9 +124,9 @@ namespace WireFrame.Controls
 
             // --
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
-            IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _sizeBox });
+            IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _sizeControl });
             IFiniteStateMachine rotateElementState = new RotateElementState(new List<object>() { _grid, _scrollViewer, _canvas, _rotationControl });
-            IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _sizeBox, VirtualKey.F });
+            IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _sizeControl, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
@@ -137,7 +137,7 @@ namespace WireFrame.Controls
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.RotateElement);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.Selection_Pan_Focus);
 
             // --
             this.Loaded += OnLoaded;

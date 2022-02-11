@@ -19,7 +19,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFSizeBox : UserControl, IElementSelector
+    public sealed partial class WFSizeControl : UserControl, IElementSelector
     {
         const double HITBOX_SIZE = 10.0;
 
@@ -37,7 +37,7 @@ namespace WireFrame.Controls
 
         // --
 
-        public WFSizeBox()
+        public WFSizeControl()
         {
             this.InitializeComponent();
 

@@ -41,7 +41,7 @@
 
             <local:WFActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
-            <local:WFSizeBox x:Name="_sizeBox" Visibility="Collapsed" />
+            <local:WFSizeControl x:Name="_sizeControl" Visibility="Collapsed" />
 
             <local:WFRotationControl x:Name="_rotationControl" />
 
