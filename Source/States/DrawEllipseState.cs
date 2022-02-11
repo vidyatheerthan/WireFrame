@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Shapes;
 using Windows.UI.Core;
 using WireFrame.Controls;
 using WireFrame.Misc;
+using WireFrame.Shapes;
 
 namespace WireFrame.States
 {
@@ -42,7 +43,7 @@ namespace WireFrame.States
         // --
 
         private Data data = null;
-        private FrameworkElement activeElement = null;
+        private EllipseShape activeEllipse = null;
         private bool isTracking = false;
 
         // --
@@ -76,18 +77,18 @@ namespace WireFrame.States
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                this.activeElement = AddNewPrimitive(this.data.container, canvasPoint.X, canvasPoint.Y, 1, 1);
+                this.activeEllipse = AddNewPrimitive(this.data.container, canvasPoint.X, canvasPoint.Y, 1, 1);
                 ShowActionTip(this.data.actionTip, true, hudPoint.X, hudPoint.Y);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
-                ResizePrimitive(this.activeElement, canvasPoint.X, canvasPoint.Y);
+                ResizePrimitive(this.activeEllipse, canvasPoint.X, canvasPoint.Y);
                 UpdateActionTip(this.data.actionTip, hudPoint.X, hudPoint.Y);
             }
             else if (pointerState == PointerState.Released)
             {
-                this.activeElement = null;
+                this.activeEllipse = null;
                 this.isTracking = false;
                 ShowActionTip(this.data.actionTip, false, hudPoint.X, hudPoint.Y);
             }
@@ -121,34 +122,29 @@ namespace WireFrame.States
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);
 
-            string tip = "Width: " + ((int)this.activeElement.Width).ToString() + "\n" + "Height: " + ((int)this.activeElement.Height).ToString();
+            string tip = "Width: " + ((int)this.activeEllipse.XRadius * 2).ToString() + "\n" + "Height: " + ((int)this.activeEllipse.YRadius * 2).ToString();
             actionTip.SetTip(tip);
         }
 
-        private FrameworkElement AddNewPrimitive(Canvas container, double left, double top, double width, double height)
+        private EllipseShape AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
-            Ellipse ellipse = new Ellipse();
-            ellipse.Width = width;
-            ellipse.Height = height;
-            Canvas.SetLeft(ellipse, left);
-            Canvas.SetTop(ellipse, top);
-            ellipse.Stroke = new SolidColorBrush(Colors.Orange);
-            ellipse.Fill = new SolidColorBrush(Colors.LightGoldenrodYellow);
+            EllipseShape ellipse = new EllipseShape();
+            ellipse.XRadius = width * 0.5;
+            ellipse.YRadius = height * 0.5;
+            ellipse.Center = new Point(left + ellipse.XRadius, top + ellipse.YRadius);
 
             container.Children.Insert(container.Children.Count, ellipse);
             return ellipse;
         }
 
-        private void ResizePrimitive(FrameworkElement element, double x, double y)
+        private void ResizePrimitive(EllipseShape ellipse, double x, double y)
         {
-            double left = Canvas.GetLeft(element);
-            double top = Canvas.GetTop(element);
+            double left = ellipse.Center.X - ellipse.XRadius;
+            double top = ellipse.Center.Y - ellipse.YRadius;
 
-            double width = x - left;
-            double height = y - top;
-
-            element.Width = width > 0 ? width : 1;
-            element.Height = height > 0 ? height : 1;
+            ellipse.XRadius = (x - left) * 0.5;
+            ellipse.YRadius = (y - top) * 0.5;
+            ellipse.Center = new Point(left + ellipse.XRadius, top + ellipse.YRadius);
         }
     }
 }
