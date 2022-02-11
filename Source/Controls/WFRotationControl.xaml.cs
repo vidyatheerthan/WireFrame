@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 using Path = Windows.UI.Xaml.Shapes.Path;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -22,7 +23,8 @@ namespace WireFrame.Controls
     public sealed partial class WFRotationControl : UserControl
     {
         private Point axisPoint = new Point(1000, 1000);
-        private double radius = 50.0;
+        private double innerRingRadius = 2.0;
+        private double outerRingRadius = 50.0;
 
         public Point AxisPoint { get => this.axisPoint; }
 
@@ -30,14 +32,20 @@ namespace WireFrame.Controls
         {
             this.InitializeComponent();
 
-            _ring.Width = _ring.Height = 2 * radius;
-            Canvas.SetLeft(_ring, axisPoint.X - radius);
-            Canvas.SetTop(_ring, axisPoint.Y - radius);
+            UpdateRing(_inner_ring, this.axisPoint, this.innerRingRadius);
+            UpdateRing(_outer_ring, this.axisPoint, this.outerRingRadius + 0.5);
+        }
+
+        private void UpdateRing(Ellipse ring, Point center, double radius)
+        {
+            ring.Width = ring.Height = 2 * radius;
+            Canvas.SetLeft(ring, center.X - radius);
+            Canvas.SetTop(ring, center.Y - radius);
         }
 
         public void Rotate(double startAngle, double endAngle)
         {
-            DrawArc(this.axisPoint, this.radius, startAngle, endAngle);
+            DrawArc(this.axisPoint, this.outerRingRadius, startAngle, endAngle);
         }
 
 

@@ -10,8 +10,9 @@
     d:DesignWidth="400">
 
     <Canvas x:Name="_canvas">
-        <Ellipse x:Name="_ring" Stroke="#FF0169FD" StrokeThickness="2.0"/>
-        <Path x:Name="_path" Stroke="Aqua" StrokeThickness="2.0">
+        <Ellipse x:Name="_outer_ring" Stroke="#FF00B9FF" Fill="#7F00B9FF" StrokeThickness="1.0"/>
+
+        <Path x:Name="_path" Stroke="#FF0146FD" StrokeThickness="1.0">
             <Path.Data>
                 <GeometryGroup>
                     <PathGeometry x:Name="_pathGeometry">
@@ -28,6 +29,8 @@
             </Path.Data>
         </Path>
 
+        <Ellipse x:Name="_inner_ring" Fill="#FF0146FD"/>
+        
     </Canvas>
     
 </UserControl>
