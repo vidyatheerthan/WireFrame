@@ -99,8 +99,8 @@ namespace WireFrame.States
         {
             Point axis = this.data.rotationControl.AxisPoint;
 
-            double startAngle = 0;
-            double endAngle = Math.Atan2(pointerPos.Y - axis.Y, pointerPos.X - axis.X);
+            double startAngle = Math.Atan2(pointerPos.Y - axis.Y, pointerPos.X - axis.X); 
+            double endAngle = 2 * Math.PI - 0.0001;
 
             this.data.rotationControl.Rotate(startAngle, endAngle);
         }
