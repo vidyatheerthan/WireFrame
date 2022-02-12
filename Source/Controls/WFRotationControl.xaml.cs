@@ -23,8 +23,10 @@ namespace WireFrame.Controls
     public sealed partial class WFRotationControl : UserControl
     {
         private Point axisPoint = new Point(1000, 1000);
+        private double arcRadius = 10.0;
         private double innerRingRadius = 1.0;
-        private double outerRingRadius = 50.0;
+        private double outerRing1Radius = 10.0;
+        private double outerRing2Radius = 11.0;
 
         public Point AxisPoint { get => this.axisPoint; }
 
@@ -33,7 +35,9 @@ namespace WireFrame.Controls
             this.InitializeComponent();
 
             UpdateRing(_inner_ring, this.axisPoint, this.innerRingRadius);
-            UpdateRing(_outer_ring, this.axisPoint, this.outerRingRadius + 0.5);
+            UpdateRing(_outer_ring_1, this.axisPoint, this.outerRing1Radius);
+            UpdateRing(_outer_ring_2, this.axisPoint, this.outerRing2Radius);
+            DrawArc(this.axisPoint, this.arcRadius, 0.0, 0.0);
         }
 
         private void UpdateRing(Ellipse ring, Point center, double radius)
@@ -45,7 +49,7 @@ namespace WireFrame.Controls
 
         public void Rotate(double startAngle, double endAngle)
         {
-            DrawArc(this.axisPoint, this.outerRingRadius, startAngle, endAngle);
+            DrawArc(this.axisPoint, this.arcRadius, startAngle, endAngle);
         }
 
 

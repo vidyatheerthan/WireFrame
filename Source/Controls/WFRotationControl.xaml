@@ -10,7 +10,8 @@
     d:DesignWidth="400">
 
     <Canvas x:Name="_canvas">
-        <Ellipse x:Name="_outer_ring" Stroke="#FF011B8D" Fill="#33011B8D" StrokeThickness="1.0"/>
+        <Ellipse x:Name="_outer_ring_2" Stroke="White" StrokeThickness="1.0"/>
+        <Ellipse x:Name="_outer_ring_1" Stroke="#FF011B8D" Fill="#33011B8D" StrokeThickness="1.0"/>
 
         <Path x:Name="_path" Fill="#C9011B8D" StrokeThickness="1.0">
             <Path.Data>
@@ -18,7 +19,7 @@
                     <PathGeometry x:Name="_pathGeometry">
                         <PathFigure x:Name="_pathFigure" StartPoint="100, 50">
                             <ArcSegment x:Name="_arcSegment" IsLargeArc="True"
-                                        Point="0, 100"
+                                        Point="0, 0"
                                         Size="10, 10"
                                         SweepDirection="Clockwise" />
                             <LineSegment x:Name="_line1" Point="100, 50" />
