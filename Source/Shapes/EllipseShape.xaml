@@ -9,14 +9,14 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Canvas>
-        <Path x:Name="_path" Stroke="Blue" Fill="AliceBlue">
+    <Grid>
+        <Path x:Name="_path" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="Blue" Fill="AliceBlue" Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
                 <GeometryGroup>
-                    <EllipseGeometry Center="{x:Bind Center, Mode=OneWay}" RadiusX="{x:Bind XRadius, Mode=OneWay}" RadiusY="{x:Bind YRadius, Mode=OneWay}"/>
+                    <EllipseGeometry Center="0, 0" RadiusX="100" RadiusY="100" />
                 </GeometryGroup>
             </Path.Data>
         </Path>
-    </Canvas>
+    </Grid>
     
 </UserControl>

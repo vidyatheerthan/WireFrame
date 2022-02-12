@@ -20,18 +20,8 @@ namespace WireFrame.Shapes
 {
     public sealed partial class EllipseShape : UserControl, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty CenterProperty = DependencyProperty.Register(nameof(Center), typeof(Point), typeof(EllipseShape), new PropertyMetadata(null));
-        public Point Center { get => (Point)GetValue(CenterProperty); set => SetValue(CenterProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty XRadiusProperty = DependencyProperty.Register(nameof(XRadius), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
-        public double XRadius { get => (double)GetValue(XRadiusProperty); set => SetValue(XRadiusProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty YRadiusProperty = DependencyProperty.Register(nameof(YRadius), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
-        public double YRadius { get => (double)GetValue(YRadiusProperty); set => SetValue(YRadiusProperty, value); }
+        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(EllipseShape), new PropertyMetadata(null));
+        public Stretch Stretch { get => (Stretch)GetValue(StretchProperty); set => SetValue(StretchProperty, value); }
 
         // --
 
@@ -42,6 +32,8 @@ namespace WireFrame.Shapes
         public EllipseShape()
         {
             this.InitializeComponent();
+
+            Stretch = Stretch.Uniform;
         }
 
         private void OnPropertyChanged(string propertyName = null)

@@ -122,16 +122,17 @@ namespace WireFrame.States
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);
 
-            string tip = "Width: " + ((int)this.activeEllipse.XRadius * 2).ToString() + "\n" + "Height: " + ((int)this.activeEllipse.YRadius * 2).ToString();
+            string tip = "Width: " + ((int)this.activeEllipse.Width).ToString() + "\n" + "Height: " + ((int)this.activeEllipse.Height).ToString();
             actionTip.SetTip(tip);
         }
 
         private EllipseShape AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
             EllipseShape ellipse = new EllipseShape();
-            ellipse.XRadius = width * 0.5;
-            ellipse.YRadius = height * 0.5;
-            ellipse.Center = new Point(left + ellipse.XRadius, top + ellipse.YRadius);
+            ellipse.Width = width;
+            ellipse.Height = height;
+            Canvas.SetLeft(ellipse, left);
+            Canvas.SetTop(ellipse, top);
 
             container.Children.Insert(container.Children.Count, ellipse);
             return ellipse;
@@ -139,12 +140,14 @@ namespace WireFrame.States
 
         private void ResizePrimitive(EllipseShape ellipse, double x, double y)
         {
-            double left = ellipse.Center.X - ellipse.XRadius;
-            double top = ellipse.Center.Y - ellipse.YRadius;
+            double left = Canvas.GetLeft(ellipse);
+            double top = Canvas.GetTop(ellipse);
 
-            ellipse.XRadius = (x - left) * 0.5;
-            ellipse.YRadius = (y - top) * 0.5;
-            ellipse.Center = new Point(left + ellipse.XRadius, top + ellipse.YRadius);
+            double width = x - left;
+            double height = y - top;
+
+            ellipse.Width = width > 0 ? width : 1;
+            ellipse.Height = height > 0 ? height : 1;
         }
     }
 }
