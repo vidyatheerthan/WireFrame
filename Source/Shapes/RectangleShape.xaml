@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="WireFrame.Shapes.EllipseShape"
+    x:Class="WireFrame.Shapes.RectangleShape"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WireFrame.Shapes"
@@ -13,7 +13,7 @@
         <Path x:Name="_path" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="Blue" Fill="AliceBlue" Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
                 <GeometryGroup>
-                    <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
+                    <RectangleGeometry Rect="0,0,100,100" />
                 </GeometryGroup>
             </Path.Data>
         </Path>

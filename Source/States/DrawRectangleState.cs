@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Shapes;
 using Windows.UI.Core;
 using WireFrame.Controls;
 using WireFrame.Misc;
+using WireFrame.Shapes;
 
 namespace WireFrame.States
 {
@@ -42,7 +43,7 @@ namespace WireFrame.States
         // --
 
         private Data data = null;
-        private FrameworkElement activeElement = null;
+        private RectangleShape activeRectangle = null;
         private bool isTracking = false;
 
         // --
@@ -76,18 +77,18 @@ namespace WireFrame.States
 
             if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
             {
-                this.activeElement = AddNewPrimitive(this.data.container, canvasPoint.X, canvasPoint.Y, 1, 1);
+                this.activeRectangle = AddNewPrimitive(this.data.container, canvasPoint.X, canvasPoint.Y, 1, 1);
                 ShowActionTip(this.data.actionTip, true, hudPoint.X, hudPoint.Y);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
-                ResizePrimitive(this.activeElement, canvasPoint.X, canvasPoint.Y);
+                ResizePrimitive(this.activeRectangle, canvasPoint.X, canvasPoint.Y);
                 UpdateActionTip(this.data.actionTip, hudPoint.X, hudPoint.Y);
             }
             else if (pointerState == PointerState.Released)
             {
-                this.activeElement = null;
+                this.activeRectangle = null;
                 this.isTracking = false;
                 ShowActionTip(this.data.actionTip, false, hudPoint.X, hudPoint.Y);
             }
@@ -121,34 +122,32 @@ namespace WireFrame.States
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);
 
-            string tip = "Width: " + ((int)this.activeElement.Width).ToString() + "\n" + "Height: " + ((int)this.activeElement.Height).ToString();
+            string tip = "Width: " + ((int)this.activeRectangle.Width).ToString() + "\n" + "Height: " + ((int)this.activeRectangle.Height).ToString();
             actionTip.SetTip(tip);
         }
 
-        private FrameworkElement AddNewPrimitive(Canvas container, double left, double top, double width, double height)
+        private RectangleShape AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
-            Rectangle ellipse = new Rectangle();
-            ellipse.Width = width;
-            ellipse.Height = height;
-            Canvas.SetLeft(ellipse, left);
-            Canvas.SetTop(ellipse, top);
-            ellipse.Stroke = new SolidColorBrush(Colors.Blue);
-            ellipse.Fill = new SolidColorBrush(Colors.AliceBlue);
+            RectangleShape rect = new RectangleShape();
+            rect.Width = width;
+            rect.Height = height;
+            Canvas.SetLeft(rect, left);
+            Canvas.SetTop(rect, top);
 
-            container.Children.Insert(container.Children.Count, ellipse);
-            return ellipse;
+            container.Children.Insert(container.Children.Count, rect);
+            return rect;
         }
 
-        private void ResizePrimitive(FrameworkElement element, double x, double y)
+        private void ResizePrimitive(RectangleShape rectangle, double x, double y)
         {
-            double left = Canvas.GetLeft(element);
-            double top = Canvas.GetTop(element);
+            double left = Canvas.GetLeft(rectangle);
+            double top = Canvas.GetTop(rectangle);
 
             double width = x - left;
             double height = y - top;
 
-            element.Width = width > 0 ? width : 1;
-            element.Height = height > 0 ? height : 1;
+            rectangle.Width = width > 0 ? width : 1;
+            rectangle.Height = height > 0 ? height : 1;
         }
     }
 }

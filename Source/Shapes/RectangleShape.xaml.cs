@@ -18,9 +18,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame.Shapes
 {
-    public sealed partial class EllipseShape : UserControl, INotifyPropertyChanged
+    public sealed partial class RectangleShape : UserControl, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(EllipseShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(RectangleShape), new PropertyMetadata(null));
         public Stretch Stretch { get => (Stretch)GetValue(StretchProperty); set => SetValue(StretchProperty, value); }
 
         // --
@@ -29,7 +29,7 @@ namespace WireFrame.Shapes
 
         // --
 
-        public EllipseShape()
+        public RectangleShape()
         {
             this.InitializeComponent();
 

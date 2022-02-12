@@ -146,6 +146,9 @@
     <Compile Include="Source\Shapes\EllipseShape.xaml.cs">
       <DependentUpon>EllipseShape.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Shapes\RectangleShape.xaml.cs">
+      <DependentUpon>RectangleShape.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\States\DrawEllipseState.cs" />
     <Compile Include="Source\States\DrawRectangleState.cs" />
     <Compile Include="Source\States\FocusState.cs" />
@@ -200,6 +203,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Shapes\EllipseShape.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Shapes\RectangleShape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
