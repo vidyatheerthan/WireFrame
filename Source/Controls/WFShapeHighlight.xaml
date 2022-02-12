@@ -16,8 +16,6 @@
             Canvas.Top="{x:Bind Top, Mode=OneWay}"
             Width="{x:Bind Length, Mode=OneWay}"
             Height="{x:Bind Breath, Mode=OneWay}"
-            Stroke="Blue"
-            StrokeThickness="3"
             Fill="#770000FF"
             Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
