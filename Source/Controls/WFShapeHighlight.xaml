@@ -16,7 +16,9 @@
             Canvas.Top="{x:Bind Top, Mode=OneWay}"
             Width="{x:Bind Length, Mode=OneWay}"
             Height="{x:Bind Breath, Mode=OneWay}"
-            Fill="#770000FF"
+            Stroke="{x:Bind Stroke, Mode=OneWay}"
+            StrokeThickness="{x:Bind StrokeThickness, Mode=OneWay}"
+            Fill="{x:Bind Fill, Mode=OneWay}"
             Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
                 <GeometryGroup x:Name="_geometry_group" FillRule="Nonzero">
