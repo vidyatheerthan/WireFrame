@@ -40,6 +40,8 @@ namespace WireFrame.Controls
 
         public void UpdateSelectedShape(float zoomFactor)
         {
+            if (this.selectedShape == null || this.shapeParent == null) { return; }
+
             var transform = this.selectedShape.GetPath().TransformToVisual(this.shapeParent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 

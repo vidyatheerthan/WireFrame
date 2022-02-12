@@ -45,7 +45,7 @@
 
             <local:WFRotationControl x:Name="_rotationControl" />
 
-            <local:WFShapeHighlight x:Name="_shapeHighlight" />
+            <local:WFShapeHighlight x:Name="_shapeHighlight" IsHitTestVisible="False" />
 
         </Canvas>
 

@@ -74,6 +74,8 @@ namespace WireFrame.Controls
 
         public void UpdateSelectedShape(float zoomFactor)
         {
+            if (this.selectedShape == null || this.shapeParent == null) { return; }
+
             UpdateBox(this.selectedShape, this.shapeParent, zoomFactor);
             UpdateHitBox();
             UpdateCircles();
