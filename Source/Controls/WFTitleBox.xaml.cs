@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using WireFrame.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -19,22 +20,33 @@ namespace WireFrame.Controls
 {
     public sealed partial class WFTitleBox : UserControl, IElementSelector
     {
+        private IShape selectedShape;
+
+        // --
+
         public WFTitleBox()
         {
             this.InitializeComponent();
         }
 
-        public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
         {
-            var transform = element.TransformToVisual(parent);
+            this.selectedShape = shape;
+
+            var transform = shape.GetPath().TransformToVisual(parent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Canvas.SetLeft(_box, ePoint.X);
             Canvas.SetTop(_box, ePoint.Y);
-            _box.Width = element.ActualWidth * zoomFactor;
-            _box.Height = element.ActualHeight * zoomFactor;
+            _box.Width = shape.GetLength() * zoomFactor;
+            _box.Height = shape.GetBreath() * zoomFactor;
 
             UpdateTextBoxSize();
+        }
+
+        public IShape GetSelectedShape()
+        {
+            return this.selectedShape;
         }
 
         private void UpdateTextBoxSize()

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Misc;
+using WireFrame.Shapes;
 
 namespace WireFrame.States
 {
@@ -39,8 +40,8 @@ namespace WireFrame.States
         // --
 
         private Data data = null;
-        private FrameworkElement elementUnderCursor = null;
-        private FrameworkElement elementSelected = null;
+        private IShape shapeUnderCursor = null;
+        private IShape shapeSelected = null;
 
         // --
 
@@ -110,35 +111,36 @@ namespace WireFrame.States
             }
         }
 
-        private IEnumerable<UIElement> GetElementsUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
+        private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
         {
             GeneralTransform transform = container.TransformToVisual(scrollViewer);
             Point transformedPoint = transform.TransformPoint(position);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
+            elements = elements.Where(item => item is IShape).ToList(); // allow only IShape
             return elements;
         }
 
         private void DrawSelectorBox(Grid grid, ScrollViewer scrollViewer, Canvas container, IElementSelector selector, Point position)
         {
-            var elements = GetElementsUnderPointer(scrollViewer, container, position);
-            if (elements != null && elements.Count() > 0)
+            var shapes = GetShapesUnderPointer(scrollViewer, container, position);
+            if (shapes != null && shapes.Count() > 0)
             {
-                this.elementSelected = elements.First() as FrameworkElement;
+                this.shapeSelected = shapes.First() as IShape;
             }
             else
             {
-                this.elementSelected = null;
+                this.shapeSelected = null;
             }
 
             UpdateSelectorBox(grid, scrollViewer, selector);
         }
 
         private void UpdateSelectorBox(Grid grid, ScrollViewer scrollViewer, IElementSelector selector) { 
-            if(this.elementSelected != null) 
+            if(this.shapeSelected != null) 
             {
                 selector.Show(true);
 
-                selector.SetSelectedElement(this.elementSelected, grid, scrollViewer.ZoomFactor);
+                selector.SetSelectedShape(this.shapeSelected, grid, scrollViewer.ZoomFactor);
                 //selector.SetTitle(this.elementSelected.GetType().Name);
             }
             else
@@ -149,26 +151,24 @@ namespace WireFrame.States
 
         private void SelectElement(ScrollViewer scrollViewer, Canvas container, Point position)
         {
-            var elements = GetElementsUnderPointer(scrollViewer, container, position);
-            if (elements != null && elements.Count() > 0)
+            var shapes = GetShapesUnderPointer(scrollViewer, container, position);
+            if (shapes != null && shapes.Count() > 0)
             {
-                this.elementUnderCursor = elements.First() as FrameworkElement;
-                SelectShape(this.elementUnderCursor, true);
+                this.shapeUnderCursor = shapes.First() as IShape;
+                SelectShape(this.shapeUnderCursor, true);
             }
             else
             {
-                SelectShape(this.elementUnderCursor, false);
-                this.elementUnderCursor = null;
+                SelectShape(this.shapeUnderCursor, false);
+                this.shapeUnderCursor = null;
             }
         }
 
-        private void SelectShape(FrameworkElement element, bool highlight)
+        private void SelectShape(IShape shape, bool highlight)
         {
-            if (element != null && element is Shape)
+            if (shape != null && shape is IShape)
             {
-                var shape = element as Shape;
-                shape.StrokeThickness = highlight ? 3.0 : 1.0;
-                shape.StrokeDashArray = highlight ? new DoubleCollection() { 1.0, 2.0, 0.0 } : null;
+                // highlight this shape
             }
         }
     }

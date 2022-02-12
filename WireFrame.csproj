@@ -149,6 +149,7 @@
     <Compile Include="Source\Shapes\EllipseShape.xaml.cs">
       <DependentUpon>EllipseShape.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Shapes\IShape.cs" />
     <Compile Include="Source\Shapes\RectangleShape.xaml.cs">
       <DependentUpon>RectangleShape.xaml</DependentUpon>
     </Compile>

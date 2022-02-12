@@ -14,6 +14,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using WireFrame.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -29,11 +30,7 @@ namespace WireFrame.Controls
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
-        private FrameworkElement selectedElement;
-
-        // --
-
-        public FrameworkElement SelectedElement { get => this.selectedElement; }
+        private IShape selectedShape;
 
         // --
 
@@ -66,13 +63,18 @@ namespace WireFrame.Controls
             _bottom_right_circle.PointerExited += OnPointerExitedBottomRightHitBox;
         }
 
-        public void SetSelectedElement(FrameworkElement element, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
         {
-            this.selectedElement = element;
+            this.selectedShape = shape;
 
-            UpdateBox(element, parent, zoomFactor);
+            UpdateBox(shape, parent, zoomFactor);
             UpdateHitBox();
             UpdateCircles();
+        }
+
+        public IShape GetSelectedShape()
+        {
+            return this.selectedShape;
         }
 
         public void Show(bool show)
@@ -80,15 +82,15 @@ namespace WireFrame.Controls
             Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        private void UpdateBox(FrameworkElement element, FrameworkElement parent, float zoomFactor)
+        private void UpdateBox(IShape shape, FrameworkElement parent, float zoomFactor)
         {
-            var transform = element.TransformToVisual(parent);
+            var transform = shape.GetPath().TransformToVisual(parent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Canvas.SetLeft(_box, ePoint.X);
             Canvas.SetTop(_box, ePoint.Y);
-            _box.Width = element.ActualWidth * zoomFactor;
-            _box.Height = element.ActualHeight * zoomFactor;
+            _box.Width = shape.GetLength() * zoomFactor;
+            _box.Height = shape.GetBreath() * zoomFactor;
         }
 
         private void UpdateHitBox()

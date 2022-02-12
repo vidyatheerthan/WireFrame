@@ -9,8 +9,16 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid>
-        <Path x:Name="_path" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="{x:Bind Fill, Mode=OneWay}" Stretch="{x:Bind Stretch, Mode=OneWay}">
+    <Canvas>
+        <Path 
+            x:Name="_path"
+            Canvas.Left="{x:Bind Left, Mode=OneWay}" 
+            Canvas.Top="{x:Bind Top, Mode=OneWay}"
+            Width="{x:Bind Length, Mode=OneWay}"
+            Height="{x:Bind Breath, Mode=OneWay}"
+            Stroke="{x:Bind Stroke, Mode=OneWay}"
+            Fill="{x:Bind Fill, Mode=OneWay}"
+            Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
                 <GeometryGroup FillRule="{x:Bind FillRule, Mode=OneWay}">
                     <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
@@ -18,6 +26,6 @@
                 </GeometryGroup>
             </Path.Data>
         </Path>
-    </Grid>
+    </Canvas>
     
 </UserControl>

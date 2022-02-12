@@ -59,17 +59,17 @@ namespace WireFrame.States
                 return false;
             }
 
-            if (args.VirtualKey == this.data.key && this.data.sizeControl.SelectedElement != null)
+            if (args.VirtualKey == this.data.key && this.data.sizeControl.GetSelectedShape() != null)
             {
-                double width = this.data.sizeControl.SelectedElement.Width;
-                double height = this.data.sizeControl.SelectedElement.Height;
+                double width = this.data.sizeControl.GetSelectedShape().GetLength();
+                double height = this.data.sizeControl.GetSelectedShape().GetBreath();
 
                 float zoomFactor = 0.0f;
                 (new CanvasProfile(width, height)).GetCanvas(new Size(this.data.scrollViewer.ActualWidth, this.data.scrollViewer.ActualHeight), out zoomFactor);
                 zoomFactor = Math.Max(this.data.scrollViewer.MinZoomFactor, Math.Min(zoomFactor, this.data.scrollViewer.MaxZoomFactor));
 
-                double x = (Canvas.GetLeft(this.data.sizeControl.SelectedElement) * zoomFactor) - ((this.data.scrollViewer.ActualWidth - (width * zoomFactor)) * 0.5);
-                double y = (Canvas.GetTop(this.data.sizeControl.SelectedElement) * zoomFactor) - ((this.data.scrollViewer.ActualHeight - (height * zoomFactor)) * 0.5);
+                double x = (this.data.sizeControl.GetSelectedShape().GetLeft() * zoomFactor) - ((this.data.scrollViewer.ActualWidth - (width * zoomFactor)) * 0.5);
+                double y = (this.data.sizeControl.GetSelectedShape().GetTop() * zoomFactor) - ((this.data.scrollViewer.ActualHeight - (height * zoomFactor)) * 0.5);
 
                 this.data.scrollViewer.ChangeView(x, y, zoomFactor, true);
             }

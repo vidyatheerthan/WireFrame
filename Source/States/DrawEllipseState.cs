@@ -122,32 +122,30 @@ namespace WireFrame.States
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);
 
-            string tip = "Width: " + ((int)this.activeEllipse.Width).ToString() + "\n" + "Height: " + ((int)this.activeEllipse.Height).ToString();
+            string tip = "Width: " + ((int)this.activeEllipse.GetLength()).ToString() + "\n" + "Height: " + ((int)this.activeEllipse.GetBreath()).ToString();
             actionTip.SetTip(tip);
         }
 
         private EllipseShape AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
             EllipseShape ellipse = new EllipseShape();
-            ellipse.Width = width;
-            ellipse.Height = height;
-            Canvas.SetLeft(ellipse, left);
-            Canvas.SetTop(ellipse, top);
-
             container.Children.Insert(container.Children.Count, ellipse);
+
+            ellipse.SetLeft(left);
+            ellipse.SetTop(top);
+            ellipse.SetLength(width);
+            ellipse.SetBreath(height);
+
             return ellipse;
         }
 
         private void ResizePrimitive(EllipseShape ellipse, double x, double y)
         {
-            double left = Canvas.GetLeft(ellipse);
-            double top = Canvas.GetTop(ellipse);
+            double width = x - ellipse.GetLeft();
+            double height = y - ellipse.GetTop();
 
-            double width = x - left;
-            double height = y - top;
-
-            ellipse.Width = width > 0 ? width : 1;
-            ellipse.Height = height > 0 ? height : 1;
+            ellipse.SetLength(width > 0 ? width : 1);
+            ellipse.SetBreath(height > 0 ? height : 1);
         }
     }
 }

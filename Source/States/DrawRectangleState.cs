@@ -122,17 +122,17 @@ namespace WireFrame.States
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);
 
-            string tip = "Width: " + ((int)this.activeRectangle.Width).ToString() + "\n" + "Height: " + ((int)this.activeRectangle.Height).ToString();
+            string tip = "Width: " + ((int)this.activeRectangle.GetLength()).ToString() + "\n" + "Height: " + ((int)this.activeRectangle.GetBreath()).ToString();
             actionTip.SetTip(tip);
         }
 
         private RectangleShape AddNewPrimitive(Canvas container, double left, double top, double width, double height)
         {
             RectangleShape rect = new RectangleShape();
-            rect.Width = width;
-            rect.Height = height;
-            Canvas.SetLeft(rect, left);
-            Canvas.SetTop(rect, top);
+            rect.SetLeft(left);
+            rect.SetTop(top);
+            rect.SetLength(width);
+            rect.SetBreath(height);
 
             container.Children.Insert(container.Children.Count, rect);
             return rect;
@@ -140,14 +140,11 @@ namespace WireFrame.States
 
         private void ResizePrimitive(RectangleShape rectangle, double x, double y)
         {
-            double left = Canvas.GetLeft(rectangle);
-            double top = Canvas.GetTop(rectangle);
+            double width = x - rectangle.GetLeft();
+            double height = y - rectangle.GetTop();
 
-            double width = x - left;
-            double height = y - top;
-
-            rectangle.Width = width > 0 ? width : 1;
-            rectangle.Height = height > 0 ? height : 1;
+            rectangle.SetLength(width > 0 ? width : 1);
+            rectangle.SetBreath(height > 0 ? height : 1);
         }
     }
 }
