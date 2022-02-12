@@ -152,6 +152,8 @@ namespace WireFrame.Controls
 
             // --
             this._scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.ZoomFactorProperty, OnScrollViewerZoomFactorChanged);
+            this._scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.HorizontalOffsetProperty, OnScrollViewerScrolled);
+            this._scrollViewer.RegisterPropertyChangedCallback(ScrollViewer.VerticalOffsetProperty, OnScrollViewerScrolled);
         }
 
 
@@ -225,6 +227,11 @@ namespace WireFrame.Controls
         private void OnScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)
         {
             this.stateExecutor.HandleZoom();
+        }
+
+        private void OnScrollViewerScrolled(DependencyObject sender, DependencyProperty dp)
+        {
+            this.stateExecutor.HandleScroll();
         }
     }
 }

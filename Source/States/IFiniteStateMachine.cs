@@ -18,6 +18,7 @@ namespace WireFrame.States
         bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e);
         bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args);
         void HandleZoom();
+        void HandleScroll();
         void ActiveState(IFiniteStateMachine state);
     }
 }

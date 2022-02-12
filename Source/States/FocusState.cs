@@ -81,6 +81,10 @@ namespace WireFrame.States
         {
         }
 
+        public void HandleScroll()
+        {
+        }
+
         public void ActiveState(IFiniteStateMachine state)
         {
         }

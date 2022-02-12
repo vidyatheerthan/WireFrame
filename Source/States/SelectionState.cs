@@ -100,6 +100,17 @@ namespace WireFrame.States
             data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
         }
 
+        public void HandleScroll()
+        {
+            if (this.data == null)
+            {
+                return;
+            }
+
+            data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+            data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+        }
+
         public void ActiveState(IFiniteStateMachine state)
         {
             if (state is PanState)

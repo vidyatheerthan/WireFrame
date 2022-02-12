@@ -98,5 +98,13 @@ namespace WireFrame.States
                 state.HandleZoom();
             }
         }
+
+        public void HandleScroll()
+        {
+            foreach (IFiniteStateMachine state in this.activeStates)
+            {
+                state.HandleScroll();
+            }
+        }
     }
 }
