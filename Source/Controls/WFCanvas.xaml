@@ -4,7 +4,7 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WireFrame.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:shapes="using:WireFrame.Shapes"
     mc:Ignorable="d"
     d:DesignHeight="300"
     d:DesignWidth="400">
@@ -23,7 +23,7 @@
 
                 <Canvas x:Name="_container">
 
-                    <Ellipse Stroke="BlueViolet" Fill="Violet" Width="80" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
+                    <shapes:EllipseShape Width="80" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
                     <Ellipse Stroke="DarkOrange" Fill="Orange" Width="30" Height="50" Canvas.Left="1500" Canvas.Top="200"/>
                     <Ellipse Stroke="DeepPink" Fill="Pink" Width="120" Height="60" Canvas.Left="1200" Canvas.Top="800"/>
                     <Ellipse Stroke="Coral" Fill="DarkKhaki" Width="30" Height="30" Canvas.Left="1800" Canvas.Top="500"/>

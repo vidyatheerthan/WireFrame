@@ -143,6 +143,9 @@
     <Compile Include="Source\Controls\WFCanvas.xaml.cs">
       <DependentUpon>WFCanvas.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Shapes\CompoundShape.xaml.cs">
+      <DependentUpon>CompoundShape.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Shapes\EllipseShape.xaml.cs">
       <DependentUpon>EllipseShape.xaml</DependentUpon>
     </Compile>
@@ -199,6 +202,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Controls\WFCanvas.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Shapes\CompoundShape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
