@@ -23,11 +23,11 @@
 
                 <Canvas x:Name="_container">
 
-                    <shapes:EllipseShape Width="80" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
-                    <Ellipse Stroke="DarkOrange" Fill="Orange" Width="30" Height="50" Canvas.Left="1500" Canvas.Top="200"/>
-                    <Ellipse Stroke="DeepPink" Fill="Pink" Width="120" Height="60" Canvas.Left="1200" Canvas.Top="800"/>
-                    <Ellipse Stroke="Coral" Fill="DarkKhaki" Width="30" Height="30" Canvas.Left="1800" Canvas.Top="500"/>
-                    <Ellipse Stroke="Cyan" Fill="DarkCyan" Width="60" Height="100" Canvas.Left="700" Canvas.Top="700"/>
+                    <shapes:CompoundShape Stroke="DarkGreen" Fill="GreenYellow" Width="200" Height="100" Canvas.Left="1000" Canvas.Top="300"/>
+                    <shapes:CompoundShape Stroke="DarkOrange" Fill="Orange" Width="30" Height="50" Canvas.Left="1500" Canvas.Top="200"/>
+                    <shapes:EllipseShape Stroke="DeepPink" Fill="Pink" Width="120" Height="60" Canvas.Left="1200" Canvas.Top="800"/>
+                    <shapes:CompoundShape Stroke="Coral" Fill="DarkKhaki" Width="30" Height="30" Canvas.Left="1800" Canvas.Top="500"/>
+                    <shapes:RectangleShape Stroke="Cyan" Fill="DarkCyan" Width="60" Height="100" Canvas.Left="700" Canvas.Top="700"/>
 
                 </Canvas>
 

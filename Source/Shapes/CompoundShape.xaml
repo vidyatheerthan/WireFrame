@@ -10,9 +10,9 @@
     d:DesignWidth="400">
 
     <Grid>
-        <Path x:Name="_path" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="Blue" Fill="AliceBlue" Stretch="{x:Bind Stretch, Mode=OneWay}">
+        <Path x:Name="_path" HorizontalAlignment="Left" VerticalAlignment="Top" Stroke="{x:Bind Stroke, Mode=OneWay}" Fill="{x:Bind Fill, Mode=OneWay}" Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
-                <GeometryGroup>
+                <GeometryGroup FillRule="{x:Bind FillRule, Mode=OneWay}">
                     <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
                     <RectangleGeometry Rect="0,0,100,100" />
                 </GeometryGroup>
