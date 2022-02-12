@@ -21,6 +21,7 @@ namespace WireFrame.Controls
     public sealed partial class WFTitleBox : UserControl, IElementSelector
     {
         private IShape selectedShape;
+        private FrameworkElement shapeParent;
 
         // --
 
@@ -32,14 +33,20 @@ namespace WireFrame.Controls
         public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
         {
             this.selectedShape = shape;
+            this.shapeParent = parent;
 
-            var transform = shape.GetPath().TransformToVisual(parent);
+            UpdateSelectedShape(zoomFactor);
+        }
+
+        public void UpdateSelectedShape(float zoomFactor)
+        {
+            var transform = this.selectedShape.GetPath().TransformToVisual(this.shapeParent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Canvas.SetLeft(_box, ePoint.X);
             Canvas.SetTop(_box, ePoint.Y);
-            _box.Width = shape.GetLength() * zoomFactor;
-            _box.Height = shape.GetBreath() * zoomFactor;
+            _box.Width = this.selectedShape.GetLength() * zoomFactor;
+            _box.Height = this.selectedShape.GetBreath() * zoomFactor;
 
             UpdateTextBoxSize();
         }

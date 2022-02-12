@@ -24,15 +24,17 @@ namespace WireFrame.States
             public Canvas canvas;
             public Canvas container;
             public Canvas hud;
+            public IElementSelector highlighter;
             public IElementSelector selector;
 
-            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, IElementSelector selector)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, IElementSelector highlighter, IElementSelector selector)
             {
                 this.grid = grid;
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
                 this.container = container;
                 this.hud = hud;
+                this.highlighter = highlighter;
                 this.selector = selector;
             }
         }
@@ -48,15 +50,16 @@ namespace WireFrame.States
         public SelectionState(List<object> objects)
         {
             if (objects != null &&
-                objects.Count == 6 &&
+                objects.Count == 7 &&
                 (objects[0] is Grid) &&
                 (objects[1] is ScrollViewer) &&
                 (objects[2] is Canvas) &&
                 (objects[3] is Canvas) &&
                 (objects[4] is Canvas) &&
-                (objects[5] is IElementSelector))
+                (objects[5] is IElementSelector) &&
+                (objects[6] is IElementSelector))
             {
-                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as IElementSelector);
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as IElementSelector, objects[6] as IElementSelector);
             }
         }
 
@@ -73,11 +76,11 @@ namespace WireFrame.States
             {
                 if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
                 {
-                    DrawSelectorBox(data.grid, data.scrollViewer, data.container, data.selector, pointer.Position);
+                    DrawSelector(data.grid, data.scrollViewer, data.container, data.selector, pointer.Position);
                 }
                 else if (pointerState == PointerState.Moved)
                 {
-                    SelectElement(data.scrollViewer, data.container, pointer.Position);
+                    HighlightShape(data.scrollViewer, data.container, pointer.Position);
                 }
             }
             return false;
@@ -95,7 +98,7 @@ namespace WireFrame.States
                 return;
             }
 
-            UpdateSelectorBox(data.grid, data.scrollViewer, data.selector);
+            UpdateSelector(data.grid, data.scrollViewer, data.selector);
         }
 
         public void ActiveState(IFiniteStateMachine state)
@@ -107,7 +110,7 @@ namespace WireFrame.States
                     return;
                 }
 
-                UpdateSelectorBox(data.grid, data.scrollViewer, data.selector);
+                UpdateSelector(data.grid, data.scrollViewer, data.selector);
             }
         }
 
@@ -120,7 +123,7 @@ namespace WireFrame.States
             return elements;
         }
 
-        private void DrawSelectorBox(Grid grid, ScrollViewer scrollViewer, Canvas container, IElementSelector selector, Point position)
+        private void DrawSelector(Grid grid, ScrollViewer scrollViewer, Canvas container, IElementSelector selector, Point position)
         {
             var shapes = GetShapesUnderPointer(scrollViewer, container, position);
             if (shapes != null && shapes.Count() > 0)
@@ -132,10 +135,10 @@ namespace WireFrame.States
                 this.shapeSelected = null;
             }
 
-            UpdateSelectorBox(grid, scrollViewer, selector);
+            UpdateSelector(grid, scrollViewer, selector);
         }
 
-        private void UpdateSelectorBox(Grid grid, ScrollViewer scrollViewer, IElementSelector selector) { 
+        private void UpdateSelector(Grid grid, ScrollViewer scrollViewer, IElementSelector selector) { 
             if(this.shapeSelected != null) 
             {
                 selector.Show(true);
@@ -149,22 +152,22 @@ namespace WireFrame.States
             }
         }
 
-        private void SelectElement(ScrollViewer scrollViewer, Canvas container, Point position)
+        private void HighlightShape(ScrollViewer scrollViewer, Canvas container, Point position)
         {
             var shapes = GetShapesUnderPointer(scrollViewer, container, position);
             if (shapes != null && shapes.Count() > 0)
             {
                 this.shapeUnderCursor = shapes.First() as IShape;
-                SelectShape(this.shapeUnderCursor, true);
+                HighlightShape(this.shapeUnderCursor, true);
             }
             else
             {
-                SelectShape(this.shapeUnderCursor, false);
+                HighlightShape(this.shapeUnderCursor, false);
                 this.shapeUnderCursor = null;
             }
         }
 
-        private void SelectShape(IShape shape, bool highlight)
+        private void HighlightShape(IShape shape, bool highlight)
         {
             if (shape != null && shape is IShape)
             {

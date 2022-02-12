@@ -31,6 +31,7 @@ namespace WireFrame.Controls
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
         private IShape selectedShape;
+        private FrameworkElement shapeParent;
 
         // --
 
@@ -66,8 +67,14 @@ namespace WireFrame.Controls
         public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
         {
             this.selectedShape = shape;
+            this.shapeParent = parent;
 
-            UpdateBox(shape, parent, zoomFactor);
+            UpdateSelectedShape(zoomFactor);
+        }
+
+        public void UpdateSelectedShape(float zoomFactor)
+        {
+            UpdateBox(this.selectedShape, this.shapeParent, zoomFactor);
             UpdateHitBox();
             UpdateCircles();
         }

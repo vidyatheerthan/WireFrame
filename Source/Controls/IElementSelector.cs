@@ -13,5 +13,6 @@ namespace WireFrame
         void Show(bool show);
         void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor);
         IShape GetSelectedShape();
+        void UpdateSelectedShape(float zoomFactor);
     }
 }

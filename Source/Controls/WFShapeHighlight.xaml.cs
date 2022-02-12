@@ -47,6 +47,7 @@ namespace WireFrame.Controls
         // --
 
         private IShape selectedShape;
+        private FrameworkElement shapeParent;
         public event PropertyChangedEventHandler PropertyChanged;
 
         // --
@@ -69,21 +70,39 @@ namespace WireFrame.Controls
         public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
         {
             this.selectedShape = shape;
+            this.shapeParent = parent;
 
-            var transform = shape.GetPath().TransformToVisual(parent);
+            UpdateSelectedShape(zoomFactor);
+
+            UpdateGeometryGroup(shape);
+
+            Stretch = shape.GetPath().Stretch;
+        }
+
+        public IShape GetSelectedShape()
+        {
+            return this.selectedShape;
+        }
+
+        public void UpdateSelectedShape(float zoomFactor)
+        {
+            var transform = this.selectedShape.GetPath().TransformToVisual(this.shapeParent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Left = ePoint.X;
             Top = ePoint.Y;
-            Length = shape.GetLength() * zoomFactor;
-            Breath = shape.GetBreath() * zoomFactor;
+            Length = this.selectedShape.GetLength() * zoomFactor;
+            Breath = this.selectedShape.GetBreath() * zoomFactor;
+        }
 
+        private void UpdateGeometryGroup(IShape shape)
+        {
             _geometry_group.Children = new GeometryCollection();
 
             var geoGroup = shape.GetPath().Data as GeometryGroup;
-            foreach(var geo in geoGroup.Children)
+            foreach (var geo in geoGroup.Children)
             {
-                if(geo is EllipseGeometry)
+                if (geo is EllipseGeometry)
                 {
                     _geometry_group.Children.Add(CloneEllipseGeometry(geo as EllipseGeometry));
                 }
@@ -92,8 +111,6 @@ namespace WireFrame.Controls
                     _geometry_group.Children.Add(CloneRectangleGeometry(geo as RectangleGeometry));
                 }
             }
-
-            Stretch = shape.GetPath().Stretch;
         }
 
         private EllipseGeometry CloneEllipseGeometry(EllipseGeometry geo)
@@ -110,11 +127,6 @@ namespace WireFrame.Controls
             var rect = new RectangleGeometry();
             rect.Rect = new Rect(geo.Rect.X, geo.Rect.Y, geo.Rect.Width, geo.Rect.Height);
             return rect;
-        }
-
-        public IShape GetSelectedShape()
-        {
-            return this.selectedShape;
         }
     }
 }
