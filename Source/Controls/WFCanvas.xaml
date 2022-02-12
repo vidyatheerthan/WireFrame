@@ -45,6 +45,8 @@
 
             <local:WFRotationControl x:Name="_rotationControl" />
 
+            <local:WFShapeHighlight x:Name="_shapeHighlight" />
+
         </Canvas>
 
     </Grid>

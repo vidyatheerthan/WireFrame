@@ -119,6 +119,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Controls\WFShapeHighlight.xaml.cs">
+      <DependentUpon>WFShapeHighlight.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Misc\CanvasProfile.cs" />
     <Compile Include="Source\Controls\IElementSelector.cs" />
     <Compile Include="Source\Controls\WFActionTip.xaml.cs">
@@ -183,6 +186,10 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Source\Controls\WFActionTip.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Controls\WFShapeHighlight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
