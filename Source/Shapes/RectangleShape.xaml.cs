@@ -69,6 +69,11 @@ namespace WireFrame.Shapes
             Stretch = Stretch.Fill;
         }
 
+        public RectangleGeometry GetRectangleGeometry()
+        {
+            return this._rectGeometry;
+        }
+
         private void OnPropertyChanged(string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

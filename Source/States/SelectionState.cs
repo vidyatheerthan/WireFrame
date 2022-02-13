@@ -87,7 +87,7 @@ namespace WireFrame.States
                 if (this.isTracking)
                 {
                     ResizeBoundingBox(hudPointer.Position);
-                    HighlightShapesUnderBoundingBox(data.grid, data.scrollViewer, data.container, canvasPointer.Position);
+                    HighlightShapesUnderBoundingBox(data.container);
                 }
                 else
                 {
@@ -173,9 +173,14 @@ namespace WireFrame.States
             this.boundingBox.SetBreath(height > 0 ? height : 1);
         }
 
-        private void HighlightShapesUnderBoundingBox(Grid grid, ScrollViewer scrollViewer, Canvas container, Point position)
+        private void HighlightShapesUnderBoundingBox(Canvas container)
         {
-            
+            Rect bounds = new Rect(this.boundingBox.Left, this.boundingBox.Top, this.boundingBox.Length, this.boundingBox.Breath);
+            var shapes = GetShapesUnderBounds(container, bounds);
+            foreach(var shape in shapes)
+            {
+                (shape as IShape).GetPath().Fill = new SolidColorBrush(Colors.Red);
+            }
         }
 
         private void DestroyBoundingBox(Canvas hud)
@@ -190,11 +195,18 @@ namespace WireFrame.States
             DrawSelector(data.grid, data.scrollViewer, data.container, data.selector, position);
         }
 
-        private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
+        private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Canvas container, Point position)
         {
             GeneralTransform transform = container.TransformToVisual(scrollViewer);
             Point transformedPoint = transform.TransformPoint(position);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
+            elements = elements.Where(item => item is IShape).ToList(); // allow only IShape
+            return elements;
+        }
+
+        private IEnumerable<UIElement> GetShapesUnderBounds(Canvas container,  Rect bounds)
+        {
+            var elements = VisualTreeHelper.FindElementsInHostCoordinates(bounds, container);
             elements = elements.Where(item => item is IShape).ToList(); // allow only IShape
             return elements;
         }

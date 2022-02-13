@@ -21,7 +21,7 @@
             Stretch="{x:Bind Stretch, Mode=OneWay}">
             <Path.Data>
                 <GeometryGroup>
-                    <RectangleGeometry Rect="0,0,100,100" />
+                    <RectangleGeometry x:Name="_rectGeometry" Rect="0,0,100,100" />
                 </GeometryGroup>
             </Path.Data>
         </Path>
