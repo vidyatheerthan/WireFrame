@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
@@ -91,7 +92,7 @@ namespace WireFrame.Controls
 
             UpdateGeometryGroup(shape);
 
-            Stretch = shape.GetPath().Stretch;
+            Stretch = shape.GetViewbox().Stretch;
         }
 
         public IShape GetSelectedShape()
@@ -103,7 +104,7 @@ namespace WireFrame.Controls
         {
             if(this.selectedShape == null || this.shapeParent == null) { return; }
 
-            var transform = this.selectedShape.GetPath().TransformToVisual(this.shapeParent);
+            var transform = this.selectedShape.GetViewbox().TransformToVisual(this.shapeParent);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Left = ePoint.X;
@@ -128,6 +129,8 @@ namespace WireFrame.Controls
                     _geometry_group.Children.Add(CloneRectangleGeometry(geo as RectangleGeometry));
                 }
             }
+
+            Debug.WriteLine("[WFShapeHighlight] geometry group children:" + _geometry_group.Children.Count);
         }
 
         private EllipseGeometry CloneEllipseGeometry(EllipseGeometry geo)

@@ -118,5 +118,10 @@ namespace WireFrame.Shapes
         {
             return _path;
         }
+
+        public Viewbox GetViewbox()
+        {
+            return this._viewbox;
+        }
     }
 }
