@@ -66,7 +66,6 @@ namespace WireFrame.Shapes
 
             Stroke = new SolidColorBrush(Colors.Blue);
             Fill = new SolidColorBrush(Colors.AliceBlue);
-            Stretch = Stretch.Fill;
         }
 
         public RectangleGeometry GetRectangleGeometry()

@@ -92,7 +92,7 @@ namespace WireFrame.Controls
 
             UpdateGeometryGroup(shape);
 
-            Stretch = shape.GetViewbox().Stretch;
+            _viewbox.Stretch = shape.GetViewbox().Stretch;
         }
 
         public IShape GetSelectedShape()

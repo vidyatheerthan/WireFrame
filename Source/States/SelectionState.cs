@@ -91,7 +91,7 @@ namespace WireFrame.States
                 }
                 else
                 {
-                    HighlightShapeUnderPointer(data.grid, data.scrollViewer, data.container, canvasPointer.Position);
+                    HighlightShapeUnderPointer(canvasPointer.Position);
                 }
             }
             else if (pointerState == PointerState.Released)
@@ -192,7 +192,7 @@ namespace WireFrame.States
 
         private void DoBoundingBoxAction(Point position)
         {
-            DrawSelector(data.grid, data.scrollViewer, data.container, data.selector, position);
+            SelectShapeUnderPointer(position);
         }
 
         private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Canvas container, Point position)
@@ -211,23 +211,34 @@ namespace WireFrame.States
             return elements;
         }
 
-        private void DrawSelector(Grid grid, ScrollViewer scrollViewer, Canvas container, IElementSelector selector, Point position)
+        private void SelectShapeUnderPointer(Point position)
         {
-            var shapes = GetShapesUnderPointer(scrollViewer, container, position);
+            var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
+
             if (shapes != null && shapes.Count() > 0)
             {
-                selector.SetSelectedShape(shapes.First() as IShape, grid, scrollViewer.ZoomFactor);
-                selector.Show(true);
+                var shape = shapes.First() as IShape;
+
+                if (data.selector.GetSelectedShape() == shape)
+                {
+                    data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+                }
+                else
+                {
+                    data.selector.SetSelectedShape(shape, data.grid, data.scrollViewer.ZoomFactor);
+                }
+
+                data.selector.Show(true);
             }
             else
             {
-                selector.Show(false);
+                data.selector.Show(false);
             }
         }
 
-        private void HighlightShapeUnderPointer(Grid grid, ScrollViewer scrollViewer, Canvas container, Point position)
+        private void HighlightShapeUnderPointer(Point position)
         {
-            var shapes = GetShapesUnderPointer(scrollViewer, container, position);
+            var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
             
             if (shapes != null && shapes.Count() > 0)
             {
@@ -235,11 +246,11 @@ namespace WireFrame.States
                 
                 if(data.highlighter.GetSelectedShape() == shape)
                 {
-                    data.highlighter.UpdateSelectedShape(scrollViewer.ZoomFactor);
+                    data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
                 }
                 else
                 {
-                    data.highlighter.SetSelectedShape(shape, grid, scrollViewer.ZoomFactor);
+                    data.highlighter.SetSelectedShape(shape, data.grid, data.scrollViewer.ZoomFactor);
                 }
 
                 data.highlighter.Show(true);
