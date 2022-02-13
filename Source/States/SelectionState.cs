@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
@@ -42,6 +44,8 @@ namespace WireFrame.States
         // --
 
         private Data data = null;
+        private RectangleShape boundingBox;
+        private bool isTracking = false;
 
         // --
 
@@ -68,20 +72,39 @@ namespace WireFrame.States
                 return false;
             }
 
-            PointerPoint pointer = e.GetCurrentPoint(data.canvas);
+            PointerPoint canvasPointer = e.GetCurrentPoint(data.canvas);
+            PointerPoint hudPointer = e.GetCurrentPoint(data.hud);
 
-            if (!Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
+            if (pointerState == PointerState.Pressed &&
+                    canvasPointer.Properties.IsLeftButtonPressed &&
+                    !Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
-                if (pointerState == PointerState.Pressed && pointer.Properties.IsLeftButtonPressed)
+                DrawNewBoundingBox(data.hud, hudPointer.Position);
+                this.isTracking = true;
+            }
+            else if (pointerState == PointerState.Moved)
+            {
+                if (this.isTracking)
                 {
-                    DrawSelector(data.grid, data.scrollViewer, data.container, data.selector, pointer.Position);
+                    ResizeBoundingBox(hudPointer.Position);
+                    HighlightShapesUnderBoundingBox(data.grid, data.scrollViewer, data.container, canvasPointer.Position);
                 }
-                else if (pointerState == PointerState.Moved)
+                else
                 {
-                    HighlightShape(data.grid, data.scrollViewer, data.container, pointer.Position);
+                    HighlightShapeUnderPointer(data.grid, data.scrollViewer, data.container, canvasPointer.Position);
                 }
             }
-            return false;
+            else if (pointerState == PointerState.Released)
+            {
+                if (this.isTracking)
+                {
+                    DoBoundingBoxAction(canvasPointer.Position);
+                    DestroyBoundingBox(data.hud);
+                    this.isTracking = false;
+                }
+            }
+
+            return this.isTracking;
         }
 
         public bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args)
@@ -124,6 +147,49 @@ namespace WireFrame.States
             }
         }
 
+        private void DrawNewBoundingBox(Canvas hud, Point position)
+        {
+            hud.Children.Remove(this.boundingBox);
+
+            this.boundingBox = new RectangleShape();
+            this.boundingBox.SetLeft(position.X);
+            this.boundingBox.SetTop(position.Y);
+            this.boundingBox.SetLength(1);
+            this.boundingBox.SetBreath(1);
+            this.boundingBox.Fill = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
+
+            hud.Children.Insert(hud.Children.Count, this.boundingBox);
+            Debug.WriteLine("[DrawNewBoundingBox] Hud Children:" + hud.Children.Count);
+        }
+
+        private void ResizeBoundingBox(Point position)
+        {
+            if(this.boundingBox == null) { return; }
+
+            double width = position.X - this.boundingBox.GetLeft();
+            double height = position.Y - this.boundingBox.GetTop();
+
+            this.boundingBox.SetLength(width > 0 ? width : 1);
+            this.boundingBox.SetBreath(height > 0 ? height : 1);
+        }
+
+        private void HighlightShapesUnderBoundingBox(Grid grid, ScrollViewer scrollViewer, Canvas container, Point position)
+        {
+            
+        }
+
+        private void DestroyBoundingBox(Canvas hud)
+        {
+            hud.Children.Remove(this.boundingBox);
+            this.boundingBox = null;
+            Debug.WriteLine("[DestroyBoundingBox] Hud Children:" + hud.Children.Count);
+        }
+
+        private void DoBoundingBoxAction(Point position)
+        {
+            DrawSelector(data.grid, data.scrollViewer, data.container, data.selector, position);
+        }
+
         private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Panel container, Point position)
         {
             GeneralTransform transform = container.TransformToVisual(scrollViewer);
@@ -147,7 +213,7 @@ namespace WireFrame.States
             }
         }
 
-        private void HighlightShape(Grid grid, ScrollViewer scrollViewer, Canvas container, Point position)
+        private void HighlightShapeUnderPointer(Grid grid, ScrollViewer scrollViewer, Canvas container, Point position)
         {
             var shapes = GetShapesUnderPointer(scrollViewer, container, position);
             
