@@ -47,7 +47,7 @@
 
             <local:WFShapeHighlight x:Name="_shapeHighlight" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
 
-            <local:WFShapeHighlight x:Name="_shapeSelect" Stroke="#FF0000FF" StrokeThickness="3.0" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:WFShapeHighlight x:Name="_shapeSelect" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
 
         </Canvas>
 
