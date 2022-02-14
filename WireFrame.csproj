@@ -119,6 +119,7 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Controls\IMultiSelector.cs" />
     <Compile Include="Source\Controls\WFShapeHighlight.xaml.cs">
       <DependentUpon>WFShapeHighlight.xaml</DependentUpon>
     </Compile>
