@@ -8,7 +8,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame
 {
-    interface IElementSelector
+    interface ISelector
     {
         void Show(bool show);
         void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor);

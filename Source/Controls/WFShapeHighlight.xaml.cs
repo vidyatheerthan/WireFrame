@@ -21,7 +21,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFShapeHighlight : UserControl, IElementSelector, INotifyPropertyChanged
+    public sealed partial class WFShapeHighlight : UserControl, ISelector, INotifyPropertyChanged
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }

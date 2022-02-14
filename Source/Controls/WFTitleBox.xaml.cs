@@ -18,7 +18,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFTitleBox : UserControl, IElementSelector
+    public sealed partial class WFTitleBox : UserControl, ISelector
     {
         private IShape selectedShape;
         private FrameworkElement shapeParent;
