@@ -68,7 +68,7 @@ namespace WireFrame.Controls
         // --
 
         private IShape selectedShape = null;
-        private Canvas container = null;
+        private FrameworkElement container = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
         // --
@@ -88,7 +88,7 @@ namespace WireFrame.Controls
             Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void SetSelectedShape(IShape shape, Canvas container, float zoomFactor)
+        public void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor)
         {
             this.selectedShape = shape;
             this.container = container;

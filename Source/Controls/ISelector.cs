@@ -12,7 +12,7 @@ namespace WireFrame
     interface ISelector
     {
         void Show(bool show);
-        void SetSelectedShape(IShape shape, Canvas container, float zoomFactor);
+        void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor);
         IShape GetSelectedShape();
         void UpdateSelectedShape(float zoomFactor);
     }

@@ -21,7 +21,7 @@ namespace WireFrame.Controls
     public sealed partial class WFTitleBox : UserControl, ISelector
     {
         private IShape selectedShape;
-        private Canvas container;
+        private FrameworkElement container;
 
         // --
 
@@ -30,7 +30,7 @@ namespace WireFrame.Controls
             this.InitializeComponent();
         }
 
-        public void SetSelectedShape(IShape shape, Canvas container, float zoomFactor)
+        public void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor)
         {
             this.selectedShape = shape;
             this.container = container;
