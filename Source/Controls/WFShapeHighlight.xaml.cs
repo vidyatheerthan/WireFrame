@@ -68,7 +68,7 @@ namespace WireFrame.Controls
         // --
 
         private IShape selectedShape = null;
-        private FrameworkElement shapeParent = null;
+        private Canvas container = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
         // --
@@ -88,10 +88,10 @@ namespace WireFrame.Controls
             Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedShape(IShape shape, Canvas container, float zoomFactor)
         {
             this.selectedShape = shape;
-            this.shapeParent = parent;
+            this.container = container;
 
             UpdateGeometryGroup(shape);
             UpdateSelectedShape(zoomFactor);
@@ -104,9 +104,9 @@ namespace WireFrame.Controls
 
         public void UpdateSelectedShape(float zoomFactor)
         {
-            if(this.selectedShape == null || this.shapeParent == null) { return; }
+            if(this.selectedShape == null || this.container == null) { return; }
 
-            var transform = this.selectedShape.GetViewbox().TransformToVisual(this.shapeParent);
+            var transform = this.selectedShape.GetViewbox().TransformToVisual(this.container);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Left = ePoint.X;

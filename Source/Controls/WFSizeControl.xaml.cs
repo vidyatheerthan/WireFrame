@@ -31,7 +31,7 @@ namespace WireFrame.Controls
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
         private IShape selectedShape;
-        private FrameworkElement shapeParent;
+        private Canvas container;
 
         // --
 
@@ -64,19 +64,19 @@ namespace WireFrame.Controls
             _bottom_right_circle.PointerExited += OnPointerExitedBottomRightHitBox;
         }
 
-        public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedShape(IShape shape, Canvas container, float zoomFactor)
         {
             this.selectedShape = shape;
-            this.shapeParent = parent;
+            this.container = container;
 
             UpdateSelectedShape(zoomFactor);
         }
 
         public void UpdateSelectedShape(float zoomFactor)
         {
-            if (this.selectedShape == null || this.shapeParent == null) { return; }
+            if (this.selectedShape == null || this.container == null) { return; }
 
-            UpdateBox(this.selectedShape, this.shapeParent, zoomFactor);
+            UpdateBox(this.selectedShape, this.container, zoomFactor);
             UpdateHitBox();
             UpdateCircles();
         }

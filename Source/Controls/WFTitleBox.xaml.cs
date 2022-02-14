@@ -21,7 +21,7 @@ namespace WireFrame.Controls
     public sealed partial class WFTitleBox : UserControl, ISelector
     {
         private IShape selectedShape;
-        private FrameworkElement shapeParent;
+        private Canvas container;
 
         // --
 
@@ -30,19 +30,19 @@ namespace WireFrame.Controls
             this.InitializeComponent();
         }
 
-        public void SetSelectedShape(IShape shape, FrameworkElement parent, float zoomFactor)
+        public void SetSelectedShape(IShape shape, Canvas container, float zoomFactor)
         {
             this.selectedShape = shape;
-            this.shapeParent = parent;
+            this.container = container;
 
             UpdateSelectedShape(zoomFactor);
         }
 
         public void UpdateSelectedShape(float zoomFactor)
         {
-            if (this.selectedShape == null || this.shapeParent == null) { return; }
+            if (this.selectedShape == null || this.container == null) { return; }
 
-            var transform = this.selectedShape.GetPath().TransformToVisual(this.shapeParent);
+            var transform = this.selectedShape.GetPath().TransformToVisual(this.container);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             Canvas.SetLeft(_box, ePoint.X);
