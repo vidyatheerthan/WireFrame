@@ -50,8 +50,14 @@ namespace WireFrame.Shapes
         public Brush Fill { get => (Brush)GetValue(ColorFillProperty); set => SetValue(ColorFillProperty, value); }
 
         // --
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
-        public Stretch Stretch { get => (Stretch)GetValue(StretchProperty); set => SetValue(StretchProperty, value); }
+
+        public static readonly DependencyProperty PathStretchProperty = DependencyProperty.Register(nameof(PathStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public Stretch PathStretch { get => (Stretch)GetValue(PathStretchProperty); set => SetValue(PathStretchProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty ViewStretchProperty = DependencyProperty.Register(nameof(ViewStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public Stretch ViewStretch { get => (Stretch)GetValue(ViewStretchProperty); set => SetValue(ViewStretchProperty, value); }
 
         // --
 
@@ -71,6 +77,7 @@ namespace WireFrame.Shapes
             Stroke = new SolidColorBrush(Colors.Blue);
             Fill = new SolidColorBrush(Colors.AliceBlue);
             FillRule = FillRule.EvenOdd;
+            PathStretch = Stretch.Fill;
         }
 
         private void OnPropertyChanged(string propertyName = null)

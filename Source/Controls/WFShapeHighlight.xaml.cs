@@ -42,8 +42,13 @@ namespace WireFrame.Controls
         public double Breath { get => (double)GetValue(BreathProperty); set => SetValue(BreathProperty, value); }
 
         // --
-        public static readonly DependencyProperty StretchProperty = DependencyProperty.Register(nameof(Stretch), typeof(Stretch), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public Stretch Stretch { get => (Stretch)GetValue(StretchProperty); set => SetValue(StretchProperty, value); }
+        public static readonly DependencyProperty PathStretchProperty = DependencyProperty.Register(nameof(PathStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public Stretch PathStretch { get => (Stretch)GetValue(PathStretchProperty); set => SetValue(PathStretchProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty ViewStretchProperty = DependencyProperty.Register(nameof(ViewStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public Stretch ViewStretch { get => (Stretch)GetValue(ViewStretchProperty); set => SetValue(ViewStretchProperty, value); }
 
         // --
 
@@ -62,8 +67,8 @@ namespace WireFrame.Controls
 
         // --
 
-        private IShape selectedShape;
-        private FrameworkElement shapeParent;
+        private IShape selectedShape = null;
+        private FrameworkElement shapeParent = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
         // --
@@ -88,11 +93,8 @@ namespace WireFrame.Controls
             this.selectedShape = shape;
             this.shapeParent = parent;
 
-            UpdateSelectedShape(zoomFactor);
-
             UpdateGeometryGroup(shape);
-
-            _viewbox.Stretch = shape.GetViewbox().Stretch;
+            UpdateSelectedShape(zoomFactor);
         }
 
         public IShape GetSelectedShape()
@@ -111,6 +113,9 @@ namespace WireFrame.Controls
             Top = ePoint.Y;
             Length = this.selectedShape.GetLength() * zoomFactor;
             Breath = this.selectedShape.GetBreath() * zoomFactor;
+
+            PathStretch = this.selectedShape.GetPath().Stretch;
+            ViewStretch = this.selectedShape.GetViewbox().Stretch;
         }
 
         private void UpdateGeometryGroup(IShape shape)
