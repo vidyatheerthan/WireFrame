@@ -157,6 +157,8 @@ namespace WireFrame.States
             this.boundingBox.SetLength(1);
             this.boundingBox.SetBreath(1);
             this.boundingBox.Fill = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
+            this.boundingBox.PathStretch = Stretch.Fill;
+            this.boundingBox.ViewStretch = Stretch.Fill;
 
             hud.Children.Insert(hud.Children.Count, this.boundingBox);
             Debug.WriteLine("[DrawNewBoundingBox] Hud Children:" + hud.Children.Count);

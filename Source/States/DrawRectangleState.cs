@@ -138,6 +138,9 @@ namespace WireFrame.States
             rect.SetLength(width);
             rect.SetBreath(height);
 
+            rect.PathStretch = Stretch.Fill;
+            rect.ViewStretch = Stretch.Fill;
+
             container.Children.Insert(container.Children.Count, rect);
             return rect;
         }

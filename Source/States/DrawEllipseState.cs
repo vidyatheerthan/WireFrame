@@ -140,6 +140,9 @@ namespace WireFrame.States
             ellipse.SetLength(width);
             ellipse.SetBreath(height);
 
+            ellipse.PathStretch = Stretch.Fill;
+            ellipse.ViewStretch = Stretch.Fill;
+
             return ellipse;
         }
 
