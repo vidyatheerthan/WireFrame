@@ -120,6 +120,9 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Controls\IMultiSelector.cs" />
+    <Compile Include="Source\Controls\SelectorGroup.xaml.cs">
+      <DependentUpon>SelectorGroup.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Controls\WFShapeHighlight.xaml.cs">
       <DependentUpon>WFShapeHighlight.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Page Include="Source\Controls\SelectorGroup.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Source\Controls\WFActionTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

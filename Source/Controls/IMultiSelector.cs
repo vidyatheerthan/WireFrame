@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Windows.UI.Xaml.Controls;
 using WireFrame.Shapes;
 
-namespace WireFrame.Source.Controls
+namespace WireFrame.Controls
 {
     interface IMultiSelector
     {

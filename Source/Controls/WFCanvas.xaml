@@ -49,6 +49,12 @@
 
             <local:WFShapeHighlight x:Name="_shapeSelect" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
 
+            <local:SelectorGroup x:Name="_highlightSelectorGroup">
+                <local:SelectorGroup.Selector>
+                    <local:WFShapeHighlight x:Name="_highlightSelectorGroup_selector" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
+                </local:SelectorGroup.Selector>
+            </local:SelectorGroup>
+
         </Canvas>
 
     </Grid>
