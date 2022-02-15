@@ -14,11 +14,11 @@
             x:Name="_viewbox"
             Canvas.Left="{x:Bind Left, Mode=OneWay}" 
             Canvas.Top="{x:Bind Top, Mode=OneWay}"
-            Width="{x:Bind Length, Mode=OneWay}"
-            Height="{x:Bind Breath, Mode=OneWay}"
             Stretch="{x:Bind ViewStretch, Mode=OneWay}">
             <Path
-                x:Name="_path"            
+                x:Name="_path"
+                Width="{x:Bind Length, Mode=OneWay}"
+                Height="{x:Bind Breath, Mode=OneWay}"
                 Stroke="{x:Bind Stroke, Mode=OneWay}"
                 Fill="{x:Bind Fill, Mode=OneWay}"
                 Stretch="{x:Bind PathStretch, Mode=OneWay}">
