@@ -62,6 +62,12 @@ namespace WireFrame.States
                 (objects[6] is ISelector))
             {
                 this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as ISelector, objects[6] as ISelector);
+
+                this.data.highlighter.SetContainer(data.grid);
+                this.data.selector.SetContainer(data.grid);
+
+                data.highlighter.Show(true);
+                data.selector.Show(true);
             }
         }
 
@@ -80,6 +86,7 @@ namespace WireFrame.States
                     !Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
                 DrawNewBoundingBox(data.hud, hudPointer.Position);
+                SelectShapeUnderPointer(canvasPointer.Position);
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved)
@@ -87,7 +94,7 @@ namespace WireFrame.States
                 if (this.isTracking)
                 {
                     ResizeBoundingBox(hudPointer.Position);
-                    HighlightShapesUnderBoundingBox(data.container);
+                    SelectShapesUnderBoundingBox(data.container);
                 }
                 else
                 {
@@ -119,8 +126,8 @@ namespace WireFrame.States
                 return;
             }
 
-            data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
-            data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+            data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
+            data.highlighter.UpdateShapes(data.scrollViewer.ZoomFactor);
         }
 
         public void HandleScroll()
@@ -130,8 +137,8 @@ namespace WireFrame.States
                 return;
             }
 
-            data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
-            data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+            data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
+            data.highlighter.UpdateShapes(data.scrollViewer.ZoomFactor);
         }
 
         public void ActiveState(IFiniteStateMachine state)
@@ -143,7 +150,7 @@ namespace WireFrame.States
                     return;
                 }
 
-                data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
+                data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
             }
         }
 
@@ -175,14 +182,12 @@ namespace WireFrame.States
             this.boundingBox.SetBreath(height > 0 ? height : 1);
         }
 
-        private void HighlightShapesUnderBoundingBox(Canvas container)
+        private void SelectShapesUnderBoundingBox(Canvas container)
         {
             Rect bounds = new Rect(this.boundingBox.Left, this.boundingBox.Top, this.boundingBox.Length, this.boundingBox.Breath);
             var shapes = GetShapesUnderBounds(container, bounds);
-            foreach(var shape in shapes)
-            {
-                (shape as IShape).GetPath().Fill = new SolidColorBrush(Colors.Red);
-            }
+            data.selector.AddShapes(shapes);
+            data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
         }
 
         private void DestroyBoundingBox(Canvas hud)
@@ -194,47 +199,36 @@ namespace WireFrame.States
 
         private void DoBoundingBoxAction(Point position)
         {
-            SelectShapeUnderPointer(position);
         }
 
-        private IEnumerable<UIElement> GetShapesUnderPointer(ScrollViewer scrollViewer, Canvas container, Point position)
+        private List<IShape> GetShapesUnderPointer(ScrollViewer scrollViewer, Canvas container, Point position)
         {
             GeneralTransform transform = container.TransformToVisual(scrollViewer);
             Point transformedPoint = transform.TransformPoint(position);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
-            elements = elements.Where(item => item is IShape).ToList(); // allow only IShape
-            return elements;
+            var shapes  = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
+            return shapes;
         }
 
-        private IEnumerable<UIElement> GetShapesUnderBounds(Canvas container,  Rect bounds)
+        private List<IShape> GetShapesUnderBounds(Canvas container,  Rect bounds)
         {
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(bounds, container);
-            elements = elements.Where(item => item is IShape).ToList(); // allow only IShape
-            return elements;
+            var shapes = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
+            return shapes;
         }
 
         private void SelectShapeUnderPointer(Point position)
         {
             var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
-
+            
+            data.selector.RemoveAllShapes();
+            
             if (shapes != null && shapes.Count() > 0)
             {
-                var shape = shapes.First() as IShape;
+                var shape = shapes.First();
 
-                if (data.selector.GetSelectedShape() == shape)
-                {
-                    data.selector.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
-                }
-                else
-                {
-                    data.selector.SetSelectedShape(shape, data.grid, data.scrollViewer.ZoomFactor);
-                }
-
-                data.selector.Show(true);
-            }
-            else
-            {
-                data.selector.Show(false);
+                data.selector.AddShape(shape);
+                data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
             }
         }
 
@@ -244,22 +238,14 @@ namespace WireFrame.States
             
             if (shapes != null && shapes.Count() > 0)
             {
-                var shape = shapes.First() as IShape;
-                
-                if(data.highlighter.GetSelectedShape() == shape)
-                {
-                    data.highlighter.UpdateSelectedShape(data.scrollViewer.ZoomFactor);
-                }
-                else
-                {
-                    data.highlighter.SetSelectedShape(shape, data.grid, data.scrollViewer.ZoomFactor);
-                }
+                var shape = shapes.First();
 
-                data.highlighter.Show(true);
+                data.highlighter.AddShape(shape);
+                data.highlighter.UpdateShapes(data.scrollViewer.ZoomFactor);
             }
             else
             {
-                data.highlighter.Show(false);
+                data.highlighter.RemoveAllShapes();
             }
         }
     }

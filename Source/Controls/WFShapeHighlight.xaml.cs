@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
@@ -15,6 +14,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using Windows.UI.Xaml.Shapes;
 using WireFrame.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -23,51 +23,10 @@ namespace WireFrame.Controls
 {
     public sealed partial class WFShapeHighlight : UserControl, ISelector, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
+        private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
+        private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
 
-        // --
-
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public double Top { get => (double)GetValue(TopProperty); set => SetValue(TopProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public double Length { get => (double)GetValue(LengthProperty); set => SetValue(LengthProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public double Breath { get => (double)GetValue(BreathProperty); set => SetValue(BreathProperty, value); }
-
-        // --
-        public static readonly DependencyProperty PathStretchProperty = DependencyProperty.Register(nameof(PathStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
-        public Stretch PathStretch { get => (Stretch)GetValue(PathStretchProperty); set => SetValue(PathStretchProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty ViewStretchProperty = DependencyProperty.Register(nameof(ViewStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
-        public Stretch ViewStretch { get => (Stretch)GetValue(ViewStretchProperty); set => SetValue(ViewStretchProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(CompoundShape), new PropertyMetadata(null));
-        public Brush Stroke { get => (Brush)GetValue(StrokeProperty); set => SetValue(StrokeProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(nameof(StrokeThickness), typeof(double), typeof(WFShapeHighlight), new PropertyMetadata(null));
-        public double StrokeThickness { get => (double)GetValue(StrokeThicknessProperty); set => SetValue(StrokeThicknessProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty ColorFillProperty = DependencyProperty.Register(nameof(Fill), typeof(SolidColorBrush), typeof(CompoundShape), new PropertyMetadata(null));
-        public Brush Fill { get => (Brush)GetValue(ColorFillProperty); set => SetValue(ColorFillProperty, value); }
-
-        // --
-
-        private IShape selectedShape = null;
+        private Dictionary<IShape, int> shapes = new Dictionary<IShape, int>();
         private FrameworkElement container = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -83,60 +42,131 @@ namespace WireFrame.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        public void SetContainer(FrameworkElement container)
+        {
+            this.container = container;
+        }
+
         public void Show(bool show)
         {
             Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor)
+        public bool AddShape(IShape shape)
         {
-            this.selectedShape = shape;
-            this.container = container;
-
-            UpdateGeometryGroup(shape);
-            UpdateSelectedShape(zoomFactor);
+            if(shape == null || this.shapes.ContainsKey(shape)) { return false; }
+            var view = CreateNewViewbox(shape);
+            _canvas.Children.Add(view);
+            this.shapes.Add(shape, _canvas.Children.Count - 1);
+            return true;
         }
 
-        public IShape GetSelectedShape()
+        public bool AddShapes(List<IShape> newShapes)
         {
-            return this.selectedShape;
+            foreach(var shape in this.shapes.Keys.ToList())
+            {
+                if(!newShapes.Contains(shape))
+                {
+                    this._canvas.Children.RemoveAt(this.shapes[shape]);
+                    this.shapes.Remove(shape);
+                }
+            }
+
+            bool newAddition = false;
+
+            foreach(var shape in newShapes)
+            {
+                newAddition = AddShape(shape);
+            }
+
+            return newAddition;
         }
 
-        public void UpdateSelectedShape(float zoomFactor)
+        public List<IShape> GetShapes()
         {
-            if(this.selectedShape == null || this.container == null) { return; }
+            return this.shapes.Keys.ToList();
+        }
 
-            var transform = this.selectedShape.GetViewbox().TransformToVisual(this.container);
+        public void UpdateShapes(float zoomFactor)
+        {
+            if(this.shapes == null || this.container == null) { return; }
+
+            for(int i=0; i < this._canvas.Children.Count; ++i)
+            {
+                var shape = this.shapes.ElementAt(i).Key;
+                
+                var viewbox = this._canvas.Children[i] as Viewbox;
+                var path = viewbox.Child as Path;
+                UpdateViewbox(ref viewbox, shape);
+                UpdatePath(ref path, shape, zoomFactor);
+            }
+        }
+
+        public void RemoveAllShapes()
+        {
+            this._canvas.Children.Clear();
+            this.shapes.Clear();
+        }
+
+        private Viewbox CreateNewViewbox(IShape shape)
+        {
+            Viewbox v = new Viewbox();
+            
+            UpdateViewbox(ref v, shape);
+         
+            v.Child = CreateNewPath(shape);
+            return v;
+        }
+
+        private void UpdateViewbox(ref Viewbox v, IShape shape)
+        {
+            var transform = shape.GetViewbox().TransformToVisual(this.container);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
-            Left = ePoint.X;
-            Top = ePoint.Y;
-            Length = this.selectedShape.GetLength() * zoomFactor;
-            Breath = this.selectedShape.GetBreath() * zoomFactor;
-
-            PathStretch = this.selectedShape.GetPath().Stretch;
-            ViewStretch = this.selectedShape.GetViewbox().Stretch;
+            Canvas.SetLeft(v, ePoint.X);
+            Canvas.SetTop(v, ePoint.Y);
+            v.Stretch = shape.GetViewbox().Stretch;
         }
 
-        private void UpdateGeometryGroup(IShape shape)
+        private Path CreateNewPath(IShape shape)
         {
-            _geometry_group.Children = new GeometryCollection();
+            Path p = new Path();
+            UpdatePath(ref p, shape, 1.0f);
+            p.Data = CloneGeometryGroup(shape);
+            p.Fill = this.fillBrush;
+            p.Stroke = this.strokeBrush;
+            return p;
+        }
+
+        private void UpdatePath(ref Path p, IShape shape, float zoomFactor)
+        {
+            p.Width = shape.GetLength() * zoomFactor;
+            p.Height = shape.GetBreath() * zoomFactor;
+            p.Stretch = shape.GetPath().Stretch;
+        }
+
+        private GeometryGroup CloneGeometryGroup(IShape shape)
+        {
+            GeometryGroup gg = new GeometryGroup();
+            gg.Children = new GeometryCollection();
 
             var geoGroup = shape.GetPath().Data as GeometryGroup;
             foreach (var geo in geoGroup.Children)
             {
                 if (geo is EllipseGeometry)
                 {
-                    _geometry_group.Children.Add(CloneEllipseGeometry(geo as EllipseGeometry));
+                    gg.Children.Add(CloneEllipseGeometry(geo as EllipseGeometry));
                 }
                 else if (geo is RectangleGeometry)
                 {
-                    _geometry_group.Children.Add(CloneRectangleGeometry(geo as RectangleGeometry));
+                    gg.Children.Add(CloneRectangleGeometry(geo as RectangleGeometry));
                 }
             }
 
-            Debug.WriteLine("[WFShapeHighlight] geometry group children:" + _geometry_group.Children.Count);
+            return gg;
         }
+
+        
 
         private EllipseGeometry CloneEllipseGeometry(EllipseGeometry geo)
         {

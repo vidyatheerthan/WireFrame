@@ -45,9 +45,9 @@
 
             <local:WFRotationControl x:Name="_rotationControl" Visibility="Visible" />
 
-            <local:WFShapeHighlight x:Name="_shapeHighlight" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:WFShapeHighlight x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
 
-            <local:WFShapeHighlight x:Name="_shapeSelect" Fill="#770000FF" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:WFShapeHighlight x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
 
         </Canvas>
 

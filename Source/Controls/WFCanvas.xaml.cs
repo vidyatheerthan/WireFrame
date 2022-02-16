@@ -137,7 +137,7 @@ namespace WireFrame.Controls
             stateGroups.Add(StateExecutor.StateGroup.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.DrawRectangle);
+            this.stateExecutor.SelectStateGroup(StateExecutor.StateGroup.Selection_Pan_Focus);
 
             // --
             this.Loaded += OnLoaded;

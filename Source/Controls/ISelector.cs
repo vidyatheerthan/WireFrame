@@ -11,9 +11,12 @@ namespace WireFrame
 {
     public interface ISelector
     {
+        void SetContainer(FrameworkElement container);
         void Show(bool show);
-        void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor);
-        IShape GetSelectedShape();
-        void UpdateSelectedShape(float zoomFactor);
+        bool AddShape(IShape shape);
+        bool AddShapes(List<IShape> shapes);
+        List<IShape> GetShapes();
+        void UpdateShapes(float zoomFactor);
+        void RemoveAllShapes();
     }
 }
