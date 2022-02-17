@@ -65,9 +65,6 @@ namespace WireFrame.States
 
                 this.data.highlighter.SetContainer(data.grid);
                 this.data.selector.SetContainer(data.grid);
-
-                data.highlighter.Show(true);
-                data.selector.Show(true);
             }
         }
 
@@ -188,6 +185,7 @@ namespace WireFrame.States
             var shapes = GetShapesUnderBounds(container, bounds);
             data.selector.AddShapes(shapes);
             data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
+            data.selector.Show(true);
         }
 
         private void DestroyBoundingBox(Canvas hud)
@@ -229,6 +227,11 @@ namespace WireFrame.States
 
                 data.selector.AddShape(shape);
                 data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
+                data.selector.Show(true);
+            }
+            else
+            {
+                data.selector.Show(false);
             }
         }
 
@@ -242,10 +245,12 @@ namespace WireFrame.States
 
                 data.highlighter.AddShape(shape);
                 data.highlighter.UpdateShapes(data.scrollViewer.ZoomFactor);
+                data.highlighter.Show(true);
             }
             else
             {
                 data.highlighter.RemoveAllShapes();
+                data.highlighter.Show(false);
             }
         }
     }
