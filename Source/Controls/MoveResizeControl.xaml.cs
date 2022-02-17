@@ -68,9 +68,117 @@ namespace WireFrame.Controls
 
             _bottom_right_circle.PointerEntered += OnPointerEnterBottomRightHitBox;
             _bottom_right_circle.PointerExited += OnPointerExitedBottomRightHitBox;
+
+            _box.PointerPressed += OnPointerPressedOnBox;
+            _box.PointerMoved += OnPointerMovedOnBox;
+            _box.PointerReleased += OnPointerReleasedOnBox;
         }
 
-        
+
+        ///-------------------------------------------------------------------
+
+        private void OnPointerEnterLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+        }
+
+        private void OnPointerExitedLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+        }
+
+        private void OnPointerExitedRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+        }
+
+        private void OnPointerExitedTopHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+        }
+
+        private void OnPointerExitedBottomHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+        }
+
+        private void OnPointerExitedTopLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+        }
+
+        private void OnPointerExitedTopRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+        }
+
+        private void OnPointerExitedBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+        }
+
+        private void OnPointerExitedBottomRightHitBox(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        private void OnPointerPressedOnBox(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
+        private void OnPointerMovedOnBox(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
+        private void OnPointerReleasedOnBox(object sender, PointerRoutedEventArgs e)
+        {
+
+        }
+
         ///-------------------------------------------------------------------
 
         private void UpdateCorners(IShape shape, float zoomFactor, bool reset)
@@ -176,94 +284,7 @@ namespace WireFrame.Controls
             _bottom_right_circle.Height = HITBOX_SIZE;
         }
 
-        //
-        private void OnPointerEnterLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
-        }
-
-        private void OnPointerExitedLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
-        }
-
-        private void OnPointerExitedRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterTopHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
-        }
-
-        private void OnPointerExitedTopHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterBottomHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
-        }
-
-        private void OnPointerExitedBottomHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterTopLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
-        }
-
-        private void OnPointerExitedTopLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterTopRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
-        }
-
-        private void OnPointerExitedTopRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
-        }
-
-        private void OnPointerExitedBottomLeftHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
-        //
-        private void OnPointerEnterBottomRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
-        }
-
-        private void OnPointerExitedBottomRightHitBox(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
-
+        
         ///-------------------------------------------------------------------
 
 
