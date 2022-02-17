@@ -33,8 +33,11 @@ namespace WireFrame.Controls
         private Dictionary<IShape, Size> shapeSizes = new Dictionary<IShape, Size>(); // each shape and their size contribution in _box
         private FrameworkElement container = null;
 
-        private Point topLeft = new Point(0, 0);
-        private Point bottomRight = new Point(0, 0);
+        private Point hudTopLeft = new Point(0, 0);
+        private Point hudBottomRight = new Point(0, 0);
+
+        private Point canvasTopLeft = new Point(0, 0);
+        private Point canvasBottomRight = new Point(0, 0);
 
         // --
 
@@ -77,39 +80,46 @@ namespace WireFrame.Controls
 
             if (reset)
             {
-                this.topLeft.X = ePoint.X;
-                this.topLeft.Y = ePoint.Y;
+                this.hudTopLeft.X = ePoint.X;
+                this.hudTopLeft.Y = ePoint.Y;
+
+                this.canvasTopLeft.X = shape.GetLeft();
+                this.canvasTopLeft.Y = shape.GetTop();
             }
             else
             {
-                if (ePoint.X < this.topLeft.X)
+                if (ePoint.X < this.hudTopLeft.X)
                 {
-                    this.topLeft.X = ePoint.X;
+                    this.hudTopLeft.X = ePoint.X;
+                    this.canvasTopLeft.X = shape.GetLeft();
                 }
 
-                if (ePoint.Y < this.topLeft.Y)
+                if (ePoint.Y < this.hudTopLeft.Y)
                 {
-                    this.topLeft.Y = ePoint.Y;
+                    this.hudTopLeft.Y = ePoint.Y;
+                    this.canvasTopLeft.Y = shape.GetTop();
                 }
             }
 
-            if (ePoint.X + (shape.GetLength() * zoomFactor) > this.bottomRight.X)
+            if (ePoint.X + (shape.GetLength() * zoomFactor) > this.hudBottomRight.X)
             {
-                this.bottomRight.X = ePoint.X + (shape.GetLength() * zoomFactor);
+                this.hudBottomRight.X = ePoint.X + (shape.GetLength() * zoomFactor);
+                this.canvasBottomRight.X = shape.GetLeft() + shape.GetLength();
             }
 
-            if (ePoint.Y + (shape.GetBreath() * zoomFactor) > this.bottomRight.Y)
+            if (ePoint.Y + (shape.GetBreath() * zoomFactor) > this.hudBottomRight.Y)
             {
-                this.bottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
+                this.hudBottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
+                this.canvasBottomRight.Y = shape.GetTop() + shape.GetBreath();
             }
         }
 
         private void UpdateBox()
         {
-            Canvas.SetLeft(_box, this.topLeft.X);
-            Canvas.SetTop(_box, this.topLeft.Y);
-            _box.Width = this.bottomRight.X - this.topLeft.X;
-            _box.Height = this.bottomRight.Y - this.topLeft.Y;
+            Canvas.SetLeft(_box, this.hudTopLeft.X);
+            Canvas.SetTop(_box, this.hudTopLeft.Y);
+            _box.Width = this.hudBottomRight.X - this.hudTopLeft.X;
+            _box.Height = this.hudBottomRight.Y - this.hudTopLeft.Y;
         }
 
         private void UpdateHitBox()
@@ -323,17 +333,28 @@ namespace WireFrame.Controls
         public void RemoveAllShapes()
         {
             this.shapeSizes.Clear();
-            this.topLeft = new Point(0, 0);
-            this.bottomRight = new Point(0, 0);
+            
+            this.hudTopLeft = new Point(0, 0);
+            this.hudBottomRight = new Point(0, 0);
+
+            this.canvasTopLeft = new Point(0, 0);
+            this.canvasBottomRight = new Point(0, 0);
+
             _box.Width = 0.0;
             _box.Height = 0.0;
         }
 
         ///-------------------------------------------------------------------
 
-        public Rect GetRect()
+        public Rect GetHudRect()
         {
-            Rect r = new Rect(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+            Rect r = new Rect(hudTopLeft.X, hudTopLeft.Y, hudBottomRight.X - hudTopLeft.X, hudBottomRight.Y - hudTopLeft.Y);
+            return r;
+        }
+
+        public Rect GetCanvasRect()
+        {
+            Rect r = new Rect(canvasTopLeft.X, canvasTopLeft.Y, canvasBottomRight.X - canvasTopLeft.X, canvasBottomRight.Y - canvasTopLeft.Y);
             return r;
         }
     }
