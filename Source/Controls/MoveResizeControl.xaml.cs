@@ -20,7 +20,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFSizeControl : UserControl, ISelector
+    public sealed partial class MoveResizeControl : UserControl, ISelector
     {
         const double HITBOX_SIZE = 10.0;
 
@@ -41,7 +41,7 @@ namespace WireFrame.Controls
 
         // --
 
-        public WFSizeControl()
+        public MoveResizeControl()
         {
             this.InitializeComponent();
 

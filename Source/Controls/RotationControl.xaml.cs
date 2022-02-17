@@ -20,7 +20,7 @@ using Path = Windows.UI.Xaml.Shapes.Path;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFRotationControl : UserControl
+    public sealed partial class RotationControl : UserControl
     {
         private Point axisPoint = new Point(1000, 1000);
         private double arcRadius = 10.0;
@@ -30,7 +30,7 @@ namespace WireFrame.Controls
 
         public Point AxisPoint { get => this.axisPoint; }
 
-        public WFRotationControl()
+        public RotationControl()
         {
             this.InitializeComponent();
 

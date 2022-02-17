@@ -10,7 +10,7 @@
 
     <Grid x:Name="_grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
 
-        <local:WFCanvas x:Name="_canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <local:CanvasControl x:Name="_canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
 
     </Grid>
     

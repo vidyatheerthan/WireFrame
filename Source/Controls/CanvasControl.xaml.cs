@@ -27,14 +27,14 @@ using FocusState = WireFrame.States.FocusState;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFCanvas : UserControl, INotifyPropertyChanged
+    public sealed partial class CanvasControl : UserControl, INotifyPropertyChanged
     {
         //---------------------------------
 
         public static readonly DependencyProperty FrameWidthDependencyProperty = DependencyProperty.Register(
             nameof(FrameWidth),
             typeof(double),
-            typeof(WFCanvas),
+            typeof(CanvasControl),
             new PropertyMetadata(null)
         );
 
@@ -53,7 +53,7 @@ namespace WireFrame.Controls
         public static readonly DependencyProperty FrameHeightDependencyProperty = DependencyProperty.Register(
             nameof(FrameHeight),
             typeof(double),
-            typeof(WFCanvas),
+            typeof(CanvasControl),
             new PropertyMetadata(null)
         );
 
@@ -72,7 +72,7 @@ namespace WireFrame.Controls
         public static readonly DependencyProperty CanvasWidthDependencyProperty = DependencyProperty.Register(
             nameof(CanvasWidth),
             typeof(double),
-            typeof(WFCanvas),
+            typeof(CanvasControl),
             new PropertyMetadata(null)
         );
 
@@ -91,7 +91,7 @@ namespace WireFrame.Controls
         public static readonly DependencyProperty CanvasHeightDependencyProperty = DependencyProperty.Register(
             nameof(CanvasHeight),
             typeof(double),
-            typeof(WFCanvas),
+            typeof(CanvasControl),
             new PropertyMetadata(null)
         );
 
@@ -118,7 +118,7 @@ namespace WireFrame.Controls
         //====================================================================================================
 
 
-        public WFCanvas()
+        public CanvasControl()
         {
             this.InitializeComponent();
 

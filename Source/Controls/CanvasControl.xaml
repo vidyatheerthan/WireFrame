@@ -1,5 +1,5 @@
 ﻿<UserControl
-    x:Class="WireFrame.Controls.WFCanvas"
+    x:Class="WireFrame.Controls.CanvasControl"
     xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WireFrame.Controls"
@@ -37,17 +37,17 @@
 
         <Canvas x:Name="_HUD" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
             
-            <local:WFTitleBox x:Name="_titleBox" Visibility="Collapsed" />
+            <local:TitleBox x:Name="_titleBox" Visibility="Collapsed" />
 
-            <local:WFActionTip x:Name="_actionTip" Visibility="Collapsed" />
+            <local:ActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
-            <local:WFSizeControl x:Name="_sizeControl" Visibility="Collapsed" />
+            <local:MoveResizeControl x:Name="_sizeControl" Visibility="Collapsed" />
 
-            <local:WFRotationControl x:Name="_rotationControl" Visibility="Visible" />
+            <local:RotationControl x:Name="_rotationControl" Visibility="Visible" />
 
-            <local:WFShapeHighlight x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:ShapeHighlight x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
 
-            <local:WFShapeHighlight x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:ShapeHighlight x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
 
         </Canvas>
 

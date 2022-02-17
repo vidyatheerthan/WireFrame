@@ -17,9 +17,9 @@ using Windows.UI.Xaml.Navigation;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFActionTip : UserControl
+    public sealed partial class ActionTip : UserControl
     {
-        public WFActionTip()
+        public ActionTip()
         {
             this.InitializeComponent();
         }

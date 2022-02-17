@@ -27,9 +27,9 @@ namespace WireFrame.States
             public Canvas canvas;
             public Canvas container;
             public Canvas hud;
-            public WFActionTip actionTip;
+            public ActionTip actionTip;
 
-            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, WFActionTip actionTip)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, ActionTip actionTip)
             {
                 this.grid = grid;
                 this.scrollViewer = scrollViewer;
@@ -57,9 +57,9 @@ namespace WireFrame.States
                 (objects[2] is Canvas) &&
                 (objects[3] is Canvas) &&
                 (objects[4] is Canvas) &&
-                (objects[5] is WFActionTip))
+                (objects[5] is ActionTip))
             {
-                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as WFActionTip);
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as ActionTip);
             }
         }
 
@@ -113,7 +113,7 @@ namespace WireFrame.States
         {
         }
 
-        private void ShowActionTip(WFActionTip actionTip, bool show, double left, double top)
+        private void ShowActionTip(ActionTip actionTip, bool show, double left, double top)
         {
             actionTip.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
 
@@ -121,7 +121,7 @@ namespace WireFrame.States
             Canvas.SetTop(actionTip, top);
         }
 
-        private void UpdateActionTip(WFActionTip actionTip, double left, double top)
+        private void UpdateActionTip(ActionTip actionTip, double left, double top)
         {
             Canvas.SetLeft(actionTip, left);
             Canvas.SetTop(actionTip, top);

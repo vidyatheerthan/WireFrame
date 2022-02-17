@@ -21,9 +21,9 @@ namespace WireFrame.States
             public Grid grid;
             public ScrollViewer scrollViewer;
             public Canvas canvas;
-            public WFRotationControl rotationControl;
+            public RotationControl rotationControl;
 
-            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, WFRotationControl rotationControl)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, RotationControl rotationControl)
             {
                 this.grid = grid;
                 this.scrollViewer = scrollViewer;
@@ -45,9 +45,9 @@ namespace WireFrame.States
 
         public RotateElementState(List<object> objects)
         {
-            if (objects != null && objects.Count == 4 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas) && (objects[3] is WFRotationControl))
+            if (objects != null && objects.Count == 4 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas) && (objects[3] is RotationControl))
             {
-                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as WFRotationControl);
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as RotationControl);
             }
         }
 

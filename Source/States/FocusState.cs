@@ -21,10 +21,10 @@ namespace WireFrame.States
         {
             public ScrollViewer scrollViewer;
             public Canvas canvas;
-            public WFSizeControl sizeControl;
+            public MoveResizeControl sizeControl;
             public VirtualKey key;
             
-            public Data(ScrollViewer scrollViewer, Canvas canvas, WFSizeControl sizeControl, VirtualKey key)
+            public Data(ScrollViewer scrollViewer, Canvas canvas, MoveResizeControl sizeControl, VirtualKey key)
             {
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
@@ -41,9 +41,9 @@ namespace WireFrame.States
 
         public FocusState(List<object> objects)
         {
-            if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is WFSizeControl) && (objects[3].GetType().IsEnum))
+            if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is MoveResizeControl) && (objects[3].GetType().IsEnum))
             {
-                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as WFSizeControl, (VirtualKey)objects[3]);
+                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as MoveResizeControl, (VirtualKey)objects[3]);
             }
         }
 

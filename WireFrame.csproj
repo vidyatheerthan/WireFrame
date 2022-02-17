@@ -119,19 +119,19 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Controls\WFShapeHighlight.xaml.cs">
-      <DependentUpon>WFShapeHighlight.xaml</DependentUpon>
+    <Compile Include="Source\Controls\ShapeHighlight.xaml.cs">
+      <DependentUpon>ShapeHighlight.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\CanvasProfile.cs" />
     <Compile Include="Source\Controls\ISelector.cs" />
-    <Compile Include="Source\Controls\WFActionTip.xaml.cs">
-      <DependentUpon>WFActionTip.xaml</DependentUpon>
+    <Compile Include="Source\Controls\ActionTip.xaml.cs">
+      <DependentUpon>ActionTip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Controls\WFRotationControl.xaml.cs">
-      <DependentUpon>WFRotationControl.xaml</DependentUpon>
+    <Compile Include="Source\Controls\RotationControl.xaml.cs">
+      <DependentUpon>RotationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Controls\WFSizeControl.xaml.cs">
-      <DependentUpon>WFSizeControl.xaml</DependentUpon>
+    <Compile Include="Source\Controls\MoveResizeControl.xaml.cs">
+      <DependentUpon>MoveResizeControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\Commons.cs" />
     <Compile Include="Source\Misc\PropertyStore.cs" />
@@ -139,12 +139,12 @@
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Controls\WFTitleBox.xaml.cs">
-      <DependentUpon>WFTitleBox.xaml</DependentUpon>
+    <Compile Include="Source\Controls\TitleBox.xaml.cs">
+      <DependentUpon>TitleBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\Utility.cs" />
-    <Compile Include="Source\Controls\WFCanvas.xaml.cs">
-      <DependentUpon>WFCanvas.xaml</DependentUpon>
+    <Compile Include="Source\Controls\CanvasControl.xaml.cs">
+      <DependentUpon>CanvasControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Shapes\CompoundShape.xaml.cs">
       <DependentUpon>CompoundShape.xaml</DependentUpon>
@@ -185,19 +185,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Source\Controls\WFActionTip.xaml">
+    <Page Include="Source\Controls\ActionTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\WFShapeHighlight.xaml">
+    <Page Include="Source\Controls\ShapeHighlight.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\WFRotationControl.xaml">
+    <Page Include="Source\Controls\RotationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\WFSizeControl.xaml">
+    <Page Include="Source\Controls\MoveResizeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -205,11 +205,11 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\Controls\WFTitleBox.xaml">
+    <Page Include="Source\Controls\TitleBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\WFCanvas.xaml">
+    <Page Include="Source\Controls\CanvasControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
