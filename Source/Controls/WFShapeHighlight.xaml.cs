@@ -76,7 +76,10 @@ namespace WireFrame.Controls
 
             foreach(var shape in newShapes)
             {
-                newAddition = AddShape(shape);
+                if (AddShape(shape))
+                {
+                    newAddition = true;
+                }
             }
 
             return newAddition;

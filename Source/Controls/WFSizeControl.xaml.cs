@@ -20,7 +20,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class WFSizeControl : UserControl//, ISelector
+    public sealed partial class WFSizeControl : UserControl, ISelector
     {
         const double HITBOX_SIZE = 10.0;
 
@@ -30,8 +30,11 @@ namespace WireFrame.Controls
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
-        private IShape selectedShape;
-        private FrameworkElement container;
+        private Dictionary<IShape, Size> shapeSizes = new Dictionary<IShape, Size>(); // each shape and their size contribution in _box
+        private FrameworkElement container = null;
+
+        private Point topLeft = new Point(0, 0);
+        private Point bottomRight = new Point(0, 0);
 
         // --
 
@@ -64,42 +67,49 @@ namespace WireFrame.Controls
             _bottom_right_circle.PointerExited += OnPointerExitedBottomRightHitBox;
         }
 
-        public void SetSelectedShape(IShape shape, FrameworkElement container, float zoomFactor)
+        
+        ///-------------------------------------------------------------------
+
+        private void UpdateCorners(IShape shape, float zoomFactor, bool reset)
         {
-            this.selectedShape = shape;
-            this.container = container;
-
-            UpdateSelectedShape(zoomFactor);
-        }
-
-        public void UpdateSelectedShape(float zoomFactor)
-        {
-            if (this.selectedShape == null || this.container == null) { return; }
-
-            UpdateBox(this.selectedShape, this.container, zoomFactor);
-            UpdateHitBox();
-            UpdateCircles();
-        }
-
-        public IShape GetSelectedShape()
-        {
-            return this.selectedShape;
-        }
-
-        public void Show(bool show)
-        {
-            Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        private void UpdateBox(IShape shape, FrameworkElement parent, float zoomFactor)
-        {
-            var transform = shape.GetPath().TransformToVisual(parent);
+            var transform = shape.GetPath().TransformToVisual(this.container);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
-            Canvas.SetLeft(_box, ePoint.X);
-            Canvas.SetTop(_box, ePoint.Y);
-            _box.Width = shape.GetLength() * zoomFactor;
-            _box.Height = shape.GetBreath() * zoomFactor;
+            if (reset)
+            {
+                this.topLeft.X = ePoint.X;
+                this.topLeft.Y = ePoint.Y;
+            }
+            else
+            {
+                if (ePoint.X < this.topLeft.X)
+                {
+                    this.topLeft.X = ePoint.X;
+                }
+
+                if (ePoint.Y < this.topLeft.Y)
+                {
+                    this.topLeft.Y = ePoint.Y;
+                }
+            }
+
+            if (ePoint.X + (shape.GetLength() * zoomFactor) > this.bottomRight.X)
+            {
+                this.bottomRight.X = ePoint.X + (shape.GetLength() * zoomFactor);
+            }
+
+            if (ePoint.Y + (shape.GetBreath() * zoomFactor) > this.bottomRight.Y)
+            {
+                this.bottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
+            }
+        }
+
+        private void UpdateBox()
+        {
+            Canvas.SetLeft(_box, this.topLeft.X);
+            Canvas.SetTop(_box, this.topLeft.Y);
+            _box.Width = this.bottomRight.X - this.topLeft.X;
+            _box.Height = this.bottomRight.Y - this.topLeft.Y;
         }
 
         private void UpdateHitBox()
@@ -242,6 +252,89 @@ namespace WireFrame.Controls
         private void OnPointerExitedBottomRightHitBox(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        ///-------------------------------------------------------------------
+
+
+        public void Show(bool show)
+        {
+            Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+        }
+
+        public void SetContainer(FrameworkElement container)
+        {
+            this.container = container;
+        }
+
+        public bool AddShape(IShape shape)
+        {
+            if (shape == null || this.shapeSizes.ContainsKey(shape))
+            { 
+                return false;
+            }
+
+            this.shapeSizes.Add(shape, Size.Empty);
+
+            return true;
+        }
+
+        public bool AddShapes(List<IShape> shapes)
+        {
+            bool newAddition = false;
+
+            foreach (var shape in shapes)
+            {
+                if (AddShape(shape))
+                {
+                    newAddition = true;
+                }
+            }
+
+            return newAddition;
+        }
+
+        public List<IShape> GetShapes()
+        {
+            var shapes = this.shapeSizes.Keys.ToList();
+            return shapes;
+        }
+
+        public void UpdateShapes(float zoomFactor)
+        {
+            var shapes = GetShapes();
+
+            for (int i = 0; i < shapes.Count; ++i)
+            {
+                IShape shape = shapes[i];
+
+                UpdateCorners(shape, zoomFactor, i == 0);
+                
+                double width = shape.GetLength() * zoomFactor;
+                double height = shape.GetBreath() * zoomFactor;
+                this.shapeSizes[shape] = new Size(width/_box.Width, height/_box.Height);
+            }
+
+            UpdateBox();
+            UpdateHitBox();
+            UpdateCircles();
+        }
+
+        public void RemoveAllShapes()
+        {
+            this.shapeSizes.Clear();
+            this.topLeft = new Point(0, 0);
+            this.bottomRight = new Point(0, 0);
+            _box.Width = 0.0;
+            _box.Height = 0.0;
+        }
+
+        ///-------------------------------------------------------------------
+
+        public Rect GetRect()
+        {
+            Rect r = new Rect(topLeft.X, topLeft.Y, bottomRight.X - topLeft.X, bottomRight.Y - topLeft.Y);
+            return r;
         }
     }
 }
