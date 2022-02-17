@@ -12,7 +12,7 @@ namespace WireFrame.States
 {
     class StateExecutor
     {
-        public enum StateGroup
+        public enum State
         {
             Selection_Pan_Focus,
             RotateElement,
@@ -20,7 +20,7 @@ namespace WireFrame.States
             DrawRectangle
         }
 
-        private Dictionary<StateGroup, List<IFiniteStateMachine>> stateGroups;
+        private Dictionary<State, List<IFiniteStateMachine>> stateList;
         private List<IFiniteStateMachine> activeStates = null;
         IFiniteStateMachine activeState = null;
 
@@ -29,16 +29,16 @@ namespace WireFrame.States
             this.activeStates = states;
         }
 
-        public StateExecutor(Dictionary<StateGroup, List<IFiniteStateMachine>> stateGroups)
+        public StateExecutor(Dictionary<State, List<IFiniteStateMachine>> stateList)
         {
-            this.stateGroups = stateGroups;
+            this.stateList = stateList;
         }
 
-        public bool SelectStateGroup(StateGroup stateGroup)
+        public bool SelectState(State state)
         {
-            if(this.stateGroups != null && this.stateGroups.ContainsKey(stateGroup) && this.stateGroups[stateGroup] != null && this.stateGroups[stateGroup].Count > 0)
+            if(this.stateList != null && this.stateList.ContainsKey(state) && this.stateList[state] != null && this.stateList[state].Count > 0)
             {
-                this.activeStates = this.stateGroups[stateGroup];
+                this.activeStates = this.stateList[state];
                 return true;
             }
 
