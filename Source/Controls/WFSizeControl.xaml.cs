@@ -312,6 +312,8 @@ namespace WireFrame.Controls
 
         public void UpdateShapes(float zoomFactor)
         {
+            ResetBounds();
+
             var shapes = GetShapes();
 
             for (int i = 0; i < shapes.Count; ++i)
@@ -333,7 +335,12 @@ namespace WireFrame.Controls
         public void RemoveAllShapes()
         {
             this.shapeSizes.Clear();
-            
+
+            ResetBounds();
+        }
+
+        private void ResetBounds()
+        {
             this.hudTopLeft = new Point(0, 0);
             this.hudBottomRight = new Point(0, 0);
 
