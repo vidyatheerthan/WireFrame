@@ -22,6 +22,7 @@ using Size = Windows.Foundation.Size;
 using WireFrame.States;
 using WireFrame.Misc;
 using FocusState = WireFrame.States.FocusState;
+using deVoid.Utils;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -137,7 +138,6 @@ namespace WireFrame.Controls
             stateGroups.Add(StateExecutor.State.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             this.stateExecutor = new StateExecutor(stateGroups);
-            this.stateExecutor.SelectState(StateExecutor.State.Selection_Pan_Focus);
 
             // --
             this.Loaded += OnLoaded;
@@ -166,6 +166,8 @@ namespace WireFrame.Controls
         private void OnLoaded(object sender, RoutedEventArgs e)
         {
             UpdateCanvasAndFrameSize();
+
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.DrawEllipse);
         }
 
         

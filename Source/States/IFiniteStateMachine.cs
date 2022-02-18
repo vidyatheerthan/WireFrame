@@ -13,7 +13,7 @@ using WireFrame.Misc;
 
 namespace WireFrame.States
 {
-    interface IFiniteStateMachine
+    public interface IFiniteStateMachine
     {
         bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e);
         bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args);

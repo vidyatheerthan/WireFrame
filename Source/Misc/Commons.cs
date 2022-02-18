@@ -6,14 +6,14 @@ using System.Threading.Tasks;
 
 namespace WireFrame.Misc
 {
-    enum PointerState
+    public enum PointerState
     {
         Pressed,
         Moved,
         Released
     }
 
-    enum KeyBoardState
+    public enum KeyBoardState
     {
         KeyDown,
         KeyUp

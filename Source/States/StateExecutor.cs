@@ -7,10 +7,11 @@ using Windows.UI.Input;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Core;
 using WireFrame.Misc;
+using deVoid.Utils;
 
 namespace WireFrame.States
 {
-    class StateExecutor
+    public class StateExecutor
     {
         public enum State
         {
@@ -27,22 +28,23 @@ namespace WireFrame.States
         public StateExecutor(List<IFiniteStateMachine> states)
         {
             this.activeStates = states;
+
+            Signals.Get<ChangeToState>().AddListener(SelectState);
         }
 
         public StateExecutor(Dictionary<State, List<IFiniteStateMachine>> stateList)
         {
             this.stateList = stateList;
+
+            Signals.Get<ChangeToState>().AddListener(SelectState);
         }
 
-        public bool SelectState(State state)
+        private void SelectState(State state)
         {
             if(this.stateList != null && this.stateList.ContainsKey(state) && this.stateList[state] != null && this.stateList[state].Count > 0)
             {
                 this.activeStates = this.stateList[state];
-                return true;
             }
-
-            return false;
         }
 
         private void HandleInput (Func<IFiniteStateMachine, bool> func)
@@ -93,6 +95,8 @@ namespace WireFrame.States
 
         public void HandleZoom()
         {
+            if(this.activeStates == null) { return; }
+
             foreach (IFiniteStateMachine state in this.activeStates)
             {
                 state.HandleZoom();
@@ -101,6 +105,8 @@ namespace WireFrame.States
 
         public void HandleScroll()
         {
+            if (this.activeStates == null) { return; }
+
             foreach (IFiniteStateMachine state in this.activeStates)
             {
                 state.HandleScroll();
