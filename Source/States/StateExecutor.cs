@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Core;
 using WireFrame.Misc;
 using deVoid.Utils;
+using System.Diagnostics;
 
 namespace WireFrame.States
 {
@@ -15,6 +16,7 @@ namespace WireFrame.States
     {
         public enum State
         {
+            Selection_Pan,
             Selection_Pan_Focus,
             RotateElement,
             DrawEllipse,
@@ -46,6 +48,7 @@ namespace WireFrame.States
             if(this.stateList != null && this.stateList.ContainsKey(state) && this.stateList[state] != null && this.stateList[state].Count > 0)
             {
                 this.activeStates = this.stateList[state];
+                Debug.WriteLine("Active state: " + state);
             }
         }
 

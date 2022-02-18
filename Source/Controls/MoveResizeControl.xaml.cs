@@ -1,4 +1,5 @@
-﻿using System;
+﻿using deVoid.Utils;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -15,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Shapes;
+using WireFrame.States;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -166,7 +168,7 @@ namespace WireFrame.Controls
 
         private void OnPointerPressedOnBox(object sender, PointerRoutedEventArgs e)
         {
-
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan);
         }
 
         private void OnPointerMovedOnBox(object sender, PointerRoutedEventArgs e)
@@ -176,7 +178,7 @@ namespace WireFrame.Controls
 
         private void OnPointerReleasedOnBox(object sender, PointerRoutedEventArgs e)
         {
-
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan_Focus);
         }
 
         ///-------------------------------------------------------------------

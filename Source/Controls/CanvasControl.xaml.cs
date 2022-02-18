@@ -126,6 +126,7 @@ namespace WireFrame.Controls
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
+            StateExecutor.Instance.AddState(StateExecutor.State.Selection_Pan, new List<IFiniteStateMachine>() { selectionState, panState });
             StateExecutor.Instance.AddState(StateExecutor.State.Selection_Pan_Focus, new List<IFiniteStateMachine>() { selectionState, panState, focusState });
             StateExecutor.Instance.AddState(StateExecutor.State.RotateElement, new List<IFiniteStateMachine>() { rotateElementState });
             StateExecutor.Instance.AddState(StateExecutor.State.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
@@ -159,7 +160,7 @@ namespace WireFrame.Controls
         {
             UpdateCanvasAndFrameSize();
 
-            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.DrawEllipse);
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan_Focus);
         }
 
         
