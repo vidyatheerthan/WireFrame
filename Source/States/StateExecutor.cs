@@ -11,7 +11,7 @@ using deVoid.Utils;
 
 namespace WireFrame.States
 {
-    public class StateExecutor
+    public sealed class StateExecutor
     {
         public enum State
         {
@@ -21,22 +21,24 @@ namespace WireFrame.States
             DrawRectangle
         }
 
+        private static readonly StateExecutor instance = new StateExecutor();
+        public static StateExecutor Instance { get => instance; }
         private Dictionary<State, List<IFiniteStateMachine>> stateList;
         private List<IFiniteStateMachine> activeStates = null;
         IFiniteStateMachine activeState = null;
 
-        public StateExecutor(List<IFiniteStateMachine> states)
+        static StateExecutor() { }
+
+        private StateExecutor()
         {
-            this.activeStates = states;
+            this.stateList = new Dictionary<State, List<IFiniteStateMachine>>();
 
             Signals.Get<ChangeToState>().AddListener(SelectState);
         }
 
-        public StateExecutor(Dictionary<State, List<IFiniteStateMachine>> stateList)
+        public void AddState(State state, List<IFiniteStateMachine> stateObjs)
         {
-            this.stateList = stateList;
-
-            Signals.Get<ChangeToState>().AddListener(SelectState);
+            this.stateList[state] = stateObjs;
         }
 
         private void SelectState(State state)

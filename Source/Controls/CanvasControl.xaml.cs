@@ -107,15 +107,10 @@ namespace WireFrame.Controls
 
         //====================================================================================================
 
-
-
         private CanvasProfile profile;
-
-        private StateExecutor stateExecutor;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        
         //====================================================================================================
 
 
@@ -131,13 +126,10 @@ namespace WireFrame.Controls
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
-            var stateGroups = new Dictionary<StateExecutor.State, List<IFiniteStateMachine>>();
-            stateGroups.Add(StateExecutor.State.Selection_Pan_Focus, new List<IFiniteStateMachine>() { selectionState, panState, focusState });
-            stateGroups.Add(StateExecutor.State.RotateElement, new List<IFiniteStateMachine>() { rotateElementState });
-            stateGroups.Add(StateExecutor.State.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
-            stateGroups.Add(StateExecutor.State.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
-
-            this.stateExecutor = new StateExecutor(stateGroups);
+            StateExecutor.Instance.AddState(StateExecutor.State.Selection_Pan_Focus, new List<IFiniteStateMachine>() { selectionState, panState, focusState });
+            StateExecutor.Instance.AddState(StateExecutor.State.RotateElement, new List<IFiniteStateMachine>() { rotateElementState });
+            StateExecutor.Instance.AddState(StateExecutor.State.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
+            StateExecutor.Instance.AddState(StateExecutor.State.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 
             // --
             this.Loaded += OnLoaded;
@@ -208,32 +200,32 @@ namespace WireFrame.Controls
 
         private void OnPointerPressedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            this.stateExecutor.HandleInput(PointerState.Pressed, e);
+            StateExecutor.Instance.HandleInput(PointerState.Pressed, e);
         }
 
         private void OnPointerMovedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            this.stateExecutor.HandleInput(PointerState.Moved, e);
+            StateExecutor.Instance.HandleInput(PointerState.Moved, e);
         }
 
         private void OnPointerReleasedOnGrid(object sender, PointerRoutedEventArgs e)
         {
-            this.stateExecutor.HandleInput(PointerState.Released, e);
+            StateExecutor.Instance.HandleInput(PointerState.Released, e);
         }
 
         private void OnKeyDown(Windows.UI.Core.CoreWindow sender, Windows.UI.Core.KeyEventArgs args)
         {
-            this.stateExecutor.HandleInput(KeyBoardState.KeyDown, args);
+            StateExecutor.Instance.HandleInput(KeyBoardState.KeyDown, args);
         }
 
         private void OnScrollViewerZoomFactorChanged(DependencyObject sender, DependencyProperty dp)
         {
-            this.stateExecutor.HandleZoom();
+            StateExecutor.Instance.HandleZoom();
         }
 
         private void OnScrollViewerScrolled(DependencyObject sender, DependencyProperty dp)
         {
-            this.stateExecutor.HandleScroll();
+            StateExecutor.Instance.HandleScroll();
         }
     }
 }
