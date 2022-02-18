@@ -116,9 +116,6 @@
     <RestoreProjectStyle>PackageReference</RestoreProjectStyle>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="..\signals\Signals.cs">
-      <Link>Vendors\Signals.cs</Link>
-    </Compile>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -168,6 +165,7 @@
     <Compile Include="Source\States\SelectionState.cs" />
     <Compile Include="Source\States\PanState.cs" />
     <Compile Include="Source\States\StateExecutor.cs" />
+    <Compile Include="Vendors\Signals.cs" />
   </ItemGroup>
   <ItemGroup>
     <AppxManifest Include="Package.appxmanifest">
