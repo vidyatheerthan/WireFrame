@@ -23,6 +23,7 @@ using WireFrame.States;
 using WireFrame.Misc;
 using FocusState = WireFrame.States.FocusState;
 using deVoid.Utils;
+using WireFrame.Selection;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 

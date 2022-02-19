@@ -120,13 +120,13 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
-    <Compile Include="Source\Controls\ShapeMoveResize.cs" />
-    <Compile Include="Source\Controls\ShapeSelection.cs" />
+    <Compile Include="Source\Selection\ShapeMoveResize.cs" />
+    <Compile Include="Source\Selection\ShapeSelection.cs" />
     <Compile Include="Source\Controls\ShapeSelectionControl.xaml.cs">
       <DependentUpon>ShapeSelectionControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Source\Misc\CanvasProfile.cs" />
-    <Compile Include="Source\Controls\ISelector.cs" />
+    <Compile Include="Source\Selection\ISelector.cs" />
     <Compile Include="Source\Controls\ActionTip.xaml.cs">
       <DependentUpon>ActionTip.xaml</DependentUpon>
     </Compile>

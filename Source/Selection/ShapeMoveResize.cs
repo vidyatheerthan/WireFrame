@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using WireFrame.Controls;
 using WireFrame.Shapes;
 
-namespace WireFrame.Controls
+namespace WireFrame.Selection
 {
     public class ShapeMoveResize : ISelector
     {
