@@ -16,8 +16,8 @@ namespace WireFrame.States
     {
         public enum State
         {
-            Selection_Pan,
-            Selection_Pan_Focus,
+            Select_Pan,
+            Select_Move_Resize_Pan_Focus,
             RotateElement,
             DrawEllipse,
             DrawRectangle
