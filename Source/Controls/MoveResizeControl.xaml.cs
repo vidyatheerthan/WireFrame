@@ -324,6 +324,14 @@ namespace WireFrame.Controls
                 }
             }
 
+            foreach (var shape in this.shapeSizes.Keys.ToList())
+            {
+                if (!shapes.Contains(shape))
+                {
+                    this.shapeSizes.Remove(shape);
+                }
+            }
+
             return newAddition;
         }
 
