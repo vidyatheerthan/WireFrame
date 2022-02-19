@@ -123,6 +123,7 @@
     <Compile Include="Source\Controls\ShapeHighlight.xaml.cs">
       <DependentUpon>ShapeHighlight.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Controls\ShapeMoveResize.cs" />
     <Compile Include="Source\Misc\CanvasProfile.cs" />
     <Compile Include="Source\Controls\ISelector.cs" />
     <Compile Include="Source\Controls\ActionTip.xaml.cs">

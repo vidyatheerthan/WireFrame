@@ -22,7 +22,7 @@ using WireFrame.States;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, ISelector
+    public sealed partial class MoveResizeControl : UserControl
     {
         const double HITBOX_SIZE = 10.0;
 
@@ -31,9 +31,6 @@ namespace WireFrame.Controls
         private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
-
-        private Dictionary<IShape, Size> shapeSizes = new Dictionary<IShape, Size>(); // each shape and their size contribution in _box
-        private FrameworkElement container = null;
 
         private Point hudTopLeft = new Point(0, 0);
         private Point hudBottomRight = new Point(0, 0);
@@ -183,9 +180,9 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        private void UpdateCorners(IShape shape, float zoomFactor, bool reset)
+        public void UpdateCorners(FrameworkElement container, IShape shape, float zoomFactor, bool reset)
         {
-            var transform = shape.GetPath().TransformToVisual(this.container);
+            var transform = shape.GetPath().TransformToVisual(container);
             var ePoint = transform.TransformPoint(new Point(0, 0));
 
             if (reset)
@@ -224,7 +221,7 @@ namespace WireFrame.Controls
             }
         }
 
-        private void UpdateBox()
+        public void UpdateBox()
         {
             Canvas.SetLeft(_box, this.hudTopLeft.X);
             Canvas.SetTop(_box, this.hudTopLeft.Y);
@@ -232,7 +229,7 @@ namespace WireFrame.Controls
             _box.Height = this.hudBottomRight.Y - this.hudTopLeft.Y;
         }
 
-        private void UpdateHitBox()
+        public void UpdateHitBox()
         {
             const double HALF = HITBOX_SIZE * 0.5;
 
@@ -257,7 +254,7 @@ namespace WireFrame.Controls
             _bottom_box.Height = HITBOX_SIZE;
         }
 
-        private void UpdateCircles()
+        public void UpdateCircles()
         {
             const double HALF = HITBOX_SIZE * 0.5;
 
@@ -286,102 +283,7 @@ namespace WireFrame.Controls
             _bottom_right_circle.Height = HITBOX_SIZE;
         }
 
-        
-        ///-------------------------------------------------------------------
-
-
-        public void Show(bool show)
-        {
-            Visibility = show ? Visibility.Visible : Visibility.Collapsed;
-        }
-
-        public void SetContainer(FrameworkElement container)
-        {
-            this.container = container;
-        }
-
-        public bool AddShape(IShape shape)
-        {
-            if (shape == null || this.shapeSizes.ContainsKey(shape))
-            { 
-                return false;
-            }
-
-            this.shapeSizes.Add(shape, Size.Empty);
-
-            return true;
-        }
-
-        public bool AddShapes(List<IShape> shapes)
-        {
-            bool newAddition = false;
-
-            foreach (var shape in shapes)
-            {
-                if (AddShape(shape))
-                {
-                    newAddition = true;
-                }
-            }
-
-            foreach (var shape in this.shapeSizes.Keys.ToList())
-            {
-                if (!shapes.Contains(shape))
-                {
-                    this.shapeSizes.Remove(shape);
-                }
-            }
-
-            return newAddition;
-        }
-
-        public List<IShape> GetShapes()
-        {
-            var shapes = this.shapeSizes.Keys.ToList();
-            return shapes;
-        }
-
-        public void UpdateShapes(float zoomFactor)
-        {
-            ResetBounds();
-
-            var shapes = GetShapes();
-
-            for (int i = 0; i < shapes.Count; ++i)
-            {
-                IShape shape = shapes[i];
-
-                UpdateCorners(shape, zoomFactor, i == 0);
-                
-                double width = shape.GetLength() * zoomFactor;
-                double height = shape.GetBreath() * zoomFactor;
-                this.shapeSizes[shape] = new Size(width/_box.Width, height/_box.Height);
-            }
-
-            UpdateBox();
-            UpdateHitBox();
-            UpdateCircles();
-        }
-
-        public bool RemoveShape(IShape shape)
-        {
-            if (this.shapeSizes.ContainsKey(shape))
-            {
-                this.shapeSizes.Remove(shape);
-                return true;
-            }
-
-            return false;
-        }
-
-        public void RemoveAllShapes()
-        {
-            this.shapeSizes.Clear();
-
-            ResetBounds();
-        }
-
-        private void ResetBounds()
+        public void ResetBounds()
         {
             this.hudTopLeft = new Point(0, 0);
             this.hudBottomRight = new Point(0, 0);
