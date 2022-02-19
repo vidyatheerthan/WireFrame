@@ -147,6 +147,7 @@
     <Compile Include="Source\Controls\CanvasControl.xaml.cs">
       <DependentUpon>CanvasControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Source\Shapes\BoundingBox.cs" />
     <Compile Include="Source\Shapes\CompoundShape.xaml.cs">
       <DependentUpon>CompoundShape.xaml</DependentUpon>
     </Compile>

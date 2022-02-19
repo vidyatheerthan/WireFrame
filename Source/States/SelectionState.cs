@@ -44,7 +44,7 @@ namespace WireFrame.States
         // --
 
         private Data data = null;
-        private RectangleShape boundingBox;
+        private BoundingBox boundingBox = null;
         private bool isTracking = false;
 
         // --
@@ -66,6 +66,8 @@ namespace WireFrame.States
                 this.data.highlighter.SetContainer(data.grid);
                 this.data.selector.SetContainer(data.grid);
             }
+
+            this.boundingBox = new BoundingBox(Color.FromArgb(255, 0, 0, 255), Color.FromArgb(100, 0, 0, 255));
         }
 
         public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
@@ -153,36 +155,22 @@ namespace WireFrame.States
 
         private void DrawNewBoundingBox(Canvas hud, Point position)
         {
-            hud.Children.Remove(this.boundingBox);
+            hud.Children.Remove(this.boundingBox.GetRectangle());
 
-            this.boundingBox = new RectangleShape();
-            this.boundingBox.SetLeft(position.X);
-            this.boundingBox.SetTop(position.Y);
-            this.boundingBox.SetLength(1);
-            this.boundingBox.SetBreath(1);
-            this.boundingBox.Fill = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
-            this.boundingBox.PathStretch = Stretch.Fill;
-            this.boundingBox.ViewStretch = Stretch.Fill;
+            this.boundingBox.StartTracking(position);            
 
-            hud.Children.Insert(hud.Children.Count, this.boundingBox);
+            hud.Children.Insert(hud.Children.Count, this.boundingBox.GetRectangle());
             Debug.WriteLine("[DrawNewBoundingBox] Hud Children:" + hud.Children.Count);
         }
 
         private void ResizeBoundingBox(Point position)
         {
-            if(this.boundingBox == null) { return; }
-
-            double width = position.X - this.boundingBox.GetLeft();
-            double height = position.Y - this.boundingBox.GetTop();
-
-            this.boundingBox.SetLength(width > 0 ? width : 1);
-            this.boundingBox.SetBreath(height > 0 ? height : 1);
+            this.boundingBox.Track(position);
         }
 
         private void SelectShapesUnderBoundingBox(Canvas container)
         {
-            Rect bounds = new Rect(this.boundingBox.Left, this.boundingBox.Top, this.boundingBox.Length, this.boundingBox.Breath);
-            var shapes = GetShapesUnderBounds(container, bounds);
+            var shapes = GetShapesUnderBounds(container, this.boundingBox.GetBounds());
             data.selector.AddShapes(shapes);
             data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
             data.selector.Show(true);
@@ -190,8 +178,8 @@ namespace WireFrame.States
 
         private void DestroyBoundingBox(Canvas hud)
         {
-            hud.Children.Remove(this.boundingBox);
-            this.boundingBox = null;
+            hud.Children.Remove(this.boundingBox.GetRectangle());
+            this.boundingBox.StopTracking();
             Debug.WriteLine("[DestroyBoundingBox] Hud Children:" + hud.Children.Count);
         }
 
