@@ -26,7 +26,7 @@ namespace WireFrame.Controls
         private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
         private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
 
-        private Dictionary<IShape, int> shapes = new Dictionary<IShape, int>();
+        private Dictionary<IShape, Viewbox> shapes = new Dictionary<IShape, Viewbox>();
         private FrameworkElement container = null;
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -57,21 +57,12 @@ namespace WireFrame.Controls
             if(shape == null || this.shapes.ContainsKey(shape)) { return false; }
             var view = CreateNewViewbox(shape);
             _canvas.Children.Add(view);
-            this.shapes.Add(shape, _canvas.Children.Count - 1);
+            this.shapes.Add(shape, view);
             return true;
         }
 
         public bool AddShapes(List<IShape> newShapes)
         {
-            foreach(var shape in this.shapes.Keys.ToList())
-            {
-                if(!newShapes.Contains(shape))
-                {
-                    this._canvas.Children.RemoveAt(this.shapes[shape]);
-                    this.shapes.Remove(shape);
-                }
-            }
-
             bool newAddition = false;
 
             foreach(var shape in newShapes)
@@ -79,6 +70,15 @@ namespace WireFrame.Controls
                 if (AddShape(shape))
                 {
                     newAddition = true;
+                }
+            }
+
+            foreach (var shape in this.shapes.Keys.ToList())
+            {
+                if (!newShapes.Contains(shape))
+                {
+                    this._canvas.Children.Remove(this.shapes[shape]);
+                    this.shapes.Remove(shape);
                 }
             }
 
