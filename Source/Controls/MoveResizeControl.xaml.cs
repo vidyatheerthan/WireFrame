@@ -363,6 +363,17 @@ namespace WireFrame.Controls
             UpdateCircles();
         }
 
+        public bool RemoveShape(IShape shape)
+        {
+            if (this.shapeSizes.ContainsKey(shape))
+            {
+                this.shapeSizes.Remove(shape);
+                return true;
+            }
+
+            return false;
+        }
+
         public void RemoveAllShapes()
         {
             this.shapeSizes.Clear();

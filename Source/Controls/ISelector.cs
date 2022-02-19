@@ -15,8 +15,9 @@ namespace WireFrame
         void Show(bool show);
         bool AddShape(IShape shape);
         bool AddShapes(List<IShape> shapes);
+        bool RemoveShape(IShape shape);
+        void RemoveAllShapes();
         List<IShape> GetShapes();
         void UpdateShapes(float zoomFactor);
-        void RemoveAllShapes();
     }
 }

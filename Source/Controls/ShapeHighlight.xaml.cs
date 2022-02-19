@@ -105,6 +105,18 @@ namespace WireFrame.Controls
             }
         }
 
+        public bool RemoveShape(IShape shape)
+        {
+            if (this.shapes.ContainsKey(shape))
+            {
+                this._canvas.Children.Remove(this.shapes[shape]);
+                this.shapes.Remove(shape);
+                return true;
+            }
+
+            return false;
+        }
+
         public void RemoveAllShapes()
         {
             this._canvas.Children.Clear();
