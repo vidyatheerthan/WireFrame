@@ -85,7 +85,10 @@ namespace WireFrame.States
                     !Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
                 DrawNewBoundingBox(data.hud, hudPointer.Position);
-                SelectShapeUnderPointer(canvasPointer.Position);
+                
+                bool shiftDown = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftShift).HasFlag(CoreVirtualKeyStates.Down);
+                SelectShapeUnderPointer(canvasPointer.Position, shiftDown);
+
                 this.isTracking = true;
             }
             else if (pointerState == PointerState.Moved)
@@ -203,22 +206,30 @@ namespace WireFrame.States
             return shapes;
         }
 
-        private void SelectShapeUnderPointer(Point position)
+        private void SelectShapeUnderPointer(Point position, bool alternateSelection)
         {
             var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
-            
-            data.selector.RemoveAllShapes();
+
+            if (!alternateSelection)
+            {
+                data.selector.RemoveAllShapes();
+            }
             
             if (shapes != null && shapes.Count() > 0)
             {
                 var shape = shapes.First();
 
-                data.selector.AddShape(shape);
+                if (!data.selector.AddShape(shape) && alternateSelection)
+                {
+                    data.selector.RemoveShape(shape);
+                }
+
                 data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
                 data.selector.Show(true);
             }
             else
             {
+                data.selector.RemoveAllShapes();
                 data.selector.Show(false);
             }
         }

@@ -168,7 +168,7 @@ namespace WireFrame.Controls
 
         private void OnPointerPressedOnBox(object sender, PointerRoutedEventArgs e)
         {
-            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan);
+            //Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan);
         }
 
         private void OnPointerMovedOnBox(object sender, PointerRoutedEventArgs e)
@@ -178,7 +178,7 @@ namespace WireFrame.Controls
 
         private void OnPointerReleasedOnBox(object sender, PointerRoutedEventArgs e)
         {
-            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan_Focus);
+            //Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan_Focus);
         }
 
         ///-------------------------------------------------------------------
