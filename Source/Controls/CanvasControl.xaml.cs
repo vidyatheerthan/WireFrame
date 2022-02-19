@@ -121,15 +121,15 @@ namespace WireFrame.Controls
 
             // --
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
-            IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new ShapeSelection(_shapeHighlight), new ShapeSelection(_shapeSelect) });
-            IFiniteStateMachine moveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new ShapeSelection(_shapeHighlight), new ShapeMoveResize(_sizeControl) });
+            IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), new HighlightHandler(_selectControl) });
+            IFiniteStateMachine moveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), new MoveResizeHandler(_moveResizeControl) });
             IFiniteStateMachine rotateElementState = new RotateElementState(new List<object>() { _grid, _scrollViewer, _canvas, _rotationControl });
-            IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _sizeControl, VirtualKey.F });
+            IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _moveResizeControl, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
             StateExecutor.Instance.AddState(StateExecutor.State.Select_Pan, new List<IFiniteStateMachine>() { selectionState, panState });
-            StateExecutor.Instance.AddState(StateExecutor.State.Select_Move_Resize_Pan_Focus, new List<IFiniteStateMachine>() { moveResizeState, panState, focusState });
+            StateExecutor.Instance.AddState(StateExecutor.State.SelectMoveResize_Pan_Focus, new List<IFiniteStateMachine>() { moveResizeState, panState, focusState });
             StateExecutor.Instance.AddState(StateExecutor.State.RotateElement, new List<IFiniteStateMachine>() { rotateElementState });
             StateExecutor.Instance.AddState(StateExecutor.State.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
             StateExecutor.Instance.AddState(StateExecutor.State.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
@@ -162,7 +162,7 @@ namespace WireFrame.Controls
         {
             UpdateCanvasAndFrameSize();
 
-            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Select_Move_Resize_Pan_Focus);
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
         

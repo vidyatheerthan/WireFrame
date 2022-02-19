@@ -26,10 +26,10 @@ namespace WireFrame.States
             public Canvas canvas;
             public Canvas container;
             public Canvas hud;
-            public ISelector highlighter;
-            public ISelector selector;
+            public ISelectionHandler highlighter;
+            public ISelectionHandler selector;
 
-            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, ISelector highlighter, ISelector selector)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, Canvas container, Canvas hud, ISelectionHandler highlighter, ISelectionHandler selector)
             {
                 this.grid = grid;
                 this.scrollViewer = scrollViewer;
@@ -58,10 +58,10 @@ namespace WireFrame.States
                 (objects[2] is Canvas) &&
                 (objects[3] is Canvas) &&
                 (objects[4] is Canvas) &&
-                (objects[5] is ISelector) &&
-                (objects[6] is ISelector))
+                (objects[5] is ISelectionHandler) &&
+                (objects[6] is ISelectionHandler))
             {
-                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as ISelector, objects[6] as ISelector);
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as Canvas, objects[4] as Canvas, objects[5] as ISelectionHandler, objects[6] as ISelectionHandler);
 
                 this.data.highlighter.SetContainer(data.grid);
                 this.data.selector.SetContainer(data.grid);

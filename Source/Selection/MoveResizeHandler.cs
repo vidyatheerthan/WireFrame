@@ -11,7 +11,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Selection
 {
-    public class ShapeMoveResize : ISelector
+    public class MoveResizeHandler : ISelectionHandler
     {
         private MoveResizeControl control = null;
         private Dictionary<IShape, Size> shapeSizes = null;
@@ -19,7 +19,7 @@ namespace WireFrame.Selection
 
         ///-------------------------------------------------------------------
 
-        public ShapeMoveResize(MoveResizeControl control)
+        public MoveResizeHandler(MoveResizeControl control)
         {
             this.control = control;
             this.shapeSizes = new Dictionary<IShape, Size>(); // each shape and their size contribution in _box

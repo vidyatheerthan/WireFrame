@@ -20,15 +20,15 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Selection
 {
-    public class ShapeSelection : ISelector
+    public class HighlightHandler : ISelectionHandler
     {
-        private ShapeSelectionControl control;
+        private HighlightControl control;
         private Dictionary<IShape, Viewbox> shapes = new Dictionary<IShape, Viewbox>();
         private FrameworkElement container = null;
 
         // --------------------------------------------------------
 
-        public ShapeSelection(ShapeSelectionControl control)
+        public HighlightHandler(HighlightControl control)
         {
             this.control = control;
             this.shapes = new Dictionary<IShape, Viewbox>();

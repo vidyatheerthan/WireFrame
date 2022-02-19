@@ -9,7 +9,7 @@ using WireFrame.Shapes;
 
 namespace WireFrame
 {
-    public interface ISelector
+    public interface ISelectionHandler
     {
         void SetContainer(FrameworkElement container);
         void Show(bool show);

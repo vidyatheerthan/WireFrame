@@ -19,14 +19,14 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class ShapeSelectionControl : UserControl
+    public sealed partial class HighlightControl : UserControl
     {
         private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
         private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
 
         // -----------------------------------------------------
 
-        public ShapeSelectionControl()
+        public HighlightControl()
         {
             this.InitializeComponent();
         }

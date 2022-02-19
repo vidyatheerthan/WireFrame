@@ -41,13 +41,13 @@
 
             <local:ActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
-            <local:MoveResizeControl x:Name="_sizeControl" Visibility="Collapsed" />
+            <local:MoveResizeControl x:Name="_moveResizeControl" Visibility="Collapsed" />
 
             <local:RotationControl x:Name="_rotationControl" Visibility="Visible" />
 
-            <local:ShapeSelectionControl x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:HighlightControl x:Name="_highlightControl" IsHitTestVisible="False" Visibility="Collapsed" />
 
-            <local:ShapeSelectionControl x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:HighlightControl x:Name="_selectControl" IsHitTestVisible="False" Visibility="Collapsed" />
 
         </Canvas>
 
