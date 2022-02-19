@@ -120,10 +120,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
-    <Compile Include="Source\Controls\ShapeHighlight.xaml.cs">
-      <DependentUpon>ShapeHighlight.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Source\Controls\ShapeMoveResize.cs" />
+    <Compile Include="Source\Controls\ShapeSelection.cs" />
+    <Compile Include="Source\Controls\ShapeSelectionControl.xaml.cs">
+      <DependentUpon>ShapeSelectionControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Source\Misc\CanvasProfile.cs" />
     <Compile Include="Source\Controls\ISelector.cs" />
     <Compile Include="Source\Controls\ActionTip.xaml.cs">
@@ -193,15 +194,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Controls\ShapeHighlight.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="Source\Controls\RotationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Controls\MoveResizeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\Controls\ShapeSelectionControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

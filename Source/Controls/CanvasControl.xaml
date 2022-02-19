@@ -45,9 +45,9 @@
 
             <local:RotationControl x:Name="_rotationControl" Visibility="Visible" />
 
-            <local:ShapeHighlight x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:ShapeSelectionControl x:Name="_shapeHighlight" IsHitTestVisible="False" Visibility="Collapsed" />
 
-            <local:ShapeHighlight x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
+            <local:ShapeSelectionControl x:Name="_shapeSelect" IsHitTestVisible="False" Visibility="Collapsed" />
 
         </Canvas>
 
