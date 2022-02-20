@@ -120,6 +120,11 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
+    <Compile Include="Source\Controls\Gizmo\CornerResizeGizmo.cs" />
+    <Compile Include="Source\Controls\Gizmo\FixedSideResizeGizmo.cs" />
+    <Compile Include="Source\Controls\Gizmo\IGizmo.cs" />
+    <Compile Include="Source\Controls\Gizmo\FreeSideResizeGizmo.cs" />
+    <Compile Include="Source\Controls\Gizmo\MoveGizmo.cs" />
     <Compile Include="Source\Selection\MoveResizeHandler.cs" />
     <Compile Include="Source\Selection\HighlightHandler.cs" />
     <Compile Include="Source\Controls\HighlightControl.xaml.cs">

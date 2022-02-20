@@ -93,10 +93,7 @@ namespace WireFrame.Selection
                 this.shapeSizes[shape] = new Size(width / this.control.GetCanvasRect().Width, height / this.control.GetCanvasRect().Height);
             }
 
-            this.control.UpdateBox();
-            this.control.UpdateBars();
-            this.control.UpdateSqrs();
-            this.control.UpdateCircles();
+            this.control.Update();
         }
 
         public bool RemoveShape(IShape shape)
