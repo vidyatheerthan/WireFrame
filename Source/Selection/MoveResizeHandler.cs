@@ -94,7 +94,7 @@ namespace WireFrame.Selection
             }
 
             this.control.UpdateBox();
-            this.control.UpdateHitBox();
+            this.control.UpdateBars();
             this.control.UpdateCircles();
         }
 
