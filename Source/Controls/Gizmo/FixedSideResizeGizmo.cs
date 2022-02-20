@@ -166,9 +166,43 @@ namespace WireFrame.Controls.Gizmo
             this.gizmoElement.Fill = this.highlightBrush;
         }
 
-        public void TrackPointer(Point point)
+        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
-            
+            switch (this.gizmo)
+            {
+                case Gizmo.Left:
+                    topLeft.X = pointer.X;
+                    if (bottomRight.X - topLeft.X < 0)
+                    {
+                        topLeft.X = bottomRight.X;
+                        bottomRight.X = pointer.X;
+                    }
+                    break;
+                case Gizmo.Right:
+                    bottomRight.X = pointer.X;
+                    if (bottomRight.X - topLeft.X < 0)
+                    {
+                        bottomRight.X = topLeft.X;
+                        topLeft.X = pointer.X;
+                    }
+                    break;
+                case Gizmo.Top:
+                    topLeft.Y = pointer.Y;
+                    if (bottomRight.Y - topLeft.Y < 0)
+                    {
+                        topLeft.Y = bottomRight.Y;
+                        bottomRight.Y = pointer.Y;
+                    }
+                    break;
+                case Gizmo.Bottom:
+                    bottomRight.Y = pointer.Y;
+                    if (bottomRight.Y - topLeft.Y < 0)
+                    {
+                        bottomRight.Y = topLeft.Y;
+                        topLeft.Y = pointer.Y;
+                    }
+                    break;
+            }
         }
 
         public void StopTrackingPointer(Point point)

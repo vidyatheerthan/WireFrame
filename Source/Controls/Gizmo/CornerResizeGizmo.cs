@@ -166,7 +166,7 @@ namespace WireFrame.Controls.Gizmo
             this.gizmoElement.Fill = this.highlightBrush;
         }
 
-        public void TrackPointer(Point point)
+        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
             
         }

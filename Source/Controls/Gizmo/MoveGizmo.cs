@@ -59,7 +59,7 @@ namespace WireFrame.Controls.Gizmo
             throw new NotImplementedException();
         }
 
-        public void TrackPointer(Point point)
+        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
             throw new NotImplementedException();
         }

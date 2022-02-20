@@ -125,7 +125,7 @@ namespace WireFrame.Controls
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
             IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), new HighlightHandler(_selectControl) });
             IFiniteStateMachine moveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), moveResizeHandler });
-            IFiniteStateMachine resizeState = new ResizeState(new List<object>() { _scrollViewer, _canvas, moveResizeHandler });
+            IFiniteStateMachine resizeState = new ResizeState(new List<object>() { _scrollViewer, _canvas, _HUD, moveResizeHandler });
             IFiniteStateMachine rotateElementState = new RotateElementState(new List<object>() { _grid, _scrollViewer, _canvas, _rotationControl });
             IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _moveResizeControl, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });

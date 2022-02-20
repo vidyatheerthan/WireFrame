@@ -94,7 +94,8 @@ namespace WireFrame.Controls
 
         public void Resize(Point pointer)
         {
-            this.activeGizmo.TrackPointer(pointer);
+            this.activeGizmo.TrackPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
+            Update();
         }
 
         public void StopResize(Point pointer)
