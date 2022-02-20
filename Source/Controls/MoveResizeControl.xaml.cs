@@ -243,54 +243,81 @@ namespace WireFrame.Controls
 
         public void UpdateBars()
         {
-            const double HALF = HITBOX_SIZE * 0.5;
+            double HALF_HIT = HITBOX_SIZE * 0.5;
 
-            Canvas.SetLeft(_left_bar, Canvas.GetLeft(_box) - HALF);
+            Canvas.SetLeft(_left_bar, Canvas.GetLeft(_box) - HALF_HIT);
             Canvas.SetTop(_left_bar, Canvas.GetTop(_box));
             _left_bar.Width = HITBOX_SIZE;
             _left_bar.Height = _box.ActualHeight;
 
-            Canvas.SetLeft(_right_bar, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
+            Canvas.SetLeft(_right_bar, Canvas.GetLeft(_box) + _box.ActualWidth - HALF_HIT);
             Canvas.SetTop(_right_bar, Canvas.GetTop(_box));
             _right_bar.Width = HITBOX_SIZE;
             _right_bar.Height = _box.ActualHeight;
 
             Canvas.SetLeft(_top_bar, Canvas.GetLeft(_box));
-            Canvas.SetTop(_top_bar, Canvas.GetTop(_box) - HALF);
+            Canvas.SetTop(_top_bar, Canvas.GetTop(_box) - HALF_HIT);
             _top_bar.Width = _box.ActualWidth;
             _top_bar.Height = HITBOX_SIZE;
 
             Canvas.SetLeft(_bottom_bar, Canvas.GetLeft(_box));
-            Canvas.SetTop(_bottom_bar, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            Canvas.SetTop(_bottom_bar, Canvas.GetTop(_box) + _box.ActualHeight - HALF_HIT);
             _bottom_bar.Width = _box.ActualWidth;
             _bottom_bar.Height = HITBOX_SIZE;
         }
 
+        public void UpdateSqrs()
+        {
+            double HALF_HIT = HITBOX_SIZE * 0.5;
+            double HALF_WIDTH = _box.ActualWidth * 0.5;
+            double HALF_HEIGHT = _box.ActualHeight * 0.5;
+
+            Canvas.SetLeft(_left_sqr, Canvas.GetLeft(_box) - HALF_HIT);
+            Canvas.SetTop(_left_sqr, Canvas.GetTop(_box) + HALF_HEIGHT - HALF_HIT);
+            _left_sqr.Width = HITBOX_SIZE;
+            _left_sqr.Height = HITBOX_SIZE;
+
+            Canvas.SetLeft(_right_sqr, Canvas.GetLeft(_box) + _box.ActualWidth - HALF_HIT);
+            Canvas.SetTop(_right_sqr, Canvas.GetTop(_box) + HALF_HEIGHT- HALF_HIT);
+            _right_sqr.Width = HITBOX_SIZE;
+            _right_sqr.Height = HITBOX_SIZE;
+
+            Canvas.SetLeft(_top_sqr, Canvas.GetLeft(_box) + HALF_WIDTH - HALF_HIT);
+            Canvas.SetTop(_top_sqr, Canvas.GetTop(_box) - HALF_HIT);
+            _top_sqr.Width = HITBOX_SIZE;
+            _top_sqr.Height = HITBOX_SIZE;
+
+            Canvas.SetLeft(_bottom_sqr, Canvas.GetLeft(_box) + HALF_WIDTH - HALF_HIT);
+            Canvas.SetTop(_bottom_sqr, Canvas.GetTop(_box) + _box.ActualHeight - HALF_HIT);
+            _bottom_sqr.Width = HITBOX_SIZE;
+            _bottom_sqr.Height = HITBOX_SIZE;
+        }
+
         public void UpdateCircles()
         {
-            const double HALF = HITBOX_SIZE * 0.5;
+            double HALF_HIT = HITBOX_SIZE * 0.5;
 
             // top left
-            Canvas.SetLeft(_top_left_circle, Canvas.GetLeft(_box) - HALF);
-            Canvas.SetTop(_top_left_circle, Canvas.GetTop(_box) - HALF);
+            Canvas.SetLeft(_top_left_circle, Canvas.GetLeft(_box) - HALF_HIT);
+            Canvas.SetTop(_top_left_circle, Canvas.GetTop(_box) - HALF_HIT);
             _top_left_circle.Width = HITBOX_SIZE;
             _top_left_circle.Height = HITBOX_SIZE;
 
             // top right
-            Canvas.SetLeft(_top_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
-            Canvas.SetTop(_top_right_circle, Canvas.GetTop(_box) - HALF);
+            Canvas.SetLeft(_top_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF_HIT);
+            Canvas.SetTop(_top_right_circle, Canvas.GetTop(_box) - HALF_HIT);
             _top_right_circle.Width = HITBOX_SIZE;
             _top_right_circle.Height = HITBOX_SIZE;
 
             // bottom left
-            Canvas.SetLeft(_bottom_left_circle, Canvas.GetLeft(_box) - HALF);
-            Canvas.SetTop(_bottom_left_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            Canvas.SetLeft(_bottom_left_circle, Canvas.GetLeft(_box) - HALF_HIT);
+            Canvas.SetTop(_bottom_left_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF_HIT);
             _bottom_left_circle.Width = HITBOX_SIZE;
             _bottom_left_circle.Height = HITBOX_SIZE;
 
             // bottom right
-            Canvas.SetLeft(_bottom_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF);
-            Canvas.SetTop(_bottom_right_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF);
+            Canvas.SetLeft(_bottom_right_circle, Canvas.GetLeft(_box) + _box.ActualWidth - HALF_HIT);
+            Canvas.SetTop(_bottom_right_circle, Canvas.GetTop(_box) + _box.ActualHeight - HALF_HIT);
             _bottom_right_circle.Width = HITBOX_SIZE;
             _bottom_right_circle.Height = HITBOX_SIZE;
         }
