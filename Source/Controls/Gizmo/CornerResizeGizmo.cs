@@ -168,7 +168,23 @@ namespace WireFrame.Controls.Gizmo
 
         public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
-            
+            switch (this.gizmo)
+            {
+                case Gizmo.TopLeft:
+                    topLeft = pointer;
+                    break;
+                case Gizmo.TopRight:
+                    topLeft.Y = pointer.Y;
+                    bottomRight.X = pointer.X;
+                    break;
+                case Gizmo.BottomLeft:
+                    topLeft.X = pointer.X;
+                    bottomRight.Y = pointer.Y;
+                    break;
+                case Gizmo.BottomRight:
+                    bottomRight = pointer;
+                    break;
+            }
         }
 
         public void StopTrackingPointer(Point point)

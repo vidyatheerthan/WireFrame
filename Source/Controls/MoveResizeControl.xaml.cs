@@ -102,6 +102,7 @@ namespace WireFrame.Controls
         {
             this.activeGizmo.StopTrackingPointer(pointer);
             this.activeGizmo = null;
+            SanitizedHudPoints();
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
@@ -153,7 +154,7 @@ namespace WireFrame.Controls
         {
             foreach(IGizmo gizmo in this.gizmos)
             {
-                gizmo.Update(GetHudRect());
+                gizmo.Update(GetSanitizedHudRect());
             }
         }
 
@@ -171,10 +172,26 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        public Rect GetHudRect()
+        private Rect GetSanitizedHudRect()
         {
-            Rect r = new Rect(hudTopLeft.X, hudTopLeft.Y, hudBottomRight.X - hudTopLeft.X, hudBottomRight.Y - hudTopLeft.Y);
+            double x1 = hudTopLeft.X < hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
+            double y1 = hudTopLeft.Y < hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+            double x2 = hudTopLeft.X > hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
+            double y2 = hudTopLeft.Y > hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+
+            Rect r = new Rect(x1, y1, x2 - x1, y2 - y1);
             return r;
+        }
+
+        private void SanitizedHudPoints()
+        {
+            double x1 = hudTopLeft.X < hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
+            double y1 = hudTopLeft.Y < hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+            double x2 = hudTopLeft.X > hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
+            double y2 = hudTopLeft.Y > hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+
+            this.hudTopLeft = new Point(x1, y1);
+            this.hudBottomRight = new Point(x2, y2);
         }
 
         public Rect GetCanvasRect()
