@@ -116,5 +116,20 @@ namespace WireFrame.Selection
 
             this.control.ResetBounds();
         }
+
+        public void StartResize(Point pointer)
+        {
+            this.control.StartResize(pointer);
+        }
+
+        public void Resize(Point pointer)
+        {
+            this.control.Resize(pointer);
+        }
+
+        public void StopResize(Point pointer)
+        {
+            this.control.StopResize(pointer);
+        }
     }
 }

@@ -23,34 +23,59 @@ namespace WireFrame.States
             public ScrollViewer scrollViewer;
             public Canvas canvas;
             public MoveResizeHandler resizeHandler;
-            public VirtualKey key;
 
-            public Data(ScrollViewer scrollViewer, Canvas canvas, MoveResizeHandler resizeHandler, VirtualKey key)
+            public Data(ScrollViewer scrollViewer, Canvas canvas, MoveResizeHandler resizeHandler)
             {
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
                 this.resizeHandler = resizeHandler;
-                this.key = key;
             }
         }
 
         // --
 
         private Data data = null;
+        private bool isTracking = false;
 
         // --
 
         public ResizeState(List<object> objects)
         {
-            if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is MoveResizeHandler) && (objects[3].GetType().IsEnum))
+            if (objects != null && objects.Count == 3 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is MoveResizeHandler))
             {
-                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as MoveResizeHandler, (VirtualKey)objects[3]);
+                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as MoveResizeHandler);
             }
         }
 
         public bool HandleInput(PointerState pointerState, PointerRoutedEventArgs e)
         {
-            return false;
+            PointerPoint canvasPointer = e.GetCurrentPoint(data.canvas);
+
+            if (pointerState == PointerState.Pressed &&
+                    canvasPointer.Properties.IsLeftButtonPressed &&
+                    !Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
+            {
+                data.resizeHandler.StartResize(canvasPointer.Position);
+
+                this.isTracking = true;
+            }
+            else if (pointerState == PointerState.Moved)
+            {
+                if (this.isTracking)
+                {
+                    data.resizeHandler.Resize(canvasPointer.Position);
+                }
+            }
+            else if (pointerState == PointerState.Released)
+            {
+                if (this.isTracking)
+                {
+                    data.resizeHandler.StopResize(canvasPointer.Position);
+                    this.isTracking = false;
+                }
+            }
+
+            return this.isTracking;
         }
 
         public bool HandleInput(KeyBoardState keyboardState, KeyEventArgs args)

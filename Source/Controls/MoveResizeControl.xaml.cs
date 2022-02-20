@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.InteropServices.WindowsRuntime;
 using Windows.Foundation;
 using Windows.Foundation.Collections;
+using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -69,202 +70,384 @@ namespace WireFrame.Controls
 
             // --
 
-            _left_bar.PointerEntered += OnPointerEnterLeftBar;
+            _left_bar.PointerEntered += OnPointerEnteredLeftBar;
             _left_bar.PointerExited += OnPointerExitedLeftBar;
+            _left_bar.PointerPressed += OnPointerPressedLeftBar;
 
-            _right_bar.PointerEntered += OnPointerEnterRightBar;
+            _right_bar.PointerEntered += OnPointerEnteredRightBar;
             _right_bar.PointerExited += OnPointerExitedRightBar;
+            _right_bar.PointerPressed += OnPointerPressedRightBar;
 
-            _top_bar.PointerEntered += OnPointerEnterTopBar;
+            _top_bar.PointerEntered += OnPointerEnteredTopBar;
             _top_bar.PointerExited += OnPointerExitedTopBar;
+            _top_bar.PointerPressed += OnPointerPressedTopBar;
 
-            _bottom_bar.PointerEntered += OnPointerEnterBottomBar;
+            _bottom_bar.PointerEntered += OnPointerEnteredBottomBar;
             _bottom_bar.PointerExited += OnPointerExitedBottomBar;
+            _bottom_bar.PointerPressed += OnPointerPressedBottomBar;
 
             // --
 
-            _left_sqr.PointerEntered += OnPointerEnterLeftSqr;
+            _left_sqr.PointerEntered += OnPointerEnteredLeftSqr;
             _left_sqr.PointerExited += OnPointerExitedLeftSqr;
+            _left_sqr.PointerPressed += OnPointerPressedLeftSqr;
 
-            _right_sqr.PointerEntered += OnPointerEnterRightSqr;
+            _right_sqr.PointerEntered += OnPointerEnteredRightSqr;
             _right_sqr.PointerExited += OnPointerExitedRightSqr;
+            _right_sqr.PointerPressed += OnPointerPressedRightSqr;
 
-            _top_sqr.PointerEntered += OnPointerEnterTopSqr;
+            _top_sqr.PointerEntered += OnPointerEnteredTopSqr;
             _top_sqr.PointerExited += OnPointerExitedTopSqr;
+            _top_sqr.PointerPressed += OnPointerPressedTopSqr;
 
-            _bottom_sqr.PointerEntered += OnPointerEnterBottomSqr;
+            _bottom_sqr.PointerEntered += OnPointerEnteredBottomSqr;
             _bottom_sqr.PointerExited += OnPointerExitedBottomSqr;
+            _bottom_sqr.PointerPressed += OnPointerPressedBottomSqr;
 
             // --
 
-            _top_left_circle.PointerEntered += OnPointerEnterTopLeftCircle;
+            _top_left_circle.PointerEntered += OnPointerEnteredTopLeftCircle;
             _top_left_circle.PointerExited += OnPointerExitedTopLeftCircle;
+            _top_left_circle.PointerPressed += OnPointerPressedTopLeftCircle;
 
-            _top_right_circle.PointerEntered += OnPointerEnterTopRightCircle;
+            _top_right_circle.PointerEntered += OnPointerEnteredTopRightCircle;
             _top_right_circle.PointerExited += OnPointerExitedTopRightCircle;
+            _top_right_circle.PointerPressed += OnPointerPressedTopRightCircle;
 
-            _bottom_left_circle.PointerEntered += OnPointerEnterBottomLeftCircle;
+            _bottom_left_circle.PointerEntered += OnPointerEnteredBottomLeftCircle;
             _bottom_left_circle.PointerExited += OnPointerExitedBottomLeftCircle;
+            _bottom_left_circle.PointerPressed += OnPointerPressedBottomLeftCircle;
 
-            _bottom_right_circle.PointerEntered += OnPointerEnterBottomRightCircle;
+            _bottom_right_circle.PointerEntered += OnPointerEnteredBottomRightCircle;
             _bottom_right_circle.PointerExited += OnPointerExitedBottomRightCircle;
+            _bottom_right_circle.PointerPressed += OnPointerPressedBottomRightCircle;
+
+            // --
 
             _box.PointerPressed += OnPointerPressedOnBox;
-            _box.PointerMoved += OnPointerMovedOnBox;
-            _box.PointerReleased += OnPointerReleasedOnBox;
         }
 
 
         ///-------------------------------------------------------------------
-
-        private void OnPointerEnterLeftBar(object sender, PointerRoutedEventArgs e)
+        private void OnPointerEnteredLeftBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
         }
-
         private void OnPointerExitedLeftBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedLeftBar(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.LeftBar;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterRightBar(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredRightBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
         }
-
         private void OnPointerExitedRightBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedRightBar(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.RightBar;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterTopBar(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredTopBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
         }
-
         private void OnPointerExitedTopBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedTopBar(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.TopBar;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterBottomBar(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredBottomBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
         }
-
         private void OnPointerExitedBottomBar(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedBottomBar(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.BottomBar;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
         ///-------------------------------------------------------------------
-
-        private void OnPointerEnterLeftSqr(object sender, PointerRoutedEventArgs e)
+        private void OnPointerEnteredLeftSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.leftArrowCursor;
         }
-
         private void OnPointerExitedLeftSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedLeftSqr(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.LeftSqr;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterRightSqr(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredRightSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.rightArrowCursor;
         }
-
         private void OnPointerExitedRightSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedRightSqr(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.RightSqr;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterTopSqr(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredTopSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.upArrowCursor;
         }
-
         private void OnPointerExitedTopSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedTopSqr(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.TopSqr;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterBottomSqr(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredBottomSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.downArrowCursor;
         }
-
         private void OnPointerExitedBottomSqr(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedBottomSqr(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.BottomSqr;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
         ///-------------------------------------------------------------------
-
-        //
-        private void OnPointerEnterTopLeftCircle(object sender, PointerRoutedEventArgs e)
+        private void OnPointerEnteredTopLeftCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
         }
-
         private void OnPointerExitedTopLeftCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedTopLeftCircle(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.TopLeftCircle;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterTopRightCircle(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredTopRightCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
         }
-
         private void OnPointerExitedTopRightCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedTopRightCircle(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.TopRightCircle;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterBottomLeftCircle(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredBottomLeftCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
         }
-
         private void OnPointerExitedBottomLeftCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedBottomLeftCircle(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.BottomLeftCircle;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
-        //
-        private void OnPointerEnterBottomRightCircle(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        private void OnPointerEnteredBottomRightCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
         }
-
         private void OnPointerExitedBottomRightCircle(object sender, PointerRoutedEventArgs e)
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+        private void OnPointerPressedBottomRightCircle(object sender, PointerRoutedEventArgs e)
+        {
+            this.activeResizeGizmo = ResizeGizmo.BottomRightCircle;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
+        }
 
+        ///-------------------------------------------------------------------
         private void OnPointerPressedOnBox(object sender, PointerRoutedEventArgs e)
         {
-            //Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan);
+            
         }
 
-        private void OnPointerMovedOnBox(object sender, PointerRoutedEventArgs e)
+        ///-------------------------------------------------------------------
+        
+        public void StartResize(Point pointer)
         {
-
+            switch (this.activeResizeGizmo)
+            {
+                case ResizeGizmo.TopBar:
+                    _top_bar.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.BottomBar:
+                    _bottom_bar.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.LeftBar:
+                    _left_bar.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.RightBar:
+                    _right_bar.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.TopSqr:
+                    _top_sqr.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.BottomSqr:
+                    _bottom_sqr.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.LeftSqr:
+                    _left_sqr.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.RightSqr:
+                    _right_sqr.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.TopLeftCircle:
+                    _top_left_circle.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.TopRightCircle:
+                    _top_right_circle.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.BottomLeftCircle:
+                    _bottom_left_circle.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+                case ResizeGizmo.BottomRightCircle:
+                    _bottom_right_circle.Fill = new SolidColorBrush(Colors.Aqua);
+                    break;
+            }
         }
 
-        private void OnPointerReleasedOnBox(object sender, PointerRoutedEventArgs e)
+        public void Resize(Point pointer)
         {
-            //Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Selection_Pan_Focus);
+            switch (this.activeResizeGizmo)
+            {
+                case ResizeGizmo.TopBar:
+
+                    break;
+                case ResizeGizmo.BottomBar:
+
+                    break;
+                case ResizeGizmo.LeftBar:
+
+                    break;
+                case ResizeGizmo.RightBar:
+
+                    break;
+                case ResizeGizmo.TopSqr:
+
+                    break;
+                case ResizeGizmo.BottomSqr:
+
+                    break;
+                case ResizeGizmo.LeftSqr:
+
+                    break;
+                case ResizeGizmo.RightSqr:
+
+                    break;
+                case ResizeGizmo.TopLeftCircle:
+
+                    break;
+                case ResizeGizmo.TopRightCircle:
+
+                    break;
+                case ResizeGizmo.BottomLeftCircle:
+
+                    break;
+                case ResizeGizmo.BottomRightCircle:
+
+                    break;
+            }
         }
+
+        public void StopResize(Point pointer)
+        {
+            switch (this.activeResizeGizmo)
+            {
+                case ResizeGizmo.TopBar:
+                    _top_bar.Fill = new SolidColorBrush(Colors.Transparent);
+                    break;
+                case ResizeGizmo.BottomBar:
+                    _bottom_bar.Fill = new SolidColorBrush(Colors.Transparent);
+                    break;
+                case ResizeGizmo.LeftBar:
+                    _left_bar.Fill = new SolidColorBrush(Colors.Transparent);
+                    break;
+                case ResizeGizmo.RightBar:
+                    _right_bar.Fill = new SolidColorBrush(Colors.Transparent);
+                    break;
+                case ResizeGizmo.TopSqr:
+                    _top_sqr.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.BottomSqr:
+                    _bottom_sqr.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.LeftSqr:
+                    _left_sqr.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.RightSqr:
+                    _right_sqr.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.TopLeftCircle:
+                    _top_left_circle.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.TopRightCircle:
+                    _top_right_circle.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.BottomLeftCircle:
+                    _bottom_left_circle.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+                case ResizeGizmo.BottomRightCircle:
+                    _bottom_right_circle.Fill = new SolidColorBrush(Colors.AliceBlue);
+                    break;
+            }
+
+            this.activeResizeGizmo = ResizeGizmo.None;
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
+        }
+
 
         ///-------------------------------------------------------------------
 

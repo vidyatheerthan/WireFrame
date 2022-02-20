@@ -18,7 +18,8 @@ namespace WireFrame.States
         {
             Select_Pan,
             SelectMoveResize_Pan_Focus,
-            RotateElement,
+            Resize,
+            Rotate,
             DrawEllipse,
             DrawRectangle
         }
