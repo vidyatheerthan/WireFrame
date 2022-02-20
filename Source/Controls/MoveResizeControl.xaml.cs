@@ -26,14 +26,19 @@ namespace WireFrame.Controls
     {
         private enum ResizeGizmo
         {
-            Top,
-            Bottom,
-            Left,
-            Right,
-            TopLeft,
-            TopRight,
-            BottomLeft,
-            BottomRight
+            None,
+            TopBar,
+            BottomBar,
+            LeftBar,
+            RightBar,
+            TopSqr,
+            BottomSqr,
+            LeftSqr,
+            RightSqr,
+            TopLeftCircle,
+            TopRightCircle,
+            BottomLeftCircle,
+            BottomRightCircle
         }
 
         const double HITBOX_SIZE = 10.0;
@@ -42,6 +47,10 @@ namespace WireFrame.Controls
         private CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
         private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
+        private CoreCursor upArrowCursor = new CoreCursor(CoreCursorType.UpArrow, 1);
+        private CoreCursor downArrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+        private CoreCursor leftArrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
+        private CoreCursor rightArrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
         private Point hudTopLeft = new Point(0, 0);
@@ -50,11 +59,15 @@ namespace WireFrame.Controls
         private Point canvasTopLeft = new Point(0, 0);
         private Point canvasBottomRight = new Point(0, 0);
 
+        private ResizeGizmo activeResizeGizmo = ResizeGizmo.None;
+
         // --
 
         public MoveResizeControl()
         {
             this.InitializeComponent();
+
+            // --
 
             _left_bar.PointerEntered += OnPointerEnterLeftBar;
             _left_bar.PointerExited += OnPointerExitedLeftBar;
@@ -67,6 +80,22 @@ namespace WireFrame.Controls
 
             _bottom_bar.PointerEntered += OnPointerEnterBottomBar;
             _bottom_bar.PointerExited += OnPointerExitedBottomBar;
+
+            // --
+
+            _left_sqr.PointerEntered += OnPointerEnterLeftSqr;
+            _left_sqr.PointerExited += OnPointerExitedLeftSqr;
+
+            _right_sqr.PointerEntered += OnPointerEnterRightSqr;
+            _right_sqr.PointerExited += OnPointerExitedRightSqr;
+
+            _top_sqr.PointerEntered += OnPointerEnterTopSqr;
+            _top_sqr.PointerExited += OnPointerExitedTopSqr;
+
+            _bottom_sqr.PointerEntered += OnPointerEnterBottomSqr;
+            _bottom_sqr.PointerExited += OnPointerExitedBottomSqr;
+
+            // --
 
             _top_left_circle.PointerEntered += OnPointerEnterTopLeftCircle;
             _top_left_circle.PointerExited += OnPointerExitedTopLeftCircle;
@@ -130,6 +159,53 @@ namespace WireFrame.Controls
         {
             Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
         }
+
+        ///-------------------------------------------------------------------
+
+        private void OnPointerEnterLeftSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.leftArrowCursor;
+        }
+
+        private void OnPointerExitedLeftSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterRightSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.rightArrowCursor;
+        }
+
+        private void OnPointerExitedRightSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterTopSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.upArrowCursor;
+        }
+
+        private void OnPointerExitedTopSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        //
+        private void OnPointerEnterBottomSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.downArrowCursor;
+        }
+
+        private void OnPointerExitedBottomSqr(object sender, PointerRoutedEventArgs e)
+        {
+            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+        }
+
+        ///-------------------------------------------------------------------
 
         //
         private void OnPointerEnterTopLeftCircle(object sender, PointerRoutedEventArgs e)
