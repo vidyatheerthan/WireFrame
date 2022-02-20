@@ -12,9 +12,9 @@ namespace WireFrame.Controls.Gizmo
     public interface IGizmo
     {
         void OnActivate(Action<IGizmo> action);
-        void StartTrackingPointer(Point pointer);
+        void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point pointer);
         void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer);
-        void StopTrackingPointer(Point pointer);
+        void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point pointer);
         void Update(Rect rect);
     }
 }

@@ -161,7 +161,7 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(Point point)
+        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
         }
@@ -187,7 +187,7 @@ namespace WireFrame.Controls.Gizmo
             }
         }
 
-        public void StopTrackingPointer(Point point)
+        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             this.gizmoElement.Fill = this.normalBrush;
         }

@@ -45,6 +45,8 @@ namespace WireFrame.Controls.Gizmo
 
         private SolidColorBrush highlightBrush, normalBrush;
 
+        private Point diff;
+
         // -----------------------------------
 
 
@@ -167,17 +169,40 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(Point point)
+        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
+
+            this.diff.X = bottomRight.X - topLeft.X;
+            this.diff.Y = bottomRight.Y - topLeft.Y;
         }
 
         public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
-
+            switch (this.gizmo)
+            {
+                case Gizmo.Left:
+                    if(pointer.X - topLeft.X > 0)
+                    {
+                        double dec = ((pointer.X - topLeft.X) / this.diff.X) * this.diff.Y * 0.5;
+                        topLeft.Y += dec;
+                        bottomRight.Y -= dec;
+                    }
+                    topLeft.X = pointer.X;
+                    break;
+                case Gizmo.Right:
+                    bottomRight.X = pointer.X;
+                    break;
+                case Gizmo.Top:
+                    topLeft.Y = pointer.Y;
+                    break;
+                case Gizmo.Bottom:
+                    bottomRight.Y = pointer.Y;
+                    break;
+            }
         }
 
-        public void StopTrackingPointer(Point point)
+        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             this.gizmoElement.Fill = this.normalBrush;
         }

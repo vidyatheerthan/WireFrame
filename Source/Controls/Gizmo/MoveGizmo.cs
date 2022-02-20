@@ -49,12 +49,7 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(Point point)
-        {
-            throw new NotImplementedException();
-        }
-
-        public void StopTrackingPointer(Point point)
+        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             throw new NotImplementedException();
         }
@@ -64,8 +59,11 @@ namespace WireFrame.Controls.Gizmo
             throw new NotImplementedException();
         }
 
-        // ------------------------------
+        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        {
+            throw new NotImplementedException();
+        }
 
-        
+        // ------------------------------
     }
 }

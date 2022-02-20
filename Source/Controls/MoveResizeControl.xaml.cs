@@ -89,7 +89,7 @@ namespace WireFrame.Controls
         
         public void StartResize(Point pointer)
         {
-            this.activeGizmo.StartTrackingPointer(pointer);
+            this.activeGizmo.StartTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
         }
 
         public void Resize(Point pointer)
@@ -100,7 +100,7 @@ namespace WireFrame.Controls
 
         public void StopResize(Point pointer)
         {
-            this.activeGizmo.StopTrackingPointer(pointer);
+            this.activeGizmo.StopTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
             this.activeGizmo = null;
             SanitizedHudPoints();
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
