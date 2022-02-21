@@ -45,8 +45,6 @@ namespace WireFrame.Controls.Gizmo
 
         private SolidColorBrush highlightBrush, normalBrush;
 
-        private Point diff;
-
         // -----------------------------------
 
 
@@ -172,15 +170,15 @@ namespace WireFrame.Controls.Gizmo
         public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
-
-            this.diff.X = bottomRight.X - topLeft.X;
-            this.diff.Y = bottomRight.Y - topLeft.Y;
         }
 
         public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
-            double x = ((pointer.Y - topLeft.Y) / this.diff.Y) * this.diff.X * 0.5;
-            double y = ((pointer.X - topLeft.X) / this.diff.X) * this.diff.Y * 0.5;
+            double diffX = bottomRight.X - topLeft.X;
+            double diffY = bottomRight.Y - topLeft.Y;
+
+            double x = ((pointer.Y - topLeft.Y) / diffY) * diffX * 0.5;
+            double y = ((pointer.X - topLeft.X) / diffX) * diffY * 0.5;
 
             switch (this.gizmo)
             {

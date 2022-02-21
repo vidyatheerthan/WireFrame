@@ -102,7 +102,7 @@ namespace WireFrame.Controls
         {
             this.activeGizmo.StopTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
             this.activeGizmo = null;
-            SanitizedHudPoints();
+            GetSanitizedHudPoints(ref this.hudTopLeft, ref this.hudBottomRight);
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
@@ -152,9 +152,10 @@ namespace WireFrame.Controls
 
         public void Update()
         {
-            foreach(IGizmo gizmo in this.gizmos)
+            var rect = GetSanitizedHudRect();
+            foreach (IGizmo gizmo in this.gizmos)
             {
-                gizmo.Update(GetSanitizedHudRect());
+                gizmo.Update(rect);
             }
         }
 
@@ -172,26 +173,24 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        private Rect GetSanitizedHudRect()
+        private void GetSanitizedHudPoints(ref Point p1, ref Point p2)
         {
             double x1 = hudTopLeft.X < hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
             double y1 = hudTopLeft.Y < hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
             double x2 = hudTopLeft.X > hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
             double y2 = hudTopLeft.Y > hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
 
-            Rect r = new Rect(x1, y1, x2 - x1, y2 - y1);
-            return r;
+            p1 = new Point(x1, y1);
+            p2 = new Point(x2, y2);
         }
 
-        private void SanitizedHudPoints()
+        private Rect GetSanitizedHudRect()
         {
-            double x1 = hudTopLeft.X < hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
-            double y1 = hudTopLeft.Y < hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
-            double x2 = hudTopLeft.X > hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
-            double y2 = hudTopLeft.Y > hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+            Point p1, p2;
+            GetSanitizedHudPoints(ref p1, ref p2);
 
-            this.hudTopLeft = new Point(x1, y1);
-            this.hudBottomRight = new Point(x2, y2);
+            Rect r = new Rect(p1.X, p1.Y, p2.X - p1.X, p2.Y - p1.Y);
+            return r;
         }
 
         public Rect GetCanvasRect()
