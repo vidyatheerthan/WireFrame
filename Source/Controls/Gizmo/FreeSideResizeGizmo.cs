@@ -179,25 +179,30 @@ namespace WireFrame.Controls.Gizmo
 
         public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
         {
+            double x = ((pointer.Y - topLeft.Y) / this.diff.Y) * this.diff.X * 0.5;
+            double y = ((pointer.X - topLeft.X) / this.diff.X) * this.diff.Y * 0.5;
+
             switch (this.gizmo)
             {
                 case Gizmo.Left:
-                    if(pointer.X - topLeft.X > 0)
-                    {
-                        double dec = ((pointer.X - topLeft.X) / this.diff.X) * this.diff.Y * 0.5;
-                        topLeft.Y += dec;
-                        bottomRight.Y -= dec;
-                    }
                     topLeft.X = pointer.X;
+                    topLeft.Y += y;
+                    bottomRight.Y -= y;
                     break;
                 case Gizmo.Right:
                     bottomRight.X = pointer.X;
+                    bottomRight.Y -= y;
+                    topLeft.Y += y;
                     break;
                 case Gizmo.Top:
                     topLeft.Y = pointer.Y;
+                    topLeft.X += x;
+                    bottomRight.X -= x;
                     break;
                 case Gizmo.Bottom:
                     bottomRight.Y = pointer.Y;
+                    bottomRight.X -= x;
+                    topLeft.X += x;
                     break;
             }
         }
