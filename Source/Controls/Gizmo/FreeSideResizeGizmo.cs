@@ -177,30 +177,33 @@ namespace WireFrame.Controls.Gizmo
             double diffX = bottomRight.X - topLeft.X;
             double diffY = bottomRight.Y - topLeft.Y;
 
-            double x = ((pointer.Y - topLeft.Y) / diffY) * diffX * 0.5;
-            double y = ((pointer.X - topLeft.X) / diffX) * diffY * 0.5;
+            double tlx = ((pointer.Y - topLeft.Y) / diffY) * diffX * 0.5;
+            double tly = ((pointer.X - topLeft.X) / diffX) * diffY * 0.5;
+
+            double brx = ((pointer.Y - bottomRight.Y) / diffY) * diffX * 0.5;
+            double bry = ((pointer.X - bottomRight.X) / diffX) * diffY * 0.5;
 
             switch (this.gizmo)
             {
                 case Gizmo.Left:
                     topLeft.X = pointer.X;
-                    topLeft.Y += y;
-                    bottomRight.Y -= y;
+                    topLeft.Y += tly;
+                    bottomRight.Y -= tly;
                     break;
                 case Gizmo.Right:
                     bottomRight.X = pointer.X;
-                    bottomRight.Y -= y;
-                    topLeft.Y += y;
+                    bottomRight.Y += bry;
+                    topLeft.Y -= bry;
                     break;
                 case Gizmo.Top:
                     topLeft.Y = pointer.Y;
-                    topLeft.X += x;
-                    bottomRight.X -= x;
+                    topLeft.X += tlx;
+                    bottomRight.X -= tlx;
                     break;
                 case Gizmo.Bottom:
                     bottomRight.Y = pointer.Y;
-                    bottomRight.X -= x;
-                    topLeft.X += x;
+                    bottomRight.X += brx;
+                    topLeft.X -= brx;
                     break;
             }
         }
