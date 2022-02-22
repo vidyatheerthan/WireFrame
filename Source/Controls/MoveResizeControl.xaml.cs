@@ -95,6 +95,7 @@ namespace WireFrame.Controls
         public void Resize(Point pointer)
         {
             this.activeGizmo.TrackPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
+            this.activeGizmo.TrackPointer(ref this.canvasTopLeft, ref this.canvasBottomRight, pointer);
             Update();
         }
 
@@ -102,7 +103,8 @@ namespace WireFrame.Controls
         {
             this.activeGizmo.StopTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
             this.activeGizmo = null;
-            GetSanitizedHudPoints(ref this.hudTopLeft, ref this.hudBottomRight);
+            GetSanitizedPoints(this.hudTopLeft, this.hudBottomRight, ref this.hudTopLeft, ref this.hudBottomRight);
+            GetSanitizedPoints(this.canvasTopLeft, this.canvasBottomRight, ref this.canvasTopLeft, ref this.canvasBottomRight);
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
@@ -152,7 +154,7 @@ namespace WireFrame.Controls
 
         public void Update()
         {
-            var rect = GetSanitizedHudRect();
+            var rect = GetSanitizedRect(this.hudTopLeft, this.hudBottomRight);
             foreach (IGizmo gizmo in this.gizmos)
             {
                 gizmo.Update(rect);
@@ -173,21 +175,21 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        private void GetSanitizedHudPoints(ref Point p1, ref Point p2)
+        private void GetSanitizedPoints(Point topLeft, Point bottomRight, ref Point p1, ref Point p2)
         {
-            double x1 = hudTopLeft.X < hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
-            double y1 = hudTopLeft.Y < hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
-            double x2 = hudTopLeft.X > hudBottomRight.X ? hudTopLeft.X : hudBottomRight.X;
-            double y2 = hudTopLeft.Y > hudBottomRight.Y ? hudTopLeft.Y : hudBottomRight.Y;
+            double x1 = topLeft.X < bottomRight.X ? topLeft.X : bottomRight.X;
+            double y1 = topLeft.Y < bottomRight.Y ? topLeft.Y : bottomRight.Y;
+            double x2 = topLeft.X > bottomRight.X ? topLeft.X : bottomRight.X;
+            double y2 = topLeft.Y > bottomRight.Y ? topLeft.Y : bottomRight.Y;
 
             p1 = new Point(x1, y1);
             p2 = new Point(x2, y2);
         }
 
-        private Rect GetSanitizedHudRect()
+        private Rect GetSanitizedRect(Point topLeft, Point bottomRight)
         {
             Point p1, p2;
-            GetSanitizedHudPoints(ref p1, ref p2);
+            GetSanitizedPoints(topLeft, bottomRight, ref p1, ref p2);
 
             Rect r = new Rect(p1.X, p1.Y, p2.X - p1.X, p2.Y - p1.Y);
             return r;

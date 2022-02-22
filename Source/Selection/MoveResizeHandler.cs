@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Media;
 using WireFrame.Controls;
 using WireFrame.Shapes;
 
@@ -14,7 +16,7 @@ namespace WireFrame.Selection
     public class MoveResizeHandler : ISelectionHandler
     {
         private MoveResizeControl control = null;
-        private Dictionary<IShape, Size> shapeSizes = null;
+        private Dictionary<IShape, Rect> shapeSizes = null;
         private FrameworkElement container = null;
 
         ///-------------------------------------------------------------------
@@ -22,7 +24,7 @@ namespace WireFrame.Selection
         public MoveResizeHandler(MoveResizeControl control)
         {
             this.control = control;
-            this.shapeSizes = new Dictionary<IShape, Size>(); // each shape and their size contribution in _box
+            this.shapeSizes = new Dictionary<IShape, Rect>(); // each shape and their size contribution in _box
         }
 
         public void Show(bool show)
@@ -42,7 +44,7 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            this.shapeSizes.Add(shape, Size.Empty);
+            this.shapeSizes.Add(shape, Rect.Empty);
 
             return true;
         }
@@ -79,18 +81,12 @@ namespace WireFrame.Selection
         public void UpdateShapes(float zoomFactor)
         {
             this.control.ResetBounds();
-
             var shapes = GetShapes();
 
             for (int i = 0; i < shapes.Count; ++i)
             {
                 IShape shape = shapes[i];
-
                 this.control.UpdateCorners(this.container, shape, zoomFactor, i == 0);
-
-                double width = shape.GetLength() * zoomFactor;
-                double height = shape.GetBreath() * zoomFactor;
-                this.shapeSizes[shape] = new Size(width / this.control.GetCanvasRect().Width, height / this.control.GetCanvasRect().Height);
             }
 
             this.control.Update();
@@ -117,11 +113,29 @@ namespace WireFrame.Selection
         public void StartResize(Point pointer)
         {
             this.control.StartResize(pointer);
+
+            Rect rect = this.control.GetCanvasRect();
+            foreach (IShape shape in GetShapes())
+            {
+                this.shapeSizes[shape] = new Rect(shape.GetLeft() / rect.X, shape.GetTop() / rect.Y, shape.GetLength() / rect.Width, shape.GetBreath() / rect.Height);
+            }            
         }
 
         public void Resize(Point pointer)
         {
             this.control.Resize(pointer);
+
+            Rect crect = this.control.GetCanvasRect();
+
+            foreach (var kv in this.shapeSizes) {
+                IShape shape = kv.Key;
+                Rect shapeRect = kv.Value;
+                
+                shape.SetLeft(crect.X * shapeRect.X);
+                shape.SetTop(crect.Y * shapeRect.Y);
+                shape.SetLength(crect.Width * shapeRect.Width);
+                shape.SetBreath(crect.Height * shapeRect.Height);
+            }
         }
 
         public void StopResize(Point pointer)
