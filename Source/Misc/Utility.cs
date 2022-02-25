@@ -6,7 +6,9 @@ using System.Text;
 using System.Threading.Tasks;
 using Windows.Graphics.Display;
 using Windows.UI.Xaml;
+using WireFrame.Shapes;
 using Size = Windows.Foundation.Size;
+using Point = Windows.Foundation.Point;
 
 namespace WireFrame.Misc
 {
@@ -27,6 +29,12 @@ namespace WireFrame.Misc
             double heightRatio = size.Height / source.ActualHeight;
 
             return new Size(destination.ActualWidth * widthRatio, destination.ActualHeight * heightRatio);
+        }
+
+        public static Point GetPointInContainer(IShape shape, FrameworkElement container)
+        {
+            var transform = shape.GetViewbox().TransformToVisual(container);
+            return transform.TransformPoint(new Point(0, 0));
         }
     }
 }

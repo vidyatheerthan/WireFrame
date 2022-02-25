@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Shapes;
@@ -12,13 +13,13 @@ namespace WireFrame.Controls.Gizmo
 {
     class MoveGizmo : IGizmo
     {
-        private Shape gizmoElement;
+        private FrameworkElement gizmoElement;
 
         private Action<IGizmo> onActivateAction;
 
         // ------------------------------
 
-        public MoveGizmo(Shape gizmoElement)
+        public MoveGizmo(FrameworkElement gizmoElement)
         {
             this.gizmoElement = gizmoElement;
 

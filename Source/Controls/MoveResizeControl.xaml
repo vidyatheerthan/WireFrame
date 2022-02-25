@@ -11,7 +11,11 @@
 
     <Canvas x:Name="_canvas">
 
-        <Rectangle x:Name="_box" Width="100" Height="100" Stroke="#FF011B8D" StrokeThickness="1" Fill="Transparent" />
+        <Grid x:Name="_box" Width="100" Height="100" Background="Transparent" BorderBrush="Red" BorderThickness="2">
+            <local:HighlightControl x:Name="_highlight" />
+        </Grid>
+
+        <!--<Rectangle x:Name="_box" Width="100" Height="100" Stroke="#FF011B8D" StrokeThickness="1" Fill="Transparent" />-->
 
         <Rectangle x:Name="_left_bar" Canvas.Left="-5" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />
         <Rectangle x:Name="_right_bar" Canvas.Left="95" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />

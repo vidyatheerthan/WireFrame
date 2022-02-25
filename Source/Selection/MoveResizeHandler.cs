@@ -16,7 +16,7 @@ namespace WireFrame.Selection
     public class MoveResizeHandler : ISelectionHandler
     {
         private MoveResizeControl control = null;
-        private List<IShape> shapes = null;
+        private Dictionary<IShape, Viewbox> shapes = null;
         private FrameworkElement container = null;
 
         ///-------------------------------------------------------------------
@@ -24,7 +24,7 @@ namespace WireFrame.Selection
         public MoveResizeHandler(MoveResizeControl control)
         {
             this.control = control;
-            this.shapes = new List<IShape>();
+            this.shapes = new Dictionary<IShape, Viewbox>();
         }
 
         public void Show(bool show)
@@ -39,12 +39,12 @@ namespace WireFrame.Selection
 
         public bool AddShape(IShape shape)
         {
-            if (shape == null || this.shapes.Contains(shape))
+            if (shape == null || this.shapes.ContainsKey(shape))
             {
                 return false;
             }
 
-            this.shapes.Add(shape);
+            this.shapes.Add(shape, this.control.AddShapeToHighlight(this.container, shape));
 
             return true;
         }
@@ -61,10 +61,11 @@ namespace WireFrame.Selection
                 }
             }
 
-            foreach (var shape in this.shapes.ToList())
+            foreach (var shape in GetShapes())
             {
                 if (!shapes.Contains(shape))
                 {
+                    this.control.RemoveShapeFromHighlight(this.shapes[shape]);
                     this.shapes.Remove(shape);
                 }
             }
@@ -74,16 +75,19 @@ namespace WireFrame.Selection
 
         public List<IShape> GetShapes()
         {
-            return this.shapes;
+            return this.shapes.Keys.ToList();
         }
 
         public void UpdateShapes(float zoomFactor)
         {
             this.control.ResetBounds();
 
-            for (int i = 0; i < this.shapes.Count; ++i)
+            var shapes = GetShapes();
+
+            for (int i = 0; i < shapes.Count; ++i)
             {
-                this.control.UpdateCorners(this.container, this.shapes[i], zoomFactor, i == 0);
+                this.control.UpdateCorners(this.container, shapes[i], zoomFactor, i == 0);
+                this.control.UpdateHighlights(this.container, shapes[i], this.shapes[shapes[i]], zoomFactor);
             }
 
             this.control.Update();
@@ -91,8 +95,9 @@ namespace WireFrame.Selection
 
         public bool RemoveShape(IShape shape)
         {
-            if (this.shapes.Contains(shape))
+            if (this.shapes.ContainsKey(shape))
             {
+                this.control.RemoveShapeFromHighlight(this.shapes[shape]);
                 this.shapes.Remove(shape);
                 return true;
             }
@@ -103,6 +108,7 @@ namespace WireFrame.Selection
         public void RemoveAllShapes()
         {
             this.shapes.Clear();
+            this.control.RemoveAllShapesFromHighlight();
             this.control.ResetBounds();
         }
 

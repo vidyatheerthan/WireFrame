@@ -160,6 +160,28 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
+        public Viewbox AddShapeToHighlight(FrameworkElement container, IShape shape)
+        {
+            return this._highlight.AddNewShape(container, shape);
+        }
+
+        public void RemoveShapeFromHighlight(Viewbox viewbox)
+        {
+            this._highlight.RemoveShape(viewbox);
+        }
+
+        public void RemoveAllShapesFromHighlight()
+        {
+            this._highlight.RemoveAllShapes();
+        }
+
+        public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
+        {
+            this._highlight.UpdateShape(container, shape, childView, zoomFactor);
+        }
+
+        ///-------------------------------------------------------------------
+
         private void GetSanitizedPoints(Point topLeft, Point bottomRight, ref Point p1, ref Point p2)
         {
             double x1 = topLeft.X < bottomRight.X ? topLeft.X : bottomRight.X;

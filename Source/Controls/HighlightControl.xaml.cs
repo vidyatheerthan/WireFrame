@@ -13,6 +13,7 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
+using WireFrame.Misc;
 using WireFrame.Shapes;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
@@ -31,11 +32,11 @@ namespace WireFrame.Controls
             this.InitializeComponent();
         }
 
-        public Viewbox AddNewShape(IShape shape, Point position)
+        public Viewbox AddNewShape(FrameworkElement container, IShape shape)
         {
             Viewbox v = new Viewbox();
 
-            UpdateViewbox(ref v, shape.GetViewbox(), position);
+            UpdateViewbox(ref v, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
 
             v.Child = CreateNewPath(shape.GetViewbox());
 
@@ -54,7 +55,7 @@ namespace WireFrame.Controls
             this._canvas.Children.Clear();
         }
 
-        public void UpdateShape(IShape shape, Viewbox childView, Point position, float zoomFactor)
+        public void UpdateShape(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
         {
             if(!this._canvas.Children.Contains(childView))
             {
@@ -62,7 +63,7 @@ namespace WireFrame.Controls
             }
 
             var path = childView.Child as Path;
-            UpdateViewbox(ref childView, shape.GetViewbox(), position);
+            UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
             UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
         }
 

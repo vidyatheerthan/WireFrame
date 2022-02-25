@@ -23,7 +23,7 @@ namespace WireFrame.Selection
     public class HighlightHandler : ISelectionHandler
     {
         private HighlightControl control;
-        private Dictionary<IShape, Viewbox> shapes = new Dictionary<IShape, Viewbox>();
+        private Dictionary<IShape, Viewbox> shapes = null;
         private FrameworkElement container = null;
 
         // --------------------------------------------------------
@@ -48,7 +48,7 @@ namespace WireFrame.Selection
         {
             if (shape == null || this.shapes.ContainsKey(shape)) { return false; }
 
-            var view = this.control.AddNewShape(shape, GetPointInContainer(shape));
+            var view = this.control.AddNewShape(this.container, shape);
 
             this.shapes.Add(shape, view);
 
@@ -90,7 +90,7 @@ namespace WireFrame.Selection
 
             foreach (var shape in this.shapes.Keys)
             {
-                this.control.UpdateShape(shape, this.shapes[shape], GetPointInContainer(shape), zoomFactor);
+                this.control.UpdateShape(this.container, shape, this.shapes[shape], zoomFactor);
             }
         }
 
@@ -113,11 +113,5 @@ namespace WireFrame.Selection
         }
 
         // ----------------------
-
-        private Point GetPointInContainer(IShape shape)
-        {
-            var transform = shape.GetViewbox().TransformToVisual(this.container);
-            return transform.TransformPoint(new Point(0, 0));
-        }
     }
 }
