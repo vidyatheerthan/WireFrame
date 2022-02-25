@@ -166,7 +166,7 @@ namespace WireFrame.Controls
         {
             UpdateCanvasAndFrameSize();
 
-            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Select_Pan);
         }
 
         

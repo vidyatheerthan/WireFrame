@@ -34,11 +34,7 @@ namespace WireFrame.Controls
 
         public Viewbox AddNewShape(FrameworkElement container, IShape shape)
         {
-            Viewbox v = new Viewbox();
-
-            UpdateViewbox(ref v, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-
-            v.Child = CreateNewPath(shape.GetViewbox());
+            var v = ViewboxCloner.CreateNewViewbox(shape, Utility.GetPointInContainer(shape, container), fillBrush, strokeBrush);
 
             _canvas.Children.Add(v);
 
@@ -63,70 +59,8 @@ namespace WireFrame.Controls
             }
 
             var path = childView.Child as Path;
-            UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-            UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
-        }
-
-
-        private void UpdateViewbox(ref Viewbox childView, Viewbox cloneView, Point position)
-        {
-            Canvas.SetLeft(childView, position.X);
-            Canvas.SetTop(childView, position.Y);
-            childView.Stretch = cloneView.Stretch;
-        }
-
-        private Path CreateNewPath(Viewbox cloneView)
-        {
-            Path p = new Path();
-            UpdatePath(ref p, cloneView, 1.0f);
-            p.Data = CloneGeometryGroup(cloneView);
-            p.Fill = this.fillBrush;
-            p.Stroke = this.strokeBrush;
-            return p;
-        }
-
-        private void UpdatePath(ref Path childViewPath, Viewbox cloneView, float zoomFactor)
-        {
-            childViewPath.Width = cloneView.ActualWidth * zoomFactor;
-            childViewPath.Height = cloneView.ActualHeight * zoomFactor;
-            childViewPath.Stretch = (cloneView.Child as Path).Stretch;
-        }
-
-        private GeometryGroup CloneGeometryGroup(Viewbox cloneView)
-        {
-            GeometryGroup gg = new GeometryGroup();
-            gg.Children = new GeometryCollection();
-
-            var geoGroup = (cloneView.Child as Path).Data as GeometryGroup;
-            foreach (var geo in geoGroup.Children)
-            {
-                if (geo is EllipseGeometry)
-                {
-                    gg.Children.Add(CloneEllipseGeometry(geo as EllipseGeometry));
-                }
-                else if (geo is RectangleGeometry)
-                {
-                    gg.Children.Add(CloneRectangleGeometry(geo as RectangleGeometry));
-                }
-            }
-
-            return gg;
-        }
-
-        private EllipseGeometry CloneEllipseGeometry(EllipseGeometry geo)
-        {
-            var ellipse = new EllipseGeometry();
-            ellipse.Center = geo.Center;
-            ellipse.RadiusX = geo.RadiusX;
-            ellipse.RadiusY = geo.RadiusY;
-            return ellipse;
-        }
-
-        private RectangleGeometry CloneRectangleGeometry(RectangleGeometry geo)
-        {
-            var rect = new RectangleGeometry();
-            rect.Rect = new Rect(geo.Rect.X, geo.Rect.Y, geo.Rect.Width, geo.Rect.Height);
-            return rect;
-        }
+            ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
+            ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
+        }        
     }
 }
