@@ -13,13 +13,13 @@ namespace WireFrame.Controls.Gizmo
 {
     class MoveGizmo : IGizmo
     {
-        private FrameworkElement gizmoElement;
+        private BoxControl gizmoElement;
 
         private Action<IGizmo> onActivateAction;
 
         // ------------------------------
 
-        public MoveGizmo(FrameworkElement gizmoElement)
+        public MoveGizmo(BoxControl gizmoElement)
         {
             this.gizmoElement = gizmoElement;
 

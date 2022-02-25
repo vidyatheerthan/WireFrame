@@ -11,9 +11,7 @@
 
     <Canvas x:Name="_canvas">
 
-        <local:HighlightControl x:Name="_highlight" />
-
-        <Rectangle x:Name="_box" Width="100" Height="100" Stroke="#FF011B8D" StrokeThickness="1" Fill="Transparent" />
+        <local:BoxControl x:Name="_box" />
 
         <Rectangle x:Name="_left_bar" Canvas.Left="-5" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />
         <Rectangle x:Name="_right_bar" Canvas.Left="95" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />

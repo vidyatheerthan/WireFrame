@@ -92,6 +92,7 @@ namespace WireFrame.Controls
         public void Resize(Point pointer)
         {
             this.activeGizmo.TrackPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
+            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
             Update();
         }
 
@@ -137,6 +138,8 @@ namespace WireFrame.Controls
             {
                 this.hudBottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
             }
+
+            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
         }
 
 
@@ -154,30 +157,29 @@ namespace WireFrame.Controls
             this.hudTopLeft = new Point(0, 0);
             this.hudBottomRight = new Point(0, 0);
 
-            _box.Width = 0.0;
-            _box.Height = 0.0;
+            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
         }
 
         ///-------------------------------------------------------------------
 
         public Viewbox AddShapeToHighlight(FrameworkElement container, IShape shape)
         {
-            return this._highlight.AddNewShape(container, shape);
+            return _box.AddNewShape(container, shape);
         }
 
         public void RemoveShapeFromHighlight(Viewbox viewbox)
         {
-            this._highlight.RemoveShape(viewbox);
+            _box.RemoveShape(viewbox);
         }
 
         public void RemoveAllShapesFromHighlight()
         {
-            this._highlight.RemoveAllShapes();
+            _box.RemoveAllShapes();
         }
 
         public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
         {
-            this._highlight.UpdateShape(container, shape, childView, zoomFactor);
+            _box.UpdateShape(shape, childView);
         }
 
         ///-------------------------------------------------------------------

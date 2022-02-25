@@ -9,6 +9,6 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Grid x:Name="_grid" />
+    <Grid x:Name="_grid" Background="#7FADD8E6" BorderBrush="Red" BorderThickness="1" />
     
 </UserControl>

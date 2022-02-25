@@ -32,35 +32,47 @@ namespace WireFrame.Controls
             this.InitializeComponent();
         }
 
-        //public Viewbox AddNewShape(FrameworkElement container, IShape shape)
-        //{
-        //    var v = ViewboxCloner.CreateNewViewbox(shape, fillBrush, strokeBrush);
-        //    ViewboxCloner.UpdateViewbox(ref v, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-        //    _canvas.Children.Add(v);
+        public void SetBounds(Point topLeft, Point bottomRight)
+        {
+            Canvas.SetTop(_grid, topLeft.Y);
+            Canvas.SetLeft(_grid, topLeft.X);
+            _grid.Width = bottomRight.X - topLeft.X;
+            _grid.Height = bottomRight.Y - topLeft.Y;
+        }
 
-        //    return v;
-        //}
+        public Viewbox AddNewShape(FrameworkElement container, IShape shape)
+        {
+            var v = ViewboxCloner.CreateNewViewbox(shape, fillBrush, strokeBrush);
+            _grid.Children.Add(v);
+            return v;
+        }
 
-        //public void RemoveShape(Viewbox view)
-        //{
-        //    this._canvas.Children.Remove(view);
-        //}
+        public void RemoveShape(Viewbox view)
+        {
+            _grid.Children.Remove(view);
+        }
 
-        //public void RemoveAllShapes()
-        //{
-        //    this._canvas.Children.Clear();
-        //}
+        public void RemoveAllShapes()
+        {
+            _grid.Children.Clear();
+        }
 
-        //public void UpdateShape(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
-        //{
-        //    if (!this._canvas.Children.Contains(childView))
-        //    {
-        //        return;
-        //    }
+        public void UpdateShape(IShape shape, Viewbox childView)
+        {
+            if (!_grid.Children.Contains(childView))
+            {
+                return;
+            }
 
-        //    var path = childView.Child as Path;
-        //    ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-        //    ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
-        //}
+            //var path = childView.Child as Path;
+            //ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
+            //ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
+
+            var transform = shape.GetViewbox().TransformToVisual(_grid);
+            var startPoint = transform.TransformPoint(new Point(0, 0));
+            var endPoint = transform.TransformPoint(new Point(shape.GetLength(), shape.GetBreath()));
+
+            childView.Margin = new Thickness(startPoint.X, startPoint.Y, _grid.ActualWidth - endPoint.X, _grid.ActualHeight - endPoint.Y);
+        }
     }
 }
