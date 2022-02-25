@@ -29,9 +29,6 @@ namespace WireFrame.Controls
         private Point hudTopLeft = new Point(0, 0);
         private Point hudBottomRight = new Point(0, 0);
 
-        private Point canvasTopLeft = new Point(0, 0);
-        private Point canvasBottomRight = new Point(0, 0);
-
         private IGizmo activeGizmo = null;
 
         private IGizmo[] gizmos;
@@ -95,7 +92,6 @@ namespace WireFrame.Controls
         public void Resize(Point pointer)
         {
             this.activeGizmo.TrackPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
-            this.activeGizmo.TrackPointer(ref this.canvasTopLeft, ref this.canvasBottomRight, pointer);
             Update();
         }
 
@@ -104,7 +100,6 @@ namespace WireFrame.Controls
             this.activeGizmo.StopTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
             this.activeGizmo = null;
             GetSanitizedPoints(this.hudTopLeft, this.hudBottomRight, ref this.hudTopLeft, ref this.hudBottomRight);
-            GetSanitizedPoints(this.canvasTopLeft, this.canvasBottomRight, ref this.canvasTopLeft, ref this.canvasBottomRight);
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
@@ -119,35 +114,28 @@ namespace WireFrame.Controls
             {
                 this.hudTopLeft.X = ePoint.X;
                 this.hudTopLeft.Y = ePoint.Y;
-
-                this.canvasTopLeft.X = shape.GetLeft();
-                this.canvasTopLeft.Y = shape.GetTop();
             }
             else
             {
                 if (ePoint.X < this.hudTopLeft.X)
                 {
                     this.hudTopLeft.X = ePoint.X;
-                    this.canvasTopLeft.X = shape.GetLeft();
                 }
 
                 if (ePoint.Y < this.hudTopLeft.Y)
                 {
                     this.hudTopLeft.Y = ePoint.Y;
-                    this.canvasTopLeft.Y = shape.GetTop();
                 }
             }
 
             if (ePoint.X + (shape.GetLength() * zoomFactor) > this.hudBottomRight.X)
             {
                 this.hudBottomRight.X = ePoint.X + (shape.GetLength() * zoomFactor);
-                this.canvasBottomRight.X = shape.GetLeft() + shape.GetLength();
             }
 
             if (ePoint.Y + (shape.GetBreath() * zoomFactor) > this.hudBottomRight.Y)
             {
                 this.hudBottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
-                this.canvasBottomRight.Y = shape.GetTop() + shape.GetBreath();
             }
         }
 
@@ -165,9 +153,6 @@ namespace WireFrame.Controls
         {
             this.hudTopLeft = new Point(0, 0);
             this.hudBottomRight = new Point(0, 0);
-
-            this.canvasTopLeft = new Point(0, 0);
-            this.canvasBottomRight = new Point(0, 0);
 
             _box.Width = 0.0;
             _box.Height = 0.0;
@@ -195,9 +180,13 @@ namespace WireFrame.Controls
             return r;
         }
 
-        public Rect GetCanvasRect()
+        public Rect GetRect(Canvas canvas)
         {
-            Rect r = new Rect(canvasTopLeft.X, canvasTopLeft.Y, canvasBottomRight.X - canvasTopLeft.X, canvasBottomRight.Y - canvasTopLeft.Y);
+            var transform = _box.TransformToVisual(canvas);
+            var tl = transform.TransformPoint(new Point(0, 0));
+            var br = transform.TransformPoint(new Point(_box.ActualWidth, _box.ActualHeight));
+
+            Rect r = new Rect(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
             return r;
         }
     }

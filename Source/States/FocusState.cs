@@ -61,7 +61,7 @@ namespace WireFrame.States
 
             if (args.VirtualKey == this.data.key)
             {
-                Rect r = this.data.sizeControl.GetCanvasRect();
+                Rect r = this.data.sizeControl.GetRect(this.data.canvas);
                 double width = r.Width;
                 double height = r.Height;
 

@@ -16,7 +16,7 @@ namespace WireFrame.Selection
     public class MoveResizeHandler : ISelectionHandler
     {
         private MoveResizeControl control = null;
-        private Dictionary<IShape, Rect> shapeSizes = null;
+        private List<IShape> shapes = null;
         private FrameworkElement container = null;
 
         ///-------------------------------------------------------------------
@@ -24,7 +24,7 @@ namespace WireFrame.Selection
         public MoveResizeHandler(MoveResizeControl control)
         {
             this.control = control;
-            this.shapeSizes = new Dictionary<IShape, Rect>(); // each shape and their size contribution in _box
+            this.shapes = new List<IShape>();
         }
 
         public void Show(bool show)
@@ -39,12 +39,12 @@ namespace WireFrame.Selection
 
         public bool AddShape(IShape shape)
         {
-            if (shape == null || this.shapeSizes.ContainsKey(shape))
+            if (shape == null || this.shapes.Contains(shape))
             {
                 return false;
             }
 
-            this.shapeSizes.Add(shape, Rect.Empty);
+            this.shapes.Add(shape);
 
             return true;
         }
@@ -61,11 +61,11 @@ namespace WireFrame.Selection
                 }
             }
 
-            foreach (var shape in this.shapeSizes.Keys.ToList())
+            foreach (var shape in this.shapes.ToList())
             {
                 if (!shapes.Contains(shape))
                 {
-                    this.shapeSizes.Remove(shape);
+                    this.shapes.Remove(shape);
                 }
             }
 
@@ -74,19 +74,16 @@ namespace WireFrame.Selection
 
         public List<IShape> GetShapes()
         {
-            var shapes = this.shapeSizes.Keys.ToList();
-            return shapes;
+            return this.shapes;
         }
 
         public void UpdateShapes(float zoomFactor)
         {
             this.control.ResetBounds();
-            var shapes = GetShapes();
 
-            for (int i = 0; i < shapes.Count; ++i)
+            for (int i = 0; i < this.shapes.Count; ++i)
             {
-                IShape shape = shapes[i];
-                this.control.UpdateCorners(this.container, shape, zoomFactor, i == 0);
+                this.control.UpdateCorners(this.container, this.shapes[i], zoomFactor, i == 0);
             }
 
             this.control.Update();
@@ -94,9 +91,9 @@ namespace WireFrame.Selection
 
         public bool RemoveShape(IShape shape)
         {
-            if (this.shapeSizes.ContainsKey(shape))
+            if (this.shapes.Contains(shape))
             {
-                this.shapeSizes.Remove(shape);
+                this.shapes.Remove(shape);
                 return true;
             }
 
@@ -105,37 +102,18 @@ namespace WireFrame.Selection
 
         public void RemoveAllShapes()
         {
-            this.shapeSizes.Clear();
-
+            this.shapes.Clear();
             this.control.ResetBounds();
         }
 
         public void StartResize(Point pointer)
         {
-            this.control.StartResize(pointer);
-
-            Rect rect = this.control.GetCanvasRect();
-            foreach (IShape shape in GetShapes())
-            {
-                this.shapeSizes[shape] = new Rect(shape.GetLeft() / rect.X, shape.GetTop() / rect.Y, shape.GetLength() / rect.Width, shape.GetBreath() / rect.Height);
-            }            
+            this.control.StartResize(pointer);            
         }
 
         public void Resize(Point pointer)
         {
             this.control.Resize(pointer);
-
-            Rect crect = this.control.GetCanvasRect();
-
-            foreach (var kv in this.shapeSizes) {
-                IShape shape = kv.Key;
-                Rect shapeRect = kv.Value;
-                
-                shape.SetLeft(crect.X * shapeRect.X);
-                shape.SetTop(crect.Y * shapeRect.Y);
-                shape.SetLength(crect.Width * shapeRect.Width);
-                shape.SetBreath(crect.Height * shapeRect.Height);
-            }
         }
 
         public void StopResize(Point pointer)
