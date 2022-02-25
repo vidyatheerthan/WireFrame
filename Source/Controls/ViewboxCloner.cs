@@ -13,10 +13,9 @@ namespace WireFrame.Controls
 {
     public static class ViewboxCloner
     {
-        public static Viewbox CreateNewViewbox(IShape shape, Point position, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        public static Viewbox CreateNewViewbox(IShape shape, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
         {
             Viewbox v = new Viewbox();
-            UpdateViewbox(ref v, shape.GetViewbox(), position);
             v.Child = CreateNewPath(shape.GetViewbox(), fillBrush, strokeBrush);
             return v;
         }
