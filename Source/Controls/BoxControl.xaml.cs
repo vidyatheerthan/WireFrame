@@ -40,40 +40,44 @@ namespace WireFrame.Controls
             _grid.Height = Math.Max(0, bottomRight.Y - topLeft.Y);
         }
 
-        public Viewbox AddNewShape(FrameworkElement container, IShape shape)
+        // -----------------------------------------------------
+
+        public Viewbox AddNewView(Viewbox refView)
         {
-            var v = ViewboxCloner.CreateNewViewbox(shape, fillBrush, strokeBrush);
+            var v = ViewboxCloner.CreateNewViewbox(refView, fillBrush, strokeBrush);
             v.Stretch = Stretch.Fill;
             _grid.Children.Add(v);
             return v;
         }
 
-        public void RemoveShape(Viewbox view)
+        public void RemoveView(Viewbox view)
         {
             _grid.Children.Remove(view);
         }
 
-        public void RemoveAllShapes()
+        public void RemoveAllViews()
         {
             _grid.Children.Clear();
         }
 
-        public void UpdateShape(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
+        public void UpdateView(Viewbox refView, Viewbox cloneView, Point refViewPos, float zoomFactor)
         {
-            if (!_grid.Children.Contains(childView))
+            if (!_grid.Children.Contains(cloneView))
             {
                 return;
             }
 
-            var path = childView.Child as Path;
-            ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-            ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
+            var path = cloneView.Child as Path;
+            ViewboxCloner.UpdateViewbox(refView, ref cloneView, refViewPos);
+            ViewboxCloner.UpdatePath(refView, ref path, zoomFactor);
 
-            var transform = shape.GetViewbox().TransformToVisual(_grid);
+            var transform = refView.TransformToVisual(_grid);
             var startPoint = transform.TransformPoint(new Point(0, 0));
-            var endPoint = transform.TransformPoint(new Point(shape.GetLength(), shape.GetBreath()));
+            var endPoint = transform.TransformPoint(new Point(refView.ActualWidth, refView.ActualHeight));
 
-            childView.Margin = new Thickness(startPoint.X, startPoint.Y, _grid.ActualWidth - endPoint.X, _grid.ActualHeight - endPoint.Y);
+            cloneView.Margin = new Thickness(startPoint.X, startPoint.Y, _grid.ActualWidth - endPoint.X, _grid.ActualHeight - endPoint.Y);
         }
+
+        // -----------------------------------------------------
     }
 }

@@ -44,7 +44,7 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            this.shapes.Add(shape, this.control.AddShapeToHighlight(this.container, shape));
+            this.shapes.Add(shape, this.control.AddShapeToHighlight(shape));
 
             return true;
         }

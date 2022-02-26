@@ -1,47 +1,41 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Foundation;
+﻿using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using WireFrame.Shapes;
 
 namespace WireFrame.Controls
 {
     public static class ViewboxCloner
     {
-        public static Viewbox CreateNewViewbox(IShape shape, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        public static Viewbox CreateNewViewbox(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
         {
             Viewbox v = new Viewbox();
-            v.Child = CreateNewPath(shape.GetViewbox(), fillBrush, strokeBrush);
+            v.Child = CreateNewPath(refView, fillBrush, strokeBrush);
             return v;
         }
 
-        private static Path CreateNewPath(Viewbox cloneView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        private static Path CreateNewPath(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
         {
             Path p = new Path();
             p.Fill = fillBrush;
             p.Stroke = strokeBrush;
-            UpdatePath(ref p, cloneView, 1.0f);
-            p.Data = CloneGeometryGroup(cloneView);
+            UpdatePath(refView, ref p, 1.0f);
+            p.Data = CloneGeometryGroup(refView);
             return p;
         }
 
-        public static void UpdateViewbox(ref Viewbox childView, Viewbox cloneView, Point position)
+        public static void UpdateViewbox(Viewbox refView, ref Viewbox childView, Point refViewPos)
         {
-            Canvas.SetLeft(childView, position.X);
-            Canvas.SetTop(childView, position.Y);
-            childView.Stretch = cloneView.Stretch;
+            Canvas.SetLeft(childView, refViewPos.X);
+            Canvas.SetTop(childView, refViewPos.Y);
+            childView.Stretch = refView.Stretch;
         }
 
-        public static void UpdatePath(ref Path childViewPath, Viewbox cloneView, float zoomFactor)
+        public static void UpdatePath(Viewbox refView, ref Path cloneViewPath, float zoomFactor)
         {
-            childViewPath.Width = cloneView.ActualWidth * zoomFactor;
-            childViewPath.Height = cloneView.ActualHeight * zoomFactor;
-            childViewPath.Stretch = (cloneView.Child as Path).Stretch;
+            cloneViewPath.Width = refView.ActualWidth * zoomFactor;
+            cloneViewPath.Height = refView.ActualHeight * zoomFactor;
+            cloneViewPath.Stretch = (refView.Child as Path).Stretch;
         }
 
         private static GeometryGroup CloneGeometryGroup(Viewbox cloneView)

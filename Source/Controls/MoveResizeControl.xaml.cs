@@ -17,6 +17,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Controls.Gizmo;
+using WireFrame.Misc;
 using WireFrame.Shapes;
 using WireFrame.States;
 
@@ -162,24 +163,24 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        public Viewbox AddShapeToHighlight(FrameworkElement container, IShape shape)
+        public Viewbox AddShapeToHighlight(IShape shape)
         {
-            return _box.AddNewShape(container, shape);
+            return _box.AddNewView(shape.GetViewbox());
         }
 
         public void RemoveShapeFromHighlight(Viewbox viewbox)
         {
-            _box.RemoveShape(viewbox);
+            _box.RemoveView(viewbox);
         }
 
         public void RemoveAllShapesFromHighlight()
         {
-            _box.RemoveAllShapes();
+            _box.RemoveAllViews();
         }
 
-        public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
+        public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox cloneView, float zoomFactor)
         {
-            _box.UpdateShape(container, shape, childView, zoomFactor);
+            _box.UpdateView(shape.GetViewbox(), cloneView, Utility.GetPointInContainer(shape, container), zoomFactor);
         }
 
         ///-------------------------------------------------------------------

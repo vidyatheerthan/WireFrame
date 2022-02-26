@@ -34,8 +34,8 @@ namespace WireFrame.Controls
 
         public Viewbox AddNewShape(FrameworkElement container, IShape shape)
         {
-            var v = ViewboxCloner.CreateNewViewbox(shape, fillBrush, strokeBrush);
-            ViewboxCloner.UpdateViewbox(ref v, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
+            var v = ViewboxCloner.CreateNewViewbox(shape.GetViewbox(), fillBrush, strokeBrush);
+            ViewboxCloner.UpdateViewbox(shape.GetViewbox(), ref v, Utility.GetPointInContainer(shape, container));
             _canvas.Children.Add(v);
 
             return v;
@@ -59,8 +59,8 @@ namespace WireFrame.Controls
             }
 
             var path = childView.Child as Path;
-            ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-            ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
+            ViewboxCloner.UpdateViewbox(shape.GetViewbox(), ref childView, Utility.GetPointInContainer(shape, container));
+            ViewboxCloner.UpdatePath(shape.GetViewbox(), ref path, zoomFactor);
         }        
     }
 }
