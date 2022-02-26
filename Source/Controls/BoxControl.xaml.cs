@@ -36,13 +36,14 @@ namespace WireFrame.Controls
         {
             Canvas.SetTop(_grid, topLeft.Y);
             Canvas.SetLeft(_grid, topLeft.X);
-            _grid.Width = bottomRight.X - topLeft.X;
-            _grid.Height = bottomRight.Y - topLeft.Y;
+            _grid.Width = Math.Max(0, bottomRight.X - topLeft.X);
+            _grid.Height = Math.Max(0, bottomRight.Y - topLeft.Y);
         }
 
         public Viewbox AddNewShape(FrameworkElement container, IShape shape)
         {
             var v = ViewboxCloner.CreateNewViewbox(shape, fillBrush, strokeBrush);
+            v.Stretch = Stretch.Fill;
             _grid.Children.Add(v);
             return v;
         }
