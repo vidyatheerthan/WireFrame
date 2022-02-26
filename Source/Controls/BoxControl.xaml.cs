@@ -58,16 +58,16 @@ namespace WireFrame.Controls
             _grid.Children.Clear();
         }
 
-        public void UpdateShape(IShape shape, Viewbox childView)
+        public void UpdateShape(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
         {
             if (!_grid.Children.Contains(childView))
             {
                 return;
             }
 
-            //var path = childView.Child as Path;
-            //ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
-            //ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
+            var path = childView.Child as Path;
+            ViewboxCloner.UpdateViewbox(ref childView, shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
+            ViewboxCloner.UpdatePath(ref path, shape.GetViewbox(), zoomFactor);
 
             var transform = shape.GetViewbox().TransformToVisual(_grid);
             var startPoint = transform.TransformPoint(new Point(0, 0));

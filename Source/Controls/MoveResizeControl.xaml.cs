@@ -179,7 +179,7 @@ namespace WireFrame.Controls
 
         public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
         {
-            _box.UpdateShape(shape, childView);
+            _box.UpdateShape(container, shape, childView, zoomFactor);
         }
 
         ///-------------------------------------------------------------------
