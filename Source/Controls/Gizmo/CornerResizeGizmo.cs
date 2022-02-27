@@ -107,35 +107,58 @@ namespace WireFrame.Controls.Gizmo
             this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
         }
 
-        public void TrackPointer(Point pointer)
+        public void TrackPointer(Point point)
         {
-            Point diff = new Point(pointer.X - this.clickPoint.X, pointer.Y - this.clickPoint.Y);
+            Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
 
-            switch (this.gizmoClicked)
+            if (this.gizmoClicked == Gizmo.TopLeft) 
             {
-                case Gizmo.TopLeft:
-                    this.box.SetLeft(this.boxBeforeResize.X + diff.X);
-                    this.box.SetTop(this.boxBeforeResize.Y + diff.Y);
-                    double length = this.boxBeforeResize.Width - diff.X;
-                    double breath = this.boxBeforeResize.Height - diff.Y;
-                    this.box.SetLength(Math.Abs(length));
-                    this.box.SetBreath(Math.Abs(breath));
-                    this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
-                    if(length < 0)
-                    {
-                        this.gizmoClicked = Gizmo.TopRight;
-                    }
-                    if (breath < 0)
-                    {
-                        this.gizmoClicked = Gizmo.BottomRight;
-                    }
-                    break;
-                case Gizmo.TopRight:
-                    break;
-                case Gizmo.BottomLeft:
-                    break;
-                case Gizmo.BottomRight:
-                    break;
+                double left = this.boxBeforeResize.X + diff.X;
+                double top = this.boxBeforeResize.Y + diff.Y;
+                double length = this.boxBeforeResize.Width - diff.X;
+                double breath = this.boxBeforeResize.Height - diff.Y;
+
+                this.box.SetLeft(left);
+                this.box.SetTop(top);
+                this.box.SetLength(Math.Abs(length));
+                this.box.SetBreath(Math.Abs(breath));
+
+                this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
+
+                if (length < 0)
+                {
+                    this.gizmoClicked = Gizmo.TopRight;
+                    this.clickPoint = point;
+                    this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+                }
+
+                if (breath < 0)
+                {
+                    this.gizmoClicked = Gizmo.BottomRight;
+                }
+            }
+
+            else if (this.gizmoClicked == Gizmo.TopRight)
+            {
+                double top = this.boxBeforeResize.Y + diff.Y;
+                double length = this.boxBeforeResize.Width + diff.X;
+                double breath = this.boxBeforeResize.Height - diff.Y;
+                
+                this.box.SetTop(top);
+                this.box.SetLength(Math.Abs(length));
+                this.box.SetBreath(Math.Abs(breath));
+
+                if (length < 0)
+                {
+                    this.gizmoClicked = Gizmo.TopLeft;
+                    this.clickPoint = point;
+                    this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+                }
+
+                if (breath < 0)
+                {
+                    this.gizmoClicked = Gizmo.BottomRight;
+                }
             }
         }
 
