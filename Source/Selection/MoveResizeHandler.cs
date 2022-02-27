@@ -46,7 +46,8 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            this.shapes.Add(shape, this.control.AddView(shape.GetViewbox(), Utility.GetPointInContainer(shape, container)));
+            Point pos = Utility.GetPointInContainer(shape, container);
+            this.shapes.Add(shape, this.control.AddView(shape.GetViewbox(), pos));
 
             return true;
         }
@@ -90,6 +91,12 @@ namespace WireFrame.Selection
             {
                 Point pos = Utility.GetPointInContainer(shapes[i], container);
                 UpdateControl(shapes[i].GetViewbox(), pos, zoomFactor, i == 0);
+            }
+
+            for (int i = 0; i < shapes.Count; ++i)
+            {
+                Point pos = Utility.GetPointInContainer(shapes[i], container);
+                pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
                 this.control.UpdateView(shapes[i].GetViewbox(), this.shapes[shapes[i]], pos, zoomFactor);
             }
 
@@ -129,10 +136,7 @@ namespace WireFrame.Selection
             this.control.StopResize(pointer);
         }
 
-
-
-
-
+        ///-------------------------------------------------------------------
 
         public void UpdateControl(Viewbox refView, Point position, float zoomFactor, bool reset)
         {
@@ -180,7 +184,5 @@ namespace WireFrame.Selection
             this.control.SetLength(0);
             this.control.SetBreath(0);
         }
-    }
-
-    
+    } 
 }
