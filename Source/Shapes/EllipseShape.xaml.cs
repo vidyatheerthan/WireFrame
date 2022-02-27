@@ -125,6 +125,16 @@ namespace WireFrame.Shapes
             this.Breath = breath;
         }
 
+        public void GetScale(ref double x, ref double y)
+        {
+
+        }
+
+        public void SetScale(double x, double y)
+        {
+
+        }
+
         public Path GetPath()
         {
             return _path;

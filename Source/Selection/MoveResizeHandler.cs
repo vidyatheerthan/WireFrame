@@ -99,8 +99,6 @@ namespace WireFrame.Selection
                 pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
                 this.control.UpdateView(shapes[i].GetViewbox(), this.shapes[shapes[i]], pos, zoomFactor);
             }
-
-            this.control.Update();
         }
 
         public bool RemoveShape(IShape shape)

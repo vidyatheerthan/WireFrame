@@ -66,71 +66,6 @@ namespace WireFrame.Controls.Gizmo
 
         // ----------------------------------------------------------
 
-        public void Update(Rect rect)
-        {
-            //switch (this.gizmo)
-            //{
-            //    case Gizmo.Top:
-            //        UpdateTop(rect);
-            //        break;
-            //    case Gizmo.Bottom:
-            //        UpdateBottom(rect);
-            //        break;
-            //    case Gizmo.Left:
-            //        UpdateLeft(rect);
-            //        break;
-            //    case Gizmo.Right:
-            //        UpdateRight(rect);
-            //        break;
-            //}
-        }
-
-        private void UpdateLeft(Rect rect)
-        {
-            double HALF_HIT = HITBOX_SIZE * 0.5;
-            double HALF_HEIGHT = rect.Height * 0.5;
-
-            Canvas.SetLeft(this.gizmoElement, rect.X - HALF_HIT);
-            Canvas.SetTop(this.gizmoElement, rect.Y + HALF_HEIGHT - HALF_HIT);
-            this.gizmoElement.Width = HITBOX_SIZE;
-            this.gizmoElement.Height = HITBOX_SIZE;
-        }
-
-        private void UpdateRight(Rect rect)
-        {
-            double HALF_HIT = HITBOX_SIZE * 0.5;
-            double HALF_HEIGHT = rect.Height * 0.5;
-
-            Canvas.SetLeft(this.gizmoElement, rect.X + rect.Width - HALF_HIT);
-            Canvas.SetTop(this.gizmoElement, rect.Y + HALF_HEIGHT - HALF_HIT);
-            this.gizmoElement.Width = HITBOX_SIZE;
-            this.gizmoElement.Height = HITBOX_SIZE;
-        }
-
-        private void UpdateTop(Rect rect)
-        {
-            double HALF_HIT = HITBOX_SIZE * 0.5;
-            double HALF_WIDTH = rect.Width * 0.5;
-
-            Canvas.SetLeft(this.gizmoElement, rect.X + HALF_WIDTH - HALF_HIT);
-            Canvas.SetTop(this.gizmoElement, rect.Y - HALF_HIT);
-            this.gizmoElement.Width = HITBOX_SIZE;
-            this.gizmoElement.Height = HITBOX_SIZE;
-        }
-
-        private void UpdateBottom(Rect rect)
-        {
-            double HALF_HIT = HITBOX_SIZE * 0.5;
-            double HALF_WIDTH = rect.Width * 0.5;
-
-            Canvas.SetLeft(this.gizmoElement, rect.X + HALF_WIDTH - HALF_HIT);
-            Canvas.SetTop(this.gizmoElement, rect.Y + rect.Height - HALF_HIT);
-            this.gizmoElement.Width = HITBOX_SIZE;
-            this.gizmoElement.Height = HITBOX_SIZE;
-        }
-
-        // ----------------------------------------------------------
-
         private void OnPointerEntered(object sender, PointerRoutedEventArgs e)
         {
             switch (this.gizmo)
@@ -167,12 +102,12 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(Panel box, Point point)
+        public void StartTrackingPointer(Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
         }
 
-        public void TrackPointer(Panel box, Point pointer)
+        public void TrackPointer(Point pointer)
         {
             //double diffX = bottomRight.X - topLeft.X;
             //double diffY = bottomRight.Y - topLeft.Y;
@@ -208,7 +143,7 @@ namespace WireFrame.Controls.Gizmo
             //}
         }
 
-        public void StopTrackingPointer(Panel box, Point point)
+        public void StopTrackingPointer(Point point)
         {
             this.gizmoElement.Fill = this.normalBrush;
         }

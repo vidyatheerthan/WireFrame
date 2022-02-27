@@ -50,19 +50,16 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(Panel box, Point point)
+        public void StartTrackingPointer(Point point)
         {
-            throw new NotImplementedException();
         }
 
-        public void TrackPointer(Panel box, Point pointer)
+        public void TrackPointer(Point pointer)
         {
-            throw new NotImplementedException();
         }
 
-        public void StopTrackingPointer(Panel box, Point point)
+        public void StopTrackingPointer(Point point)
         {
-            throw new NotImplementedException();
         }
 
         // ------------------------------

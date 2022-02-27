@@ -20,5 +20,8 @@ namespace WireFrame.Shapes
 
         double GetBreath();
         void SetBreath(double breath);
+
+        void GetScale(ref double x, ref double y);
+        void SetScale(double x, double y);
     }
 }

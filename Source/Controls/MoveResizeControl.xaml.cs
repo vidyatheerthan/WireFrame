@@ -8,13 +8,14 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Controls.Gizmo;
 using WireFrame.Misc;
+using WireFrame.Shapes;
 using WireFrame.States;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IBox
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
@@ -36,6 +37,15 @@ namespace WireFrame.Controls
 
         // --
 
+        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register(nameof(ScaleX), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double ScaleX { get => (double)GetValue(ScaleXProperty); set => SetValue(ScaleXProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double ScaleY { get => (double)GetValue(ScaleYProperty); set => SetValue(ScaleYProperty, value); }
+        
+
         ///-------------------------------------------------------------------
 
         private IGizmo activeGizmo = null;
@@ -53,17 +63,17 @@ namespace WireFrame.Controls
         {
             this.InitializeComponent();
 
-
+            ScaleX = ScaleY = 1.0;
 
             // --
 
             this.gizmos = new IGizmo[]
             {
                 // corners
-                new CornerResizeGizmo(10.0, _top_left_circle, CornerResizeGizmo.Gizmo.TopLeft),
-                new CornerResizeGizmo(10.0, _top_right_circle, CornerResizeGizmo.Gizmo.TopRight),
-                new CornerResizeGizmo(10.0, _bottom_left_circle, CornerResizeGizmo.Gizmo.BottomLeft),
-                new CornerResizeGizmo(10.0, _bottom_right_circle, CornerResizeGizmo.Gizmo.BottomRight),
+                new CornerResizeGizmo(this, 10.0, _top_left_circle, CornerResizeGizmo.Gizmo.TopLeft),
+                new CornerResizeGizmo(this, 10.0, _top_right_circle, CornerResizeGizmo.Gizmo.TopRight),
+                new CornerResizeGizmo(this, 10.0, _bottom_left_circle, CornerResizeGizmo.Gizmo.BottomLeft),
+                new CornerResizeGizmo(this, 10.0, _bottom_right_circle, CornerResizeGizmo.Gizmo.BottomRight),
                 // fixed sided
                 new FixedSideResizeGizmo(10.0, _top_bar, FixedSideResizeGizmo.Gizmo.Top),
                 new FixedSideResizeGizmo(10.0, _bottom_bar, FixedSideResizeGizmo.Gizmo.Bottom),
@@ -75,7 +85,7 @@ namespace WireFrame.Controls
                 new FreeSideResizeGizmo(10.0, _left_sqr, FreeSideResizeGizmo.Gizmo.Left),
                 new FreeSideResizeGizmo(10.0, _right_sqr, FreeSideResizeGizmo.Gizmo.Right),
                 // box
-                new MoveGizmo(_box),
+                //new MoveGizmo(_box),
             };
 
             foreach (IGizmo gizmo in this.gizmos)
@@ -133,6 +143,16 @@ namespace WireFrame.Controls
             this.Breath = breath;
         }
 
+        public void GetScale(ref double x, ref double y)
+        {
+
+        }
+
+        public void SetScale(double x, double y)
+        {
+
+        }
+
         ///-------------------------------------------------------------------
 
         private void OnGizmoActivated(IGizmo gizmo)
@@ -149,33 +169,19 @@ namespace WireFrame.Controls
         
         public void StartResize(Point pointer)
         {
-            this.activeGizmo.StartTrackingPointer(_box, pointer);
+            this.activeGizmo.StartTrackingPointer(pointer);
         }
 
         public void Resize(Point pointer)
         {
-            this.activeGizmo.TrackPointer(_box, pointer);
-            Update();
+            this.activeGizmo.TrackPointer(pointer);
         }
 
         public void StopResize(Point pointer)
         {
-            this.activeGizmo.StopTrackingPointer(_box, pointer);
+            this.activeGizmo.StopTrackingPointer(pointer);
             this.activeGizmo = null;
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
-        }
-
-        ///-------------------------------------------------------------------
-
-
-        public void Update()
-        {
-            var rect = GetRect();
-
-            foreach (IGizmo gizmo in this.gizmos)
-            {
-                gizmo.Update(rect);
-            }
         }
 
         ///-------------------------------------------------------------------
