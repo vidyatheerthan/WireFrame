@@ -8,20 +8,8 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Shapes
 {
-    public interface IShape
+    public interface IShape : IBox
     {
-        double GetLeft();
-        void SetLeft(double left);
-
-        double GetTop();
-        void SetTop(double top);
-
-        double GetLength();
-        void SetLength(double length);
-
-        double GetBreath();
-        void SetBreath(double breath);
-
         Viewbox GetViewbox();
         Path GetPath();
     }
