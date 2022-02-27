@@ -67,13 +67,16 @@ namespace WireFrame.Controls
 
             // --
 
+            var cornerGizmo = new CornerResizeGizmo(this, 10.0);
+            cornerGizmo.AddGizmo(_top_left_circle, CornerResizeGizmo.Gizmo.TopLeft);
+            cornerGizmo.AddGizmo(_top_right_circle, CornerResizeGizmo.Gizmo.TopRight);
+            cornerGizmo.AddGizmo(_bottom_left_circle, CornerResizeGizmo.Gizmo.BottomLeft);
+            cornerGizmo.AddGizmo(_bottom_right_circle, CornerResizeGizmo.Gizmo.BottomRight);
+
             this.gizmos = new IGizmo[]
             {
                 // corners
-                new CornerResizeGizmo(this, 10.0, _top_left_circle, CornerResizeGizmo.Gizmo.TopLeft),
-                new CornerResizeGizmo(this, 10.0, _top_right_circle, CornerResizeGizmo.Gizmo.TopRight),
-                new CornerResizeGizmo(this, 10.0, _bottom_left_circle, CornerResizeGizmo.Gizmo.BottomLeft),
-                new CornerResizeGizmo(this, 10.0, _bottom_right_circle, CornerResizeGizmo.Gizmo.BottomRight),
+                cornerGizmo,
                 // fixed sided
                 new FixedSideResizeGizmo(10.0, _top_bar, FixedSideResizeGizmo.Gizmo.Top),
                 new FixedSideResizeGizmo(10.0, _bottom_bar, FixedSideResizeGizmo.Gizmo.Bottom),

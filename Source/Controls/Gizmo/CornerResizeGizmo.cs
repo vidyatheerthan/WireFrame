@@ -38,68 +38,59 @@ namespace WireFrame.Controls.Gizmo
 
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
-        private Shape gizmoElement = null;
-
-        private Gizmo gizmo;
+        private Dictionary<Gizmo, Shape> gizmos = new Dictionary<Gizmo, Shape>();
 
         private Action<IGizmo> onActivateAction;
 
-        private SolidColorBrush highlightBrush, normalBrush;
+        private SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Aqua);
+        private SolidColorBrush normalBrush = new SolidColorBrush(Colors.AliceBlue);
 
+        private Gizmo gizmoClicked;
         private Rect boxBeforeResize;
         private Point clickPoint;
 
         // -----------------------------------
 
 
-        public CornerResizeGizmo(IBox box, double hitboxSize, Shape gizmoElement, Gizmo gizmo)
+        public CornerResizeGizmo(IBox box, double hitboxSize)
         {
             HITBOX_SIZE = hitboxSize;
-
             this.box = box;
-
-            this.gizmoElement = gizmoElement;
-
-            this.gizmo = gizmo;
-
-            this.gizmoElement.PointerEntered += OnPointerEntered;
-            this.gizmoElement.PointerExited += OnPointerExited;
-            this.gizmoElement.PointerPressed += OnPointerPressed;
-
-            this.highlightBrush = new SolidColorBrush(Colors.Aqua);
-            this.normalBrush = new SolidColorBrush(Colors.AliceBlue);
         }
 
-        
-        // ----------------------------------------------------------
-
-        private void OnPointerEntered(object sender, PointerRoutedEventArgs e)
+        public void AddGizmo(Shape shape, Gizmo gizmo) 
         {
-            switch(this.gizmo)
+            this.gizmos[gizmo] = shape;
+
+            shape.PointerEntered += (object sender, PointerRoutedEventArgs e) =>
             {
-                case Gizmo.TopLeft:
-                    Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
-                    break;
-                case Gizmo.TopRight:
-                    Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
-                    break;
-                case Gizmo.BottomLeft:
-                    Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
-                    break;
-                case Gizmo.BottomRight:
-                    Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
-                    break;
-            }
-        }
+                switch (gizmo)
+                {
+                    case Gizmo.TopLeft:
+                        Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+                        break;
+                    case Gizmo.TopRight:
+                        Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+                        break;
+                    case Gizmo.BottomLeft:
+                        Window.Current.CoreWindow.PointerCursor = this.northEastSouthWestCursor;
+                        break;
+                    case Gizmo.BottomRight:
+                        Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
+                        break;
+                }
+            };
 
-        private void OnPointerExited(object sender, PointerRoutedEventArgs e)
-        {
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
-        }
+            shape.PointerExited += (object sender, PointerRoutedEventArgs e) => 
+            {
+                Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+            };
 
-        private void OnPointerPressed(object sender, PointerRoutedEventArgs e)
-        {
-            this.onActivateAction(this);
+            shape.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
+            {
+                this.gizmoClicked = gizmo;
+                this.onActivateAction(this);
+            };
         }
 
         // ----------------------------------------------------------
@@ -111,8 +102,7 @@ namespace WireFrame.Controls.Gizmo
 
         public void StartTrackingPointer(Point point)
         {
-            this.gizmoElement.Fill = this.highlightBrush;
-
+            this.gizmos[this.gizmoClicked].Fill = this.highlightBrush;
             this.clickPoint = point;
             this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
         }
@@ -121,7 +111,7 @@ namespace WireFrame.Controls.Gizmo
         {
             Point diff = new Point(pointer.X - this.clickPoint.X, pointer.Y - this.clickPoint.Y);
 
-            switch (this.gizmo)
+            switch (this.gizmoClicked)
             {
                 case Gizmo.TopLeft:
                     this.box.SetLeft(this.boxBeforeResize.X + diff.X);
@@ -131,6 +121,14 @@ namespace WireFrame.Controls.Gizmo
                     this.box.SetLength(Math.Abs(length));
                     this.box.SetBreath(Math.Abs(breath));
                     this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
+                    if(length < 0)
+                    {
+                        this.gizmoClicked = Gizmo.TopRight;
+                    }
+                    if (breath < 0)
+                    {
+                        this.gizmoClicked = Gizmo.BottomRight;
+                    }
                     break;
                 case Gizmo.TopRight:
                     break;
@@ -143,7 +141,7 @@ namespace WireFrame.Controls.Gizmo
 
         public void StopTrackingPointer(Point point)
         {
-            this.gizmoElement.Fill = this.normalBrush;
+            this.gizmos[this.gizmoClicked].Fill = this.normalBrush;
         }
     }
 }
