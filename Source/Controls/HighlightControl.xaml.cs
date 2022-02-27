@@ -32,35 +32,34 @@ namespace WireFrame.Controls
             this.InitializeComponent();
         }
 
-        public Viewbox AddNewShape(FrameworkElement container, IShape shape)
+        public Viewbox AddView(Viewbox refView, Point position)
         {
-            var v = ViewboxCloner.CreateNewViewbox(shape.GetViewbox(), fillBrush, strokeBrush);
-            ViewboxCloner.UpdateViewbox(shape.GetViewbox(), ref v, Utility.GetPointInContainer(shape, container));
-            _canvas.Children.Add(v);
-
-            return v;
+            var view = ViewboxCloner.CreateNewViewbox(refView, fillBrush, strokeBrush);
+            ViewboxCloner.UpdateViewbox(refView, ref view, position);
+            _canvas.Children.Add(view);
+            return view;
         }
 
-        public void RemoveShape(Viewbox view)
+        public void RemoveView(Viewbox viewbox)
         {
-            this._canvas.Children.Remove(view);
+            _canvas.Children.Remove(viewbox);
         }
 
-        public void RemoveAllShapes()
+        public void RemoveAllViews()
         {
-            this._canvas.Children.Clear();
+            _canvas.Children.Clear();
         }
 
-        public void UpdateShape(FrameworkElement container, IShape shape, Viewbox childView, float zoomFactor)
+        public void UpdateView(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
         {
-            if(!this._canvas.Children.Contains(childView))
+            if (!this._canvas.Children.Contains(cloneView))
             {
                 return;
             }
 
-            var path = childView.Child as Path;
-            ViewboxCloner.UpdateViewbox(shape.GetViewbox(), ref childView, Utility.GetPointInContainer(shape, container));
-            ViewboxCloner.UpdatePath(shape.GetViewbox(), ref path, zoomFactor);
-        }        
+            var path = cloneView.Child as Path;
+            ViewboxCloner.UpdateViewbox(refView, ref cloneView, position);
+            ViewboxCloner.UpdatePath(refView, ref path, zoomFactor);
+        }
     }
 }

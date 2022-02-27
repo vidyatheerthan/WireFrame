@@ -16,6 +16,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Controls;
+using WireFrame.Misc;
 using WireFrame.Shapes;
 
 namespace WireFrame.Selection
@@ -48,7 +49,7 @@ namespace WireFrame.Selection
         {
             if (shape == null || this.shapes.ContainsKey(shape)) { return false; }
 
-            var view = this.control.AddNewShape(this.container, shape);
+            var view = this.control.AddView(shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
 
             this.shapes.Add(shape, view);
 
@@ -71,7 +72,7 @@ namespace WireFrame.Selection
             {
                 if (!newShapes.Contains(shape))
                 {
-                    this.control.RemoveShape(this.shapes[shape]);
+                    this.control.RemoveView(this.shapes[shape]);
                     this.shapes.Remove(shape);
                 }
             }
@@ -90,7 +91,7 @@ namespace WireFrame.Selection
 
             foreach (var shape in this.shapes.Keys)
             {
-                this.control.UpdateShape(this.container, shape, this.shapes[shape], zoomFactor);
+                this.control.UpdateView(shape.GetViewbox(), this.shapes[shape], Utility.GetPointInContainer(shape, container), zoomFactor);
             }
         }
 
@@ -98,7 +99,7 @@ namespace WireFrame.Selection
         {
             if (this.shapes.ContainsKey(shape))
             {
-                this.control.RemoveShape(this.shapes[shape]);
+                this.control.RemoveView(this.shapes[shape]);
                 this.shapes.Remove(shape);
                 return true;
             }
@@ -108,7 +109,7 @@ namespace WireFrame.Selection
 
         public void RemoveAllShapes()
         {
-            this.control.RemoveAllShapes();
+            this.control.RemoveAllViews();
             this.shapes.Clear();
         }
 

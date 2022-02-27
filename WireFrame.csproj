@@ -120,9 +120,6 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
-    <Compile Include="Source\Controls\BoxControl.xaml.cs">
-      <DependentUpon>BoxControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="Source\Controls\Gizmo\CornerResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\FixedSideResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\IGizmo.cs" />
@@ -201,10 +198,6 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Page Include="Source\Controls\ActionTip.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="Source\Controls\BoxControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

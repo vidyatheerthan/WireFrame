@@ -9,25 +9,27 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Canvas x:Name="_canvas">
+    <Canvas>
+        <Grid x:Name="_box" Canvas.Left="{x:Bind Left, Mode=OneWay}" Canvas.Top="{x:Bind Top, Mode=OneWay}" Width="{x:Bind Length, Mode=OneWay}" Height="{x:Bind Breath, Mode=OneWay}" Background="Transparent" BorderBrush="Green">
 
-        <local:BoxControl x:Name="_box" />
+            <Canvas x:Name="_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
 
-        <Rectangle x:Name="_left_bar" Canvas.Left="-5" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />
-        <Rectangle x:Name="_right_bar" Canvas.Left="95" Canvas.Top="0" Width="10" Height="100" Fill="Transparent" IsHitTestVisible="True" />
-        <Rectangle x:Name="_top_bar" Canvas.Left="0" Canvas.Top="-5" Width="100" Height="10" Fill="Transparent" IsHitTestVisible="True" />
-        <Rectangle x:Name="_bottom_bar" Canvas.Left="0" Canvas.Top="95" Width="100" Height="10" Fill="Transparent" IsHitTestVisible="True" />
+            <Rectangle x:Name="_left_bar" Width="10" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-5, 0, 0, 0" Fill="Red" IsHitTestVisible="True" />
+            <Rectangle x:Name="_right_bar" Width="10" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0, 0, -5, 0" Fill="Green" IsHitTestVisible="True" />
+            <Rectangle x:Name="_top_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0, -5, 0, 0" Fill="Blue" IsHitTestVisible="True" />
+            <Rectangle x:Name="_bottom_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" Fill="Yellow" IsHitTestVisible="True" />
 
-        <Rectangle x:Name="_left_sqr" Canvas.Left="-5" Canvas.Top="45" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Rectangle x:Name="_right_sqr" Canvas.Left="95" Canvas.Top="45" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Rectangle x:Name="_top_sqr" Canvas.Left="45" Canvas.Top="-5" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Rectangle x:Name="_bottom_sqr" Canvas.Left="45" Canvas.Top="95" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
+            <Rectangle x:Name="_left_sqr" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5, 0, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Rectangle x:Name="_right_sqr" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, -5, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Rectangle x:Name="_top_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, -5, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Rectangle x:Name="_bottom_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
 
-        <Ellipse x:Name="_top_left_circle" Canvas.Left="-5" Canvas.Top="-5" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Ellipse x:Name="_top_right_circle" Canvas.Left="95" Canvas.Top="-5" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Ellipse x:Name="_bottom_left_circle" Canvas.Left="-5" Canvas.Top="95" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
-        <Ellipse x:Name="_bottom_right_circle" Canvas.Left="95" Canvas.Top="95" Width="10" Height="10" Stroke="#FF011B8D" Fill="AliceBlue"/>
+            <Ellipse x:Name="_top_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-5, -5, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Ellipse x:Name="_top_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0, -5, -5, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Ellipse x:Name="_bottom_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5, 0, 0, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Ellipse x:Name="_bottom_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0, 0, -5, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
 
+        </Grid>
     </Canvas>
-    
+
 </UserControl>

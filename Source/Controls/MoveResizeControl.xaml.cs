@@ -1,44 +1,59 @@
 ﻿using deVoid.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
+using System.ComponentModel;
 using Windows.Foundation;
-using Windows.Foundation.Collections;
 using Windows.UI;
-using Windows.UI.Core;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
-using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Controls.Gizmo;
 using WireFrame.Misc;
-using WireFrame.Shapes;
 using WireFrame.States;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged
     {
-        private Point hudTopLeft = new Point(0, 0);
-        private Point hudBottomRight = new Point(0, 0);
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double Top { get => (double)GetValue(TopProperty); set => SetValue(TopProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double Length { get => (double)GetValue(LengthProperty); set => SetValue(LengthProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double Breath { get => (double)GetValue(BreathProperty); set => SetValue(BreathProperty, value); }
+
+        // --
+
+        ///-------------------------------------------------------------------
 
         private IGizmo activeGizmo = null;
 
         private IGizmo[] gizmos;
 
-        // --
+        private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
+        private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        ///-------------------------------------------------------------------
 
         public MoveResizeControl()
         {
             this.InitializeComponent();
+
+
 
             // --
 
@@ -72,7 +87,54 @@ namespace WireFrame.Controls
         }
 
         ///-------------------------------------------------------------------
-        
+
+        private void OnPropertyChanged(string propertyName = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        public double GetLeft()
+        {
+            return this.Left;
+        }
+
+        public void SetLeft(double left)
+        {
+            this.Left = left;
+        }
+
+        public double GetTop()
+        {
+            return this.Top;
+        }
+
+        public void SetTop(double top)
+        {
+            this.Top = top;
+        }
+
+        public double GetLength()
+        {
+            return this.Length;
+        }
+
+        public void SetLength(double length)
+        {
+            this.Length = length;
+        }
+
+        public double GetBreath()
+        {
+            return this.Breath;
+        }
+
+        public void SetBreath(double breath)
+        {
+            this.Breath = breath;
+        }
+
+        ///-------------------------------------------------------------------
+
         private void OnGizmoActivated(IGizmo gizmo)
         {
             this.activeGizmo = gizmo;
@@ -87,132 +149,72 @@ namespace WireFrame.Controls
         
         public void StartResize(Point pointer)
         {
-            this.activeGizmo.StartTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
+            this.activeGizmo.StartTrackingPointer(_box, pointer);
         }
 
         public void Resize(Point pointer)
         {
-            this.activeGizmo.TrackPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
-            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
+            this.activeGizmo.TrackPointer(_box, pointer);
             Update();
         }
 
         public void StopResize(Point pointer)
         {
-            this.activeGizmo.StopTrackingPointer(ref this.hudTopLeft, ref this.hudBottomRight, pointer);
+            this.activeGizmo.StopTrackingPointer(_box, pointer);
             this.activeGizmo = null;
-            GetSanitizedPoints(this.hudTopLeft, this.hudBottomRight, ref this.hudTopLeft, ref this.hudBottomRight);
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
         ///-------------------------------------------------------------------
 
-        public void UpdateCorners(FrameworkElement container, IShape shape, float zoomFactor, bool reset)
-        {
-            var transform = shape.GetPath().TransformToVisual(container);
-            var ePoint = transform.TransformPoint(new Point(0, 0));
-
-            if (reset)
-            {
-                this.hudTopLeft.X = ePoint.X;
-                this.hudTopLeft.Y = ePoint.Y;
-            }
-            else
-            {
-                if (ePoint.X < this.hudTopLeft.X)
-                {
-                    this.hudTopLeft.X = ePoint.X;
-                }
-
-                if (ePoint.Y < this.hudTopLeft.Y)
-                {
-                    this.hudTopLeft.Y = ePoint.Y;
-                }
-            }
-
-            if (ePoint.X + (shape.GetLength() * zoomFactor) > this.hudBottomRight.X)
-            {
-                this.hudBottomRight.X = ePoint.X + (shape.GetLength() * zoomFactor);
-            }
-
-            if (ePoint.Y + (shape.GetBreath() * zoomFactor) > this.hudBottomRight.Y)
-            {
-                this.hudBottomRight.Y = ePoint.Y + (shape.GetBreath() * zoomFactor);
-            }
-
-            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
-        }
-
 
         public void Update()
         {
-            var rect = GetSanitizedRect(this.hudTopLeft, this.hudBottomRight);
+            var rect = GetRect();
+
             foreach (IGizmo gizmo in this.gizmos)
             {
                 gizmo.Update(rect);
             }
         }
 
-        public void ResetBounds()
-        {
-            this.hudTopLeft = new Point(0, 0);
-            this.hudBottomRight = new Point(0, 0);
+        ///-------------------------------------------------------------------
 
-            _box.SetBounds(this.hudTopLeft, this.hudBottomRight);
+        public Viewbox AddView(Viewbox refView, Point position)
+        {
+            var view = ViewboxCloner.CreateNewViewbox(refView, fillBrush, strokeBrush);
+            ViewboxCloner.UpdateViewbox(refView, ref view, position);
+            _canvas.Children.Add(view);
+            return view;
+        }
+
+        public void RemoveView(Viewbox viewbox)
+        {
+            _canvas.Children.Remove(viewbox);
+        }
+
+        public void RemoveAllViews()
+        {
+            _canvas.Children.Clear();
+        }
+
+        public void UpdateView(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
+        {
+            if (!this._canvas.Children.Contains(cloneView))
+            {
+                return;
+            }
+
+            var path = cloneView.Child as Path;
+            ViewboxCloner.UpdateViewbox(refView, ref cloneView, position);
+            ViewboxCloner.UpdatePath(refView, ref path, zoomFactor);
         }
 
         ///-------------------------------------------------------------------
 
-        public Viewbox AddShapeToHighlight(IShape shape)
+        public Rect GetRect()
         {
-            return _box.AddNewView(shape.GetViewbox());
-        }
-
-        public void RemoveShapeFromHighlight(Viewbox viewbox)
-        {
-            _box.RemoveView(viewbox);
-        }
-
-        public void RemoveAllShapesFromHighlight()
-        {
-            _box.RemoveAllViews();
-        }
-
-        public void UpdateHighlights(FrameworkElement container, IShape shape, Viewbox cloneView, float zoomFactor)
-        {
-            _box.UpdateView(shape.GetViewbox(), cloneView, Utility.GetPointInContainer(shape, container), zoomFactor);
-        }
-
-        ///-------------------------------------------------------------------
-
-        private void GetSanitizedPoints(Point topLeft, Point bottomRight, ref Point p1, ref Point p2)
-        {
-            double x1 = topLeft.X < bottomRight.X ? topLeft.X : bottomRight.X;
-            double y1 = topLeft.Y < bottomRight.Y ? topLeft.Y : bottomRight.Y;
-            double x2 = topLeft.X > bottomRight.X ? topLeft.X : bottomRight.X;
-            double y2 = topLeft.Y > bottomRight.Y ? topLeft.Y : bottomRight.Y;
-
-            p1 = new Point(x1, y1);
-            p2 = new Point(x2, y2);
-        }
-
-        private Rect GetSanitizedRect(Point topLeft, Point bottomRight)
-        {
-            Point p1, p2;
-            GetSanitizedPoints(topLeft, bottomRight, ref p1, ref p2);
-
-            Rect r = new Rect(p1.X, p1.Y, p2.X - p1.X, p2.Y - p1.Y);
-            return r;
-        }
-
-        public Rect GetRect(Canvas canvas)
-        {
-            var transform = _box.TransformToVisual(canvas);
-            var tl = transform.TransformPoint(new Point(0, 0));
-            var br = transform.TransformPoint(new Point(_box.ActualWidth, _box.ActualHeight));
-
-            Rect r = new Rect(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
-            return r;
+            return new Rect(Left, Top, Length, Breath);
         }
     }
 }

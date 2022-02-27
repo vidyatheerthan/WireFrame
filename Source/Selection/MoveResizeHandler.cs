@@ -9,12 +9,14 @@ using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using WireFrame.Controls;
+using WireFrame.Misc;
 using WireFrame.Shapes;
 
 namespace WireFrame.Selection
 {
     public class MoveResizeHandler : ISelectionHandler
     {
+        private Thickness bounds;
         private MoveResizeControl control = null;
         private Dictionary<IShape, Viewbox> shapes = null;
         private FrameworkElement container = null;
@@ -44,7 +46,7 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            this.shapes.Add(shape, this.control.AddShapeToHighlight(shape));
+            this.shapes.Add(shape, this.control.AddView(shape.GetViewbox(), Utility.GetPointInContainer(shape, container)));
 
             return true;
         }
@@ -65,7 +67,7 @@ namespace WireFrame.Selection
             {
                 if (!shapes.Contains(shape))
                 {
-                    this.control.RemoveShapeFromHighlight(this.shapes[shape]);
+                    this.control.RemoveView(this.shapes[shape]);
                     this.shapes.Remove(shape);
                 }
             }
@@ -80,14 +82,15 @@ namespace WireFrame.Selection
 
         public void UpdateShapes(float zoomFactor)
         {
-            this.control.ResetBounds();
+            ResetBounds();
 
             var shapes = GetShapes();
 
             for (int i = 0; i < shapes.Count; ++i)
             {
-                this.control.UpdateCorners(this.container, shapes[i], zoomFactor, i == 0);
-                this.control.UpdateHighlights(this.container, shapes[i], this.shapes[shapes[i]], zoomFactor);
+                Point pos = Utility.GetPointInContainer(shapes[i], container);
+                UpdateControl(shapes[i].GetViewbox(), pos, zoomFactor, i == 0);
+                this.control.UpdateView(shapes[i].GetViewbox(), this.shapes[shapes[i]], pos, zoomFactor);
             }
 
             this.control.Update();
@@ -97,7 +100,7 @@ namespace WireFrame.Selection
         {
             if (this.shapes.ContainsKey(shape))
             {
-                this.control.RemoveShapeFromHighlight(this.shapes[shape]);
+                this.control.RemoveView(this.shapes[shape]);
                 this.shapes.Remove(shape);
                 return true;
             }
@@ -108,8 +111,7 @@ namespace WireFrame.Selection
         public void RemoveAllShapes()
         {
             this.shapes.Clear();
-            this.control.RemoveAllShapesFromHighlight();
-            this.control.ResetBounds();
+            this.control.RemoveAllViews();
         }
 
         public void StartResize(Point pointer)
@@ -126,5 +128,59 @@ namespace WireFrame.Selection
         {
             this.control.StopResize(pointer);
         }
+
+
+
+
+
+
+        public void UpdateControl(Viewbox refView, Point position, float zoomFactor, bool reset)
+        {
+            if (reset)
+            {
+                this.bounds.Left = position.X;
+                this.bounds.Top = position.Y;
+            }
+            else
+            {
+                if (position.X < this.bounds.Left)
+                {
+                    this.bounds.Left = position.X;
+                }
+
+                if (position.Y < this.bounds.Top)
+                {
+                    this.bounds.Top = position.Y;
+                }
+            }
+
+            if (position.X + (refView.ActualWidth * zoomFactor) > this.bounds.Right)
+            {
+                this.bounds.Right = position.X + (refView.ActualWidth * zoomFactor);
+            }
+
+            if (position.Y + (refView.ActualHeight * zoomFactor) > this.bounds.Bottom)
+            {
+                this.bounds.Bottom = position.Y + (refView.ActualHeight * zoomFactor);
+            }
+
+            this.control.SetLeft(this.bounds.Left);
+            this.control.SetTop(this.bounds.Top);
+            this.control.SetLength(this.bounds.Right - this.bounds.Left);
+            this.control.SetBreath(this.bounds.Bottom - this.bounds.Top);
+        }
+
+        private void ResetBounds()
+        {
+            this.bounds.Top = 0;
+            this.bounds.Left = 0;
+            this.bounds.Right = 0;
+            this.bounds.Bottom = 0;
+
+            this.control.SetLength(0);
+            this.control.SetBreath(0);
+        }
     }
+
+    
 }

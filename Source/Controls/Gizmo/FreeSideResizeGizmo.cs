@@ -68,21 +68,21 @@ namespace WireFrame.Controls.Gizmo
 
         public void Update(Rect rect)
         {
-            switch (this.gizmo)
-            {
-                case Gizmo.Top:
-                    UpdateTop(rect);
-                    break;
-                case Gizmo.Bottom:
-                    UpdateBottom(rect);
-                    break;
-                case Gizmo.Left:
-                    UpdateLeft(rect);
-                    break;
-                case Gizmo.Right:
-                    UpdateRight(rect);
-                    break;
-            }
+            //switch (this.gizmo)
+            //{
+            //    case Gizmo.Top:
+            //        UpdateTop(rect);
+            //        break;
+            //    case Gizmo.Bottom:
+            //        UpdateBottom(rect);
+            //        break;
+            //    case Gizmo.Left:
+            //        UpdateLeft(rect);
+            //        break;
+            //    case Gizmo.Right:
+            //        UpdateRight(rect);
+            //        break;
+            //}
         }
 
         private void UpdateLeft(Rect rect)
@@ -167,48 +167,48 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StartTrackingPointer(Panel box, Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
         }
 
-        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
+        public void TrackPointer(Panel box, Point pointer)
         {
-            double diffX = bottomRight.X - topLeft.X;
-            double diffY = bottomRight.Y - topLeft.Y;
+            //double diffX = bottomRight.X - topLeft.X;
+            //double diffY = bottomRight.Y - topLeft.Y;
 
-            double tlx = ((pointer.Y - topLeft.Y) / diffY) * diffX * 0.5;
-            double tly = ((pointer.X - topLeft.X) / diffX) * diffY * 0.5;
+            //double tlx = ((pointer.Y - topLeft.Y) / diffY) * diffX * 0.5;
+            //double tly = ((pointer.X - topLeft.X) / diffX) * diffY * 0.5;
 
-            double brx = ((pointer.Y - bottomRight.Y) / diffY) * diffX * 0.5;
-            double bry = ((pointer.X - bottomRight.X) / diffX) * diffY * 0.5;
+            //double brx = ((pointer.Y - bottomRight.Y) / diffY) * diffX * 0.5;
+            //double bry = ((pointer.X - bottomRight.X) / diffX) * diffY * 0.5;
 
-            switch (this.gizmo)
-            {
-                case Gizmo.Left:
-                    topLeft.X = pointer.X;
-                    topLeft.Y += tly;
-                    bottomRight.Y -= tly;
-                    break;
-                case Gizmo.Right:
-                    bottomRight.X = pointer.X;
-                    bottomRight.Y += bry;
-                    topLeft.Y -= bry;
-                    break;
-                case Gizmo.Top:
-                    topLeft.Y = pointer.Y;
-                    topLeft.X += tlx;
-                    bottomRight.X -= tlx;
-                    break;
-                case Gizmo.Bottom:
-                    bottomRight.Y = pointer.Y;
-                    bottomRight.X += brx;
-                    topLeft.X -= brx;
-                    break;
-            }
+            //switch (this.gizmo)
+            //{
+            //    case Gizmo.Left:
+            //        topLeft.X = pointer.X;
+            //        topLeft.Y += tly;
+            //        bottomRight.Y -= tly;
+            //        break;
+            //    case Gizmo.Right:
+            //        bottomRight.X = pointer.X;
+            //        bottomRight.Y += bry;
+            //        topLeft.Y -= bry;
+            //        break;
+            //    case Gizmo.Top:
+            //        topLeft.Y = pointer.Y;
+            //        topLeft.X += tlx;
+            //        bottomRight.X -= tlx;
+            //        break;
+            //    case Gizmo.Bottom:
+            //        bottomRight.Y = pointer.Y;
+            //        bottomRight.X += brx;
+            //        topLeft.X -= brx;
+            //        break;
+            //}
         }
 
-        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StopTrackingPointer(Panel box, Point point)
         {
             this.gizmoElement.Fill = this.normalBrush;
         }

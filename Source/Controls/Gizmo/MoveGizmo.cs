@@ -13,13 +13,13 @@ namespace WireFrame.Controls.Gizmo
 {
     class MoveGizmo : IGizmo
     {
-        private BoxControl gizmoElement;
+        private Panel gizmoElement;
 
         private Action<IGizmo> onActivateAction;
 
         // ------------------------------
 
-        public MoveGizmo(BoxControl gizmoElement)
+        public MoveGizmo(Panel gizmoElement)
         {
             this.gizmoElement = gizmoElement;
 
@@ -50,17 +50,17 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StartTrackingPointer(Panel box, Point point)
         {
             throw new NotImplementedException();
         }
 
-        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
+        public void TrackPointer(Panel box, Point pointer)
         {
             throw new NotImplementedException();
         }
 
-        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StopTrackingPointer(Panel box, Point point)
         {
             throw new NotImplementedException();
         }

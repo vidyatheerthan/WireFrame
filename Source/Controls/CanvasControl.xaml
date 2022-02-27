@@ -41,7 +41,7 @@
 
             <local:ActionTip x:Name="_actionTip" Visibility="Collapsed" />
 
-            <local:MoveResizeControl x:Name="_moveResizeControl" Visibility="Collapsed" />
+            <local:MoveResizeControl x:Name="_moveResizeControl" Visibility="Visible" />
 
             <local:RotationControl x:Name="_rotationControl" Visibility="Visible" />
 

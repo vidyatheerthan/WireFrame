@@ -66,21 +66,21 @@ namespace WireFrame.Controls.Gizmo
 
         public void Update(Rect rect)
         {
-            switch(this.gizmo)
-            {
-                case Gizmo.TopLeft:
-                    UpdateTopLeft(rect);
-                    break;
-                case Gizmo.TopRight:
-                    UpdateTopRight(rect);
-                    break;
-                case Gizmo.BottomLeft:
-                    UpdateBottomLeft(rect);
-                    break;
-                case Gizmo.BottomRight:
-                    UpdateBottomRight(rect);
-                    break;
-            }
+            //switch(this.gizmo)
+            //{
+            //    case Gizmo.TopLeft:
+            //        UpdateTopLeft(rect);
+            //        break;
+            //    case Gizmo.TopRight:
+            //        UpdateTopRight(rect);
+            //        break;
+            //    case Gizmo.BottomLeft:
+            //        UpdateBottomLeft(rect);
+            //        break;
+            //    case Gizmo.BottomRight:
+            //        UpdateBottomRight(rect);
+            //        break;
+            //}
         }
 
         private void UpdateTopLeft(Rect rect)
@@ -161,33 +161,33 @@ namespace WireFrame.Controls.Gizmo
             this.onActivateAction = action;
         }
 
-        public void StartTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StartTrackingPointer(Panel box, Point point)
         {
             this.gizmoElement.Fill = this.highlightBrush;
         }
 
-        public void TrackPointer(ref Point topLeft, ref Point bottomRight, Point pointer)
+        public void TrackPointer(Panel box, Point pointer)
         {
-            switch (this.gizmo)
-            {
-                case Gizmo.TopLeft:
-                    topLeft = pointer;
-                    break;
-                case Gizmo.TopRight:
-                    topLeft.Y = pointer.Y;
-                    bottomRight.X = pointer.X;
-                    break;
-                case Gizmo.BottomLeft:
-                    topLeft.X = pointer.X;
-                    bottomRight.Y = pointer.Y;
-                    break;
-                case Gizmo.BottomRight:
-                    bottomRight = pointer;
-                    break;
-            }
+            //switch (this.gizmo)
+            //{
+            //    case Gizmo.TopLeft:
+            //        topLeft = pointer;
+            //        break;
+            //    case Gizmo.TopRight:
+            //        topLeft.Y = pointer.Y;
+            //        bottomRight.X = pointer.X;
+            //        break;
+            //    case Gizmo.BottomLeft:
+            //        topLeft.X = pointer.X;
+            //        bottomRight.Y = pointer.Y;
+            //        break;
+            //    case Gizmo.BottomRight:
+            //        bottomRight = pointer;
+            //        break;
+            //}
         }
 
-        public void StopTrackingPointer(ref Point topLeft, ref Point bottomRight, Point point)
+        public void StopTrackingPointer(Panel box, Point point)
         {
             this.gizmoElement.Fill = this.normalBrush;
         }
