@@ -216,5 +216,14 @@ namespace WireFrame.Controls
         {
             return new Rect(Left, Top, Length, Breath);
         }
+
+        public Rect GetRect(Canvas canvas)
+        {
+            var transform = _box.TransformToVisual(canvas);
+            var tl = transform.TransformPoint(new Point(0, 0));
+            var br = transform.TransformPoint(new Point(_box.ActualWidth, _box.ActualHeight));
+
+            return new Rect(tl.X, tl.Y, br.X - tl.X, br.Y - tl.Y);
+        }
     }
 }
