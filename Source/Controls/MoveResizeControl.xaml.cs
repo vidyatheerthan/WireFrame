@@ -192,8 +192,8 @@ namespace WireFrame.Controls
 
         public Viewbox AddView(Viewbox refView, Point position)
         {
-            var view = ViewboxCloner.CreateNewViewbox(refView, fillBrush, strokeBrush);
-            ViewboxCloner.UpdateViewbox(refView, ref view, position);
+            var view = ShapeCloner.CloneViewbox(refView, fillBrush, strokeBrush);
+            ShapeCloner.UpdateViewbox(refView, ref view, position);
             _canvas.Children.Add(view);
             return view;
         }
@@ -217,8 +217,8 @@ namespace WireFrame.Controls
             }
 
             var path = cloneView.Child as Path;
-            ViewboxCloner.UpdateViewbox(refView, ref cloneView, position);
-            ViewboxCloner.UpdatePath(refView, ref path, zoomFactor);
+            ShapeCloner.UpdateViewbox(refView, ref cloneView, position);
+            ShapeCloner.UpdatePath(refView, ref path, zoomFactor);
         }
 
         ///-------------------------------------------------------------------

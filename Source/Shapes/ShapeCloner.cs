@@ -5,9 +5,9 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Controls
 {
-    public static class ViewboxCloner
+    public static class ShapeCloner
     {
-        public static Viewbox CreateNewViewbox(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        public static Viewbox CloneViewbox(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
         {
             Viewbox v = new Viewbox();
             v.Child = CreateNewPath(refView, fillBrush, strokeBrush);
