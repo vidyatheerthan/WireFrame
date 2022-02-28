@@ -111,23 +111,28 @@ namespace WireFrame.Controls.Gizmo
                 double length = this.boxBeforeResize.Width - diff.X;
                 double breath = this.boxBeforeResize.Height - diff.Y;
 
-                this.box.SetLeft(left);
-                this.box.SetTop(top);
-                this.box.SetLength(Math.Abs(length));
-                this.box.SetBreath(Math.Abs(breath));
-
-                this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
-
                 if (length < 0)
                 {
                     this.gizmoClicked = Gizmo.TopRight;
                     StartTrackingPointer(new Point(this.box.GetLeft() + this.box.GetLength(), this.box.GetTop()));
+                }
+                else
+                {
+                    this.box.SetLeft(left);
+                    this.box.SetLength(Math.Abs(length));
                 }
 
                 if (breath < 0)
                 {
                     this.gizmoClicked = Gizmo.BottomRight;
                 }
+                else
+                {
+                    this.box.SetTop(top);
+                    this.box.SetBreath(Math.Abs(breath));
+                }
+
+                this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
             }
 
             else if (this.gizmoClicked == Gizmo.TopRight)
@@ -136,19 +141,24 @@ namespace WireFrame.Controls.Gizmo
                 double length = this.boxBeforeResize.Width + diff.X;
                 double breath = this.boxBeforeResize.Height - diff.Y;
                 
-                this.box.SetTop(top);
-                this.box.SetLength(Math.Abs(length));
-                this.box.SetBreath(Math.Abs(breath));
-
                 if (length < 0)
                 {
                     this.gizmoClicked = Gizmo.TopLeft;
                     StartTrackingPointer(new Point(this.box.GetLeft(), this.box.GetTop()));
                 }
+                else
+                {
+                    this.box.SetLength(Math.Abs(length));
+                }
 
                 if (breath < 0)
                 {
                     this.gizmoClicked = Gizmo.BottomRight;
+                }
+                else
+                {
+                    this.box.SetTop(top);
+                    this.box.SetBreath(Math.Abs(breath));
                 }
             }
         }
