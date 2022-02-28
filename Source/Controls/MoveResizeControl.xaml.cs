@@ -7,7 +7,6 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Controls.Gizmo;
-using WireFrame.Misc;
 using WireFrame.Shapes;
 using WireFrame.States;
 
@@ -148,12 +147,14 @@ namespace WireFrame.Controls
 
         public void GetScale(ref double x, ref double y)
         {
-
+            x = ScaleX;
+            y = ScaleY;
         }
 
         public void SetScale(double x, double y)
         {
-
+            ScaleX = x;
+            ScaleY = y;
         }
 
         ///-------------------------------------------------------------------
@@ -205,6 +206,7 @@ namespace WireFrame.Controls
         public void RemoveAllViews()
         {
             _canvas.Children.Clear();
+            SetScale(1.0, 1.0);
         }
 
         public void UpdateView(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
