@@ -1,4 +1,5 @@
 ﻿using deVoid.Utils;
+using System.Collections.Generic;
 using System.ComponentModel;
 using Windows.Foundation;
 using Windows.UI;
@@ -14,7 +15,7 @@ using WireFrame.States;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IBox
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, Gizmo.IContainer
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
@@ -155,6 +156,11 @@ namespace WireFrame.Controls
         {
             ScaleX = x;
             ScaleY = y;
+        }
+
+        public List<IShape> GetContents()
+        {
+            throw new System.NotImplementedException();
         }
 
         ///-------------------------------------------------------------------
