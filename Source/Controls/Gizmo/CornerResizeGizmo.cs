@@ -1,20 +1,13 @@
-﻿using deVoid.Utils;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.Shapes;
-using WireFrame.States;
 using Point = Windows.Foundation.Point;
 
 namespace WireFrame.Controls.Gizmo
@@ -128,8 +121,7 @@ namespace WireFrame.Controls.Gizmo
                 if (length < 0)
                 {
                     this.gizmoClicked = Gizmo.TopRight;
-                    this.clickPoint = point;
-                    this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+                    StartTrackingPointer(new Point(this.box.GetLeft() + this.box.GetLength(), this.box.GetTop()));
                 }
 
                 if (breath < 0)
@@ -151,8 +143,7 @@ namespace WireFrame.Controls.Gizmo
                 if (length < 0)
                 {
                     this.gizmoClicked = Gizmo.TopLeft;
-                    this.clickPoint = point;
-                    this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+                    StartTrackingPointer(new Point(this.box.GetLeft(), this.box.GetTop()));
                 }
 
                 if (breath < 0)
@@ -166,5 +157,7 @@ namespace WireFrame.Controls.Gizmo
         {
             this.gizmos[this.gizmoClicked].Fill = this.normalBrush;
         }
+
+        
     }
 }
