@@ -3,7 +3,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace WireFrame.Controls
+namespace WireFrame.Shapes
 {
     public static class ShapeCloner
     {
