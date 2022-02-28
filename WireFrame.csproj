@@ -122,6 +122,7 @@
     <Compile Include="SignalDeclarations.cs" />
     <Compile Include="Source\Controls\Gizmo\CornerResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\FixedSideResizeGizmo.cs" />
+    <Compile Include="Source\Controls\Gizmo\IContainer.cs" />
     <Compile Include="Source\Controls\Gizmo\IGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\FreeSideResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\MoveGizmo.cs" />
