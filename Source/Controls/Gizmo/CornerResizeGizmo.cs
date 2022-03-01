@@ -114,18 +114,23 @@ namespace WireFrame.Controls.Gizmo
             double length = 0.0;
             double breath = 0.0;
 
+            double scaleX = 0.0;
+            double scaleY = 0.0;
+
+            this.box.GetScale(ref scaleX, ref scaleY);
+
             Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
 
             if (this.gizmoClicked == Gizmo.TopLeft) 
             {
-                left = this.boxBeforeResize.X + diff.X;
+                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.box.GetLeft();
                 top = this.boxBeforeResize.Y + diff.Y;
                 length = this.boxBeforeResize.Width - diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
             else if (this.gizmoClicked == Gizmo.TopRight)
             {
-                left = this.boxBeforeResize.X;
+                left = this.box.GetLeft();
                 top = this.boxBeforeResize.Y + diff.Y;
                 length = this.boxBeforeResize.Width + diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
