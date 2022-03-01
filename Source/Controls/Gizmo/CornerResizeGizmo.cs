@@ -130,7 +130,7 @@ namespace WireFrame.Controls.Gizmo
             }
             else if (this.gizmoClicked == Gizmo.TopRight)
             {
-                left = this.box.GetLeft();
+                left = scaleX > 0 ? this.boxBeforeResize.X : this.boxBeforeResize.X + this.boxBeforeResize.Width + diff.X;
                 top = this.boxBeforeResize.Y + diff.Y;
                 length = this.boxBeforeResize.Width + diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
