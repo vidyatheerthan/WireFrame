@@ -1,6 +1,7 @@
 ﻿using deVoid.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
@@ -158,9 +159,9 @@ namespace WireFrame.Controls
             ScaleY = y;
         }
 
-        public List<IShape> GetContents()
+        public List<Viewbox> GetContents()
         {
-            throw new System.NotImplementedException();
+            return _canvas.Children.Cast<Viewbox>().ToList();
         }
 
         ///-------------------------------------------------------------------

@@ -4,6 +4,7 @@ using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Core;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
@@ -24,7 +25,7 @@ namespace WireFrame.Controls.Gizmo
 
         double HITBOX_SIZE = 10.0;
 
-        private IBox box;
+        private IContainer box;
 
         private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
@@ -40,12 +41,13 @@ namespace WireFrame.Controls.Gizmo
 
         private Gizmo gizmoClicked;
         private Rect boxBeforeResize;
+        private Dictionary<Viewbox, Rect> boxContents = new Dictionary<Viewbox, Rect>();
         private Point clickPoint;
 
         // -----------------------------------
 
 
-        public CornerResizeGizmo(IBox box, double hitboxSize)
+        public CornerResizeGizmo(IContainer box, double hitboxSize)
         {
             HITBOX_SIZE = hitboxSize;
             this.box = box;
@@ -98,6 +100,11 @@ namespace WireFrame.Controls.Gizmo
             this.gizmos[this.gizmoClicked].Fill = this.highlightBrush;
             this.clickPoint = point;
             this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+            this.boxContents.Clear();
+            foreach(var viewbox in this.box.GetContents())
+            {
+                this.boxContents.Add(viewbox, new Rect(Canvas.GetLeft(viewbox), Canvas.GetTop(viewbox), viewbox.ActualWidth, viewbox.ActualHeight));
+            }
         }
 
         public void TrackPointer(Point point)
@@ -161,6 +168,8 @@ namespace WireFrame.Controls.Gizmo
                     this.box.SetBreath(Math.Abs(breath));
                 }
             }
+
+            UpdateContainerItemSizes();
         }
 
         public void StopTrackingPointer(Point point)
@@ -168,6 +177,25 @@ namespace WireFrame.Controls.Gizmo
             this.gizmos[this.gizmoClicked].Fill = this.normalBrush;
         }
 
-        
+        private void UpdateContainerItemSizes()
+        {
+            double xRatio = this.box.GetLength() / this.boxBeforeResize.Width;
+            double yRatio = this.box.GetBreath() / this.boxBeforeResize.Height;
+
+            foreach (var viewboxSize in this.boxContents)
+            {
+                double left = viewboxSize.Value.X;
+                Canvas.SetLeft(viewboxSize.Key, left * xRatio);
+
+                double top = viewboxSize.Value.Y;
+                Canvas.SetTop(viewboxSize.Key, top * yRatio);
+
+                double width = viewboxSize.Value.Width;
+                viewboxSize.Key.Width = width* xRatio;
+
+                double height = viewboxSize.Value.Height;
+                viewboxSize.Key.Height = height * yRatio;
+            }
+        }
     }
 }
