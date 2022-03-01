@@ -109,65 +109,34 @@ namespace WireFrame.Controls.Gizmo
 
         public void TrackPointer(Point point)
         {
+            double left = 0.0;
+            double top = 0.0;
+            double length = 0.0;
+            double breath = 0.0;
+
             Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
 
             if (this.gizmoClicked == Gizmo.TopLeft) 
             {
-                double left = this.boxBeforeResize.X + diff.X;
-                double top = this.boxBeforeResize.Y + diff.Y;
-                double length = this.boxBeforeResize.Width - diff.X;
-                double breath = this.boxBeforeResize.Height - diff.Y;
-
-                if (length < 0)
-                {
-                    this.gizmoClicked = Gizmo.TopRight;
-                    StartTrackingPointer(new Point(this.box.GetLeft() + this.box.GetLength(), this.box.GetTop()));
-                }
-                else
-                {
-                    this.box.SetLeft(left);
-                    this.box.SetLength(Math.Abs(length));
-                }
-
-                if (breath < 0)
-                {
-                    this.gizmoClicked = Gizmo.BottomRight;
-                }
-                else
-                {
-                    this.box.SetTop(top);
-                    this.box.SetBreath(Math.Abs(breath));
-                }
-
-                this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
+                left = this.boxBeforeResize.X + diff.X;
+                top = this.boxBeforeResize.Y + diff.Y;
+                length = this.boxBeforeResize.Width - diff.X;
+                breath = this.boxBeforeResize.Height - diff.Y;
             }
-
             else if (this.gizmoClicked == Gizmo.TopRight)
             {
-                double top = this.boxBeforeResize.Y + diff.Y;
-                double length = this.boxBeforeResize.Width + diff.X;
-                double breath = this.boxBeforeResize.Height - diff.Y;
-                
-                if (length < 0)
-                {
-                    this.gizmoClicked = Gizmo.TopLeft;
-                    StartTrackingPointer(new Point(this.box.GetLeft(), this.box.GetTop()));
-                }
-                else
-                {
-                    this.box.SetLength(Math.Abs(length));
-                }
-
-                if (breath < 0)
-                {
-                    this.gizmoClicked = Gizmo.BottomRight;
-                }
-                else
-                {
-                    this.box.SetTop(top);
-                    this.box.SetBreath(Math.Abs(breath));
-                }
+                left = this.boxBeforeResize.X;
+                top = this.boxBeforeResize.Y + diff.Y;
+                length = this.boxBeforeResize.Width + diff.X;
+                breath = this.boxBeforeResize.Height - diff.Y;
             }
+
+            this.box.SetLeft(left);
+            this.box.SetLength(Math.Abs(length));
+            this.box.SetTop(top);
+            this.box.SetBreath(Math.Abs(breath));
+
+            this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
 
             UpdateContainerItemSizes();
         }
