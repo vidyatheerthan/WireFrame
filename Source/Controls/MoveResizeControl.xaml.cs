@@ -199,7 +199,13 @@ namespace WireFrame.Controls
 
         public Viewbox AddView(Viewbox refView, Point position)
         {
-            var view = ShapeCloner.CloneViewbox(refView, fillBrush, strokeBrush);
+            if(refView == null) { return null; }
+
+            var path = refView.Child as Path;
+            var fill = path.Fill;
+            var stroke = path.Stroke;
+            var view = ShapeCloner.CloneViewbox(refView, fill, stroke);
+            view.Opacity = 0.5;
             ShapeCloner.UpdateViewbox(refView, ref view, position);
             _canvas.Children.Add(view);
             return view;

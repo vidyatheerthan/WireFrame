@@ -7,14 +7,14 @@ namespace WireFrame.Shapes
 {
     public static class ShapeCloner
     {
-        public static Viewbox CloneViewbox(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        public static Viewbox CloneViewbox(Viewbox refView, Brush fillBrush, Brush strokeBrush)
         {
             Viewbox v = new Viewbox();
             v.Child = CreateNewPath(refView, fillBrush, strokeBrush);
             return v;
         }
 
-        private static Path CreateNewPath(Viewbox refView, SolidColorBrush fillBrush, SolidColorBrush strokeBrush)
+        private static Path CreateNewPath(Viewbox refView, Brush fillBrush, Brush strokeBrush)
         {
             Path p = new Path();
             p.Fill = fillBrush;
