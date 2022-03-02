@@ -124,14 +124,14 @@ namespace WireFrame.Controls.Gizmo
             if (this.gizmoClicked == Gizmo.TopLeft) 
             {
                 left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.box.GetLeft();
-                top = this.boxBeforeResize.Y + diff.Y;
+                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.box.GetTop();
                 length = this.boxBeforeResize.Width - diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
             else if (this.gizmoClicked == Gizmo.TopRight)
             {
                 left = scaleX > 0 ? this.boxBeforeResize.X : this.boxBeforeResize.X + this.boxBeforeResize.Width + diff.X;
-                top = this.boxBeforeResize.Y + diff.Y;
+                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.box.GetTop();
                 length = this.boxBeforeResize.Width + diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
