@@ -197,9 +197,9 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        public Viewbox AddView(Viewbox refView, Point position)
+        public Viewbox AddContentItem(Viewbox refView, Point position)
         {
-            if(refView == null) { return null; }
+            if(refView == null || !(refView.Child is Path)) { return null; }
 
             var path = refView.Child as Path;
             var fill = path.Fill;
@@ -211,18 +211,18 @@ namespace WireFrame.Controls
             return view;
         }
 
-        public void RemoveView(Viewbox viewbox)
+        public void RemoveContentItem(Viewbox viewbox)
         {
             _canvas.Children.Remove(viewbox);
         }
 
-        public void RemoveAllViews()
+        public void RemoveContents()
         {
             _canvas.Children.Clear();
             SetScale(1.0, 1.0);
         }
 
-        public void UpdateView(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
+        public void UpdateContentItem(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
         {
             if (!this._canvas.Children.Contains(cloneView))
             {

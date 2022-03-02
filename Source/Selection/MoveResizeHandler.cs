@@ -47,7 +47,7 @@ namespace WireFrame.Selection
             }
 
             Point pos = Utility.GetPointInContainer(shape, container);
-            this.shapes.Add(shape, this.control.AddView(shape.GetViewbox(), pos));
+            this.shapes.Add(shape, this.control.AddContentItem(shape.GetViewbox(), pos));
 
             return true;
         }
@@ -68,7 +68,7 @@ namespace WireFrame.Selection
             {
                 if (!shapes.Contains(shape))
                 {
-                    this.control.RemoveView(this.shapes[shape]);
+                    this.control.RemoveContentItem(this.shapes[shape]);
                     this.shapes.Remove(shape);
                 }
             }
@@ -97,7 +97,7 @@ namespace WireFrame.Selection
             {
                 Point pos = Utility.GetPointInContainer(shapes[i], container);
                 pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
-                this.control.UpdateView(shapes[i].GetViewbox(), this.shapes[shapes[i]], pos, zoomFactor);
+                this.control.UpdateContentItem(shapes[i].GetViewbox(), this.shapes[shapes[i]], pos, zoomFactor);
             }
         }
 
@@ -105,7 +105,7 @@ namespace WireFrame.Selection
         {
             if (this.shapes.ContainsKey(shape))
             {
-                this.control.RemoveView(this.shapes[shape]);
+                this.control.RemoveContentItem(this.shapes[shape]);
                 this.shapes.Remove(shape);
                 return true;
             }
@@ -116,8 +116,10 @@ namespace WireFrame.Selection
         public void RemoveAllShapes()
         {
             this.shapes.Clear();
-            this.control.RemoveAllViews();
+            this.control.RemoveContents();
         }
+
+        ///-------------------------------------------------------------------
 
         public void StartResize(Point pointer)
         {
