@@ -135,6 +135,20 @@ namespace WireFrame.Controls.Gizmo
                 length = this.boxBeforeResize.Width + diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
+            else if (this.gizmoClicked == Gizmo.BottomLeft)
+            {
+                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.box.GetLeft();
+                top = scaleY > 0 ? this.boxBeforeResize.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height + diff.Y;
+                length = this.boxBeforeResize.Width - diff.X;
+                breath = this.boxBeforeResize.Height + diff.Y;
+            }
+            else if (this.gizmoClicked == Gizmo.BottomRight)
+            {
+                left = scaleX > 0 ? this.boxBeforeResize.X : this.boxBeforeResize.X + this.boxBeforeResize.Width + diff.X;
+                top = scaleY > 0 ? this.boxBeforeResize.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height + diff.Y;
+                length = this.boxBeforeResize.Width + diff.X;
+                breath = this.boxBeforeResize.Height + diff.Y;
+            }
 
             this.box.SetLeft(left);
             this.box.SetLength(Math.Abs(length));
