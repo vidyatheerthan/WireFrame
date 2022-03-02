@@ -23,10 +23,23 @@
 
                 <Canvas x:Name="_container">
 
-                    <shapes:CompoundShape Stroke="DarkGreen" Fill="GreenYellow" Left="1000" Top="300" Length="200" Breath="100" FillRule="Nonzero"  PathStretch="Fill" ViewStretch="Fill"/>
-                    <shapes:CompoundShape Stroke="DarkOrange" Fill="Orange" Left="1500" Top="200" Length="30" Breath="50" PathStretch="Fill" ViewStretch="Fill"/>
+                    <shapes:CompoundShape Stroke="DarkGreen" Fill="GreenYellow" Left="1000" Top="300" Length="200" Breath="100" FillRule="Nonzero"  PathStretch="Fill" ViewStretch="Fill">
+                        <RectangleGeometry Rect="100,100,300,200" />
+                        <RectangleGeometry Rect="0,0,300,500" />
+                    </shapes:CompoundShape>
+                    
+                    <shapes:CompoundShape Stroke="DarkOrange" Fill="Orange" Left="1500" Top="200" Length="30" Breath="50" PathStretch="Fill" ViewStretch="Fill">
+                        <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
+                        <RectangleGeometry Rect="0,0,100,100" />
+                    </shapes:CompoundShape>
+                    
                     <shapes:EllipseShape Stroke="DeepPink" Fill="Pink" Left="1200" Top="800" Length="120" Breath="60" PathStretch="Fill" ViewStretch="Fill"/>
-                    <shapes:CompoundShape Stroke="Transparent" Fill="DarkKhaki" Left="1800" Top="500" Length="30" Breath="30" FillRule="Nonzero" PathStretch="Fill" ViewStretch="Fill"/>
+                    
+                    <shapes:CompoundShape Stroke="Transparent" Fill="DarkKhaki" Left="1800" Top="500" Length="30" Breath="30" FillRule="Nonzero" PathStretch="Fill" ViewStretch="Fill">
+                        <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
+                        <RectangleGeometry Rect="0,0,100,100" />
+                    </shapes:CompoundShape>
+                    
                     <shapes:RectangleShape Stroke="Cyan" Fill="DarkCyan" Left="700" Top="700" Length="60" Breath="100" PathStretch="Fill" ViewStretch="Fill"/>
 
                 </Canvas>

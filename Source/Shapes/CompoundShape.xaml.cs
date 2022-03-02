@@ -11,6 +11,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Controls.Primitives;
 using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
+using Windows.UI.Xaml.Markup;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
 using Windows.UI.Xaml.Shapes;
@@ -19,6 +20,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.Shapes
 {
+    [ContentProperty(Name = nameof(Children))]
     public sealed partial class CompoundShape : UserControl, IShape, INotifyPropertyChanged
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
@@ -66,13 +68,30 @@ namespace WireFrame.Shapes
 
         // --
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
+            nameof(Children),
+            typeof(GeometryCollection),
+            typeof(CompoundShape),
+            new PropertyMetadata(null)
+        );
+
+        public GeometryCollection Children
+        {
+            get => (GeometryCollection)GetValue(ChildrenProperty);
+            set => SetValue(ChildrenProperty, value);
+        }
 
         // --
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // ----------------------------------------------------------------------
 
         public CompoundShape()
         {
             this.InitializeComponent();
+
+            Children = new GeometryCollection();
 
             Stroke = new SolidColorBrush(Colors.Blue);
             Fill = new SolidColorBrush(Colors.AliceBlue);
@@ -84,6 +103,8 @@ namespace WireFrame.Shapes
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        // ----------------------------------------------------------------------
 
         public double GetLeft()
         {
@@ -153,6 +174,21 @@ namespace WireFrame.Shapes
         public Path GetPath()
         {
             return this._path;
+        }
+
+        // ----------------------------------------------------------------------
+
+        public void AddGeometry(Geometry geometry)
+        {
+            this.Children.Add(geometry);
+        }
+
+        public void RemoveGeometry(Geometry geometry)
+        {
+            if (this.Children.Contains(geometry))
+            {
+                this.Children.Remove(geometry);
+            }
         }
     }
 }

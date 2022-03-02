@@ -23,9 +23,7 @@
                 Fill="{x:Bind Fill, Mode=OneWay}"
                 Stretch="{x:Bind PathStretch, Mode=OneWay}">
                 <Path.Data>
-                    <GeometryGroup FillRule="{x:Bind FillRule, Mode=OneWay}">
-                        <EllipseGeometry Center="100, 100" RadiusX="100" RadiusY="100" />
-                        <RectangleGeometry Rect="0,0,100,100" />
+                    <GeometryGroup x:Name="_geometryGroup" Children="{x:Bind Children, Mode=OneWay}" FillRule="{x:Bind FillRule, Mode=OneWay}">
                     </GeometryGroup>
                 </Path.Data>
             </Path>
