@@ -10,7 +10,9 @@ namespace WireFrame.Shapes
 {
     public interface IShape : IBox
     {
+        void SetViewbox(Viewbox viewbox);
         Viewbox GetViewbox();
+        void SetPath(Path path);
         Path GetPath();
     }
 }

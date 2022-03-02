@@ -135,14 +135,24 @@ namespace WireFrame.Shapes
 
         }
 
-        public Path GetPath()
+        public void SetViewbox(Viewbox viewbox)
         {
-            return this._path;
+            this._viewbox = viewbox;
         }
 
         public Viewbox GetViewbox()
         {
             return this._viewbox;
+        }
+
+        public void SetPath(Path path)
+        {
+            this._path = path;
+        }
+
+        public Path GetPath()
+        {
+            return this._path;
         }
     }
 }
