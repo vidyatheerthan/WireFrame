@@ -198,7 +198,7 @@ namespace WireFrame.Controls
             if(refShape == null) { return null; }
 
             var cloneShape = ShapeCloner.Clone(refShape);
-            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f);
+            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f, 1.0f);
 
             var refPath = refShape.GetPath();
             var cloneView = cloneShape.GetViewbox();
@@ -231,7 +231,7 @@ namespace WireFrame.Controls
                 return;
             }
 
-            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor);
+            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor, 1.0f);
         }
 
         public List<Viewbox> GetViewboxes()

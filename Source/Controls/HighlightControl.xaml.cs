@@ -27,7 +27,7 @@ namespace WireFrame.Controls
         public IShape AddShape(IShape refShape, Point position)
         {
             var cloneShape = ShapeCloner.Clone(refShape);
-            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f);
+            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f, 1.0f);
             var clonePath = cloneShape.GetPath();
             clonePath.Fill = fillBrush;
             clonePath.Stroke = strokeBrush;
@@ -52,7 +52,7 @@ namespace WireFrame.Controls
                 return;
             }
 
-            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor);
+            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor, 1.0f);
         }
 
         public List<Viewbox> GetViewboxes()

@@ -16,10 +16,13 @@ namespace WireFrame.Shapes
             return shape;
         }
 
-        public static void Update(IShape refShape, ref IShape cloneShape, Point refPos, float zoomFactor)
+        public static void Update(IShape refShape, ref IShape cloneShape, Point refPos, float zoomFactor, float posFactor)
         {
             var cloneViewbox = cloneShape.GetViewbox();
-            UpdateViewbox(refShape.GetViewbox(), ref cloneViewbox, refPos, zoomFactor);
+            UpdateViewbox(refShape.GetViewbox(), ref cloneViewbox, refPos, zoomFactor, posFactor);
+            double scaleX = 0.0, scaleY = 0.0;
+            refShape.GetScale(ref scaleX, ref scaleY);
+            cloneShape.SetScale(scaleX, scaleY);
         }
 
         private static Viewbox CloneViewbox(Viewbox refView)
@@ -40,10 +43,10 @@ namespace WireFrame.Shapes
             return cloneViewPath;
         }
 
-        private static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor)
+        private static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor, float posFactor)
         {
-            Canvas.SetLeft(cloneView, refViewPos.X);
-            Canvas.SetTop(cloneView, refViewPos.Y);
+            Canvas.SetLeft(cloneView, refViewPos.X * posFactor);
+            Canvas.SetTop(cloneView, refViewPos.Y * posFactor);
             cloneView.Width = refView.ActualWidth * zoomFactor;
             cloneView.Height = refView.ActualHeight * zoomFactor;
             cloneView.Stretch = refView.Stretch;

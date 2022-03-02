@@ -131,9 +131,16 @@ namespace WireFrame.Selection
             this.control.Resize(pointer);
         }
 
-        public void StopResize(Point pointer)
+        public void StopResize(Point pointer, float zoomFactor)
         {
             this.control.StopResize(pointer);
+
+            foreach(var shapeClone in this.shapesClones)
+            {
+                var srcShape = shapeClone.Value;
+                var destShape = shapeClone.Key;
+                ShapeCloner.Update(srcShape, ref destShape, Utility.GetPointInContainer(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
+            }
         }
 
         ///-------------------------------------------------------------------

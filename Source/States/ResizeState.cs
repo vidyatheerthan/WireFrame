@@ -72,7 +72,7 @@ namespace WireFrame.States
             {
                 if (this.isTracking)
                 {
-                    data.resizeHandler.StopResize(hudPointer.Position);
+                    data.resizeHandler.StopResize(hudPointer.Position, data.scrollViewer.ZoomFactor);
                     this.isTracking = false;
                 }
             }
