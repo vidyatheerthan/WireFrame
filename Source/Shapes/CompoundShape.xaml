@@ -14,7 +14,13 @@
             x:Name="_viewbox"
             Canvas.Left="{x:Bind Left, Mode=OneWay}" 
             Canvas.Top="{x:Bind Top, Mode=OneWay}"
-            Stretch="{x:Bind ViewStretch, Mode=OneWay}">
+            Stretch="{x:Bind ViewStretch, Mode=OneWay}" 
+            RenderTransformOrigin="0.5,0.5">
+            
+            <Viewbox.RenderTransform>
+                <CompositeTransform ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>
+            </Viewbox.RenderTransform>
+            
             <Path 
                 x:Name="_path"
                 Width="{x:Bind Length, Mode=OneWay}"

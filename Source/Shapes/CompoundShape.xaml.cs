@@ -68,6 +68,17 @@ namespace WireFrame.Shapes
 
         // --
 
+        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register(nameof(ScaleX), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public double ScaleX { get => (double)GetValue(ScaleXProperty); set => SetValue(ScaleXProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public double ScaleY { get => (double)GetValue(ScaleYProperty); set => SetValue(ScaleYProperty, value); }
+
+
+        // --
+
         public static readonly DependencyProperty ChildrenProperty = DependencyProperty.Register(
             nameof(Children),
             typeof(GeometryCollection),
@@ -90,6 +101,8 @@ namespace WireFrame.Shapes
         public CompoundShape()
         {
             this.InitializeComponent();
+
+            ScaleX = ScaleY = 1.0;
 
             Children = new GeometryCollection();
 
@@ -148,12 +161,14 @@ namespace WireFrame.Shapes
 
         public void GetScale(ref double x, ref double y)
         {
-
+            x = ScaleX;
+            y = ScaleY;
         }
 
         public void SetScale(double x, double y)
         {
-
+            ScaleX = x;
+            ScaleY = y;
         }
 
         public void SetViewbox(Viewbox viewbox)

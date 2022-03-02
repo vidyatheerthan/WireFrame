@@ -135,11 +135,15 @@ namespace WireFrame.Selection
         {
             this.control.StopResize(pointer);
 
-            foreach(var shapeClone in this.shapesClones)
+            double scaleX = 0.0, scaleY = 0.0;
+            this.control.GetScale(ref scaleX, ref scaleY);
+
+            foreach (var shapeClone in this.shapesClones)
             {
                 var srcShape = shapeClone.Value;
                 var destShape = shapeClone.Key;
                 ShapeCloner.Update(srcShape, ref destShape, Utility.GetPointInContainer(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
+                destShape.SetScale(scaleX, scaleY);
             }
         }
 
