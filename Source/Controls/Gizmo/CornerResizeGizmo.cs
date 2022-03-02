@@ -123,21 +123,21 @@ namespace WireFrame.Controls.Gizmo
 
             if (this.gizmoClicked == Gizmo.TopLeft) 
             {
-                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.box.GetLeft();
-                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.box.GetTop();
+                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.boxBeforeResize.X + this.boxBeforeResize.Width;
+                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
                 length = this.boxBeforeResize.Width - diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
             else if (this.gizmoClicked == Gizmo.TopRight)
             {
                 left = scaleX > 0 ? this.boxBeforeResize.X : this.boxBeforeResize.X + this.boxBeforeResize.Width + diff.X;
-                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.box.GetTop();
+                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
                 length = this.boxBeforeResize.Width + diff.X;
                 breath = this.boxBeforeResize.Height - diff.Y;
             }
             else if (this.gizmoClicked == Gizmo.BottomLeft)
             {
-                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.box.GetLeft();
+                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.boxBeforeResize.X + this.boxBeforeResize.Width;
                 top = scaleY > 0 ? this.boxBeforeResize.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height + diff.Y;
                 length = this.boxBeforeResize.Width - diff.X;
                 breath = this.boxBeforeResize.Height + diff.Y;
