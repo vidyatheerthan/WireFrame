@@ -201,14 +201,15 @@ namespace WireFrame.Controls
         {
             if(refView == null || !(refView.Child is Path)) { return null; }
 
-            var path = refView.Child as Path;
-            var fill = path.Fill;
-            var stroke = path.Stroke;
-            var view = ShapeCloner.CloneViewbox(refView, fill, stroke);
-            view.Opacity = 0.5;
-            ShapeCloner.UpdateViewbox(refView, ref view, position);
-            _canvas.Children.Add(view);
-            return view;
+            var cloneView = ShapeCloner.CloneViewbox(refView);
+            cloneView.Opacity = 0.5;
+            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, 1.0f);
+            var refPath = refView.Child as Path;
+            var clonePath = cloneView.Child as Path;
+            clonePath.Fill = refPath.Fill;
+            clonePath.Stroke = refPath.Stroke;
+            _canvas.Children.Add(cloneView);
+            return cloneView;
         }
 
         public void RemoveContentItem(Viewbox viewbox)
@@ -230,8 +231,7 @@ namespace WireFrame.Controls
             }
 
             var path = cloneView.Child as Path;
-            ShapeCloner.UpdateViewbox(refView, ref cloneView, position);
-            ShapeCloner.UpdatePath(refView, ref path, zoomFactor);
+            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, zoomFactor);
         }
 
         ///-------------------------------------------------------------------

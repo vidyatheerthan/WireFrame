@@ -23,10 +23,13 @@ namespace WireFrame.Controls
 
         public Viewbox AddView(Viewbox refView, Point position)
         {
-            var view = ShapeCloner.CloneViewbox(refView, fillBrush, strokeBrush);
-            ShapeCloner.UpdateViewbox(refView, ref view, position);
-            _canvas.Children.Add(view);
-            return view;
+            var cloneView = ShapeCloner.CloneViewbox(refView);
+            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, 1.0f);
+            var clonePath = cloneView.Child as Path;
+            clonePath.Fill = fillBrush;
+            clonePath.Stroke = strokeBrush;
+            _canvas.Children.Add(cloneView);
+            return cloneView;
         }
 
         public void RemoveView(Viewbox viewbox)
@@ -46,9 +49,7 @@ namespace WireFrame.Controls
                 return;
             }
 
-            var path = cloneView.Child as Path;
-            ShapeCloner.UpdateViewbox(refView, ref cloneView, position);
-            ShapeCloner.UpdatePath(refView, ref path, zoomFactor);
+            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, zoomFactor);
         }
     }
 }

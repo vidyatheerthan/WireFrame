@@ -7,35 +7,40 @@ namespace WireFrame.Shapes
 {
     public static class ShapeCloner
     {
-        public static Viewbox CloneViewbox(Viewbox refView, Brush fillBrush, Brush strokeBrush)
+        public static IShape Clone(IShape refShape)
+        {
+            var shape = new CompoundShape();
+            var viewbox = CloneViewbox(refShape.GetViewbox());
+            shape.SetViewbox(viewbox);
+            shape.SetPath(viewbox.Child as Path);
+            return shape;
+        }
+
+        public static Viewbox CloneViewbox(Viewbox refView)
         {
             Viewbox v = new Viewbox();
-            v.Child = CreateNewPath(refView, fillBrush, strokeBrush);
+            v.Child = ClonePath(refView);
             return v;
         }
 
-        private static Path CreateNewPath(Viewbox refView, Brush fillBrush, Brush strokeBrush)
+        private static Path ClonePath(Viewbox refView)
         {
-            Path p = new Path();
-            p.Fill = fillBrush;
-            p.Stroke = strokeBrush;
-            UpdatePath(refView, ref p, 1.0f);
-            p.Data = CloneGeometryGroup(refView);
-            return p;
+            var refPath = refView.Child as Path;
+            Path cloneViewPath = new Path();
+            cloneViewPath.Stretch = refPath.Stretch;
+            cloneViewPath.Fill = refPath.Fill;
+            cloneViewPath.Stroke = refPath.Stroke;
+            cloneViewPath.Data = CloneGeometryGroup(refView);
+            return cloneViewPath;
         }
 
-        public static void UpdateViewbox(Viewbox refView, ref Viewbox childView, Point refViewPos)
+        public static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor)
         {
-            Canvas.SetLeft(childView, refViewPos.X);
-            Canvas.SetTop(childView, refViewPos.Y);
-            childView.Stretch = refView.Stretch;
-        }
-
-        public static void UpdatePath(Viewbox refView, ref Path cloneViewPath, float zoomFactor)
-        {
-            cloneViewPath.Width = refView.ActualWidth * zoomFactor;
-            cloneViewPath.Height = refView.ActualHeight * zoomFactor;
-            cloneViewPath.Stretch = (refView.Child as Path).Stretch;
+            Canvas.SetLeft(cloneView, refViewPos.X);
+            Canvas.SetTop(cloneView, refViewPos.Y);
+            cloneView.Width = refView.ActualWidth * zoomFactor;
+            cloneView.Height = refView.ActualHeight * zoomFactor;
+            cloneView.Stretch = refView.Stretch;
         }
 
         private static GeometryGroup CloneGeometryGroup(Viewbox cloneView)
