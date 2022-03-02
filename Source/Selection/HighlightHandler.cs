@@ -24,7 +24,7 @@ namespace WireFrame.Selection
     public class HighlightHandler : ISelectionHandler
     {
         private HighlightControl control;
-        private Dictionary<IShape, Viewbox> shapes = null;
+        private Dictionary<IShape, IShape> shapeClones = null;
         private FrameworkElement container = null;
 
         // --------------------------------------------------------
@@ -32,7 +32,7 @@ namespace WireFrame.Selection
         public HighlightHandler(HighlightControl control)
         {
             this.control = control;
-            this.shapes = new Dictionary<IShape, Viewbox>();
+            this.shapeClones = new Dictionary<IShape, IShape>();
         }
 
         public void SetContainer(FrameworkElement container)
@@ -45,13 +45,13 @@ namespace WireFrame.Selection
             this.control.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
         }
 
-        public bool AddShape(IShape shape)
+        public bool AddShape(IShape refShape)
         {
-            if (shape == null || this.shapes.ContainsKey(shape)) { return false; }
+            if (refShape == null || this.shapeClones.ContainsKey(refShape)) { return false; }
 
-            var view = this.control.AddView(shape.GetViewbox(), Utility.GetPointInContainer(shape, container));
+            var cloneShape = this.control.AddShape(refShape, Utility.GetPointInContainer(refShape, container));
 
-            this.shapes.Add(shape, view);
+            this.shapeClones.Add(refShape, cloneShape);
 
             return true;
         }
@@ -68,12 +68,12 @@ namespace WireFrame.Selection
                 }
             }
 
-            foreach (var shape in this.shapes.Keys.ToList())
+            foreach (var shape in this.shapeClones.Keys.ToList())
             {
                 if (!newShapes.Contains(shape))
                 {
-                    this.control.RemoveView(this.shapes[shape]);
-                    this.shapes.Remove(shape);
+                    this.control.RemoveShape(this.shapeClones[shape]);
+                    this.shapeClones.Remove(shape);
                 }
             }
 
@@ -82,25 +82,25 @@ namespace WireFrame.Selection
 
         public List<IShape> GetShapes()
         {
-            return this.shapes.Keys.ToList();
+            return this.shapeClones.Keys.ToList();
         }
 
         public void UpdateShapes(float zoomFactor)
         {
-            if (this.shapes == null || this.container == null) { return; }
+            if (this.shapeClones == null || this.container == null) { return; }
 
-            foreach (var shape in this.shapes.Keys)
+            foreach (var shape in this.shapeClones.Keys)
             {
-                this.control.UpdateView(shape.GetViewbox(), this.shapes[shape], Utility.GetPointInContainer(shape, container), zoomFactor);
+                this.control.UpdateShape(shape, this.shapeClones[shape], Utility.GetPointInContainer(shape, container), zoomFactor);
             }
         }
 
         public bool RemoveShape(IShape shape)
         {
-            if (this.shapes.ContainsKey(shape))
+            if (this.shapeClones.ContainsKey(shape))
             {
-                this.control.RemoveView(this.shapes[shape]);
-                this.shapes.Remove(shape);
+                this.control.RemoveShape(this.shapeClones[shape]);
+                this.shapeClones.Remove(shape);
                 return true;
             }
 
@@ -109,8 +109,8 @@ namespace WireFrame.Selection
 
         public void RemoveAllShapes()
         {
-            this.control.RemoveAllViews();
-            this.shapes.Clear();
+            this.control.RemoveShapes();
+            this.shapeClones.Clear();
         }
 
         // ----------------------

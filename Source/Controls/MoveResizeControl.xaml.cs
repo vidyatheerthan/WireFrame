@@ -16,7 +16,7 @@ using WireFrame.States;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, Gizmo.IContainer
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, Gizmo.IContainer, IBox
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
@@ -159,11 +159,7 @@ namespace WireFrame.Controls
             ScaleY = y;
         }
 
-        public List<Viewbox> GetContents()
-        {
-            return _canvas.Children.Cast<Viewbox>().ToList();
-        }
-
+        
         ///-------------------------------------------------------------------
 
         private void OnGizmoActivated(IGizmo gizmo)
@@ -197,41 +193,50 @@ namespace WireFrame.Controls
 
         ///-------------------------------------------------------------------
 
-        public Viewbox AddContentItem(Viewbox refView, Point position)
+        public IShape AddShape(IShape refShape, Point position)
         {
-            if(refView == null || !(refView.Child is Path)) { return null; }
+            if(refShape == null) { return null; }
 
-            var cloneView = ShapeCloner.CloneViewbox(refView);
+            var cloneShape = ShapeCloner.Clone(refShape);
+            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f);
+
+            var refPath = refShape.GetPath();
+            var cloneView = cloneShape.GetViewbox();
+            var clonePath = cloneShape.GetPath();
+
             cloneView.Opacity = 0.5;
-            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, 1.0f);
-            var refPath = refView.Child as Path;
-            var clonePath = cloneView.Child as Path;
             clonePath.Fill = refPath.Fill;
             clonePath.Stroke = refPath.Stroke;
+            
             _canvas.Children.Add(cloneView);
-            return cloneView;
+            
+            return cloneShape;
         }
 
-        public void RemoveContentItem(Viewbox viewbox)
+        public void RemoveShape(IShape cloneShape)
         {
-            _canvas.Children.Remove(viewbox);
+            _canvas.Children.Remove(cloneShape.GetViewbox());
         }
 
-        public void RemoveContents()
+        public void RemoveShapes()
         {
             _canvas.Children.Clear();
             SetScale(1.0, 1.0);
         }
 
-        public void UpdateContentItem(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor)
+        public void UpdateShape(IShape refShape, IShape cloneShape, Point position, float zoomFactor)
         {
-            if (!this._canvas.Children.Contains(cloneView))
+            if (!this._canvas.Children.Contains(cloneShape.GetViewbox()))
             {
                 return;
             }
 
-            var path = cloneView.Child as Path;
-            ShapeCloner.UpdateViewbox(refView, ref cloneView, position, zoomFactor);
+            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor);
+        }
+
+        public List<Viewbox> GetViewboxes()
+        {
+            return _canvas.Children.Cast<Viewbox>().ToList();
         }
 
         ///-------------------------------------------------------------------

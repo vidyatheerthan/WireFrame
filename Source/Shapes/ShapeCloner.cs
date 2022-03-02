@@ -16,7 +16,13 @@ namespace WireFrame.Shapes
             return shape;
         }
 
-        public static Viewbox CloneViewbox(Viewbox refView)
+        public static void Update(IShape refShape, ref IShape cloneShape, Point refPos, float zoomFactor)
+        {
+            var cloneViewbox = cloneShape.GetViewbox();
+            UpdateViewbox(refShape.GetViewbox(), ref cloneViewbox, refPos, zoomFactor);
+        }
+
+        private static Viewbox CloneViewbox(Viewbox refView)
         {
             Viewbox v = new Viewbox();
             v.Child = ClonePath(refView);
@@ -34,7 +40,7 @@ namespace WireFrame.Shapes
             return cloneViewPath;
         }
 
-        public static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor)
+        private static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor)
         {
             Canvas.SetLeft(cloneView, refViewPos.X);
             Canvas.SetTop(cloneView, refViewPos.Y);

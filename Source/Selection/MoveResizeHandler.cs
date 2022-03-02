@@ -18,7 +18,7 @@ namespace WireFrame.Selection
     {
         private Thickness bounds;
         private MoveResizeControl control = null;
-        private Dictionary<IShape, Viewbox> shapesClones = null;
+        private Dictionary<IShape, IShape> shapesClones = null;
         private FrameworkElement container = null;
 
         ///-------------------------------------------------------------------
@@ -26,7 +26,7 @@ namespace WireFrame.Selection
         public MoveResizeHandler(MoveResizeControl control)
         {
             this.control = control;
-            this.shapesClones = new Dictionary<IShape, Viewbox>();
+            this.shapesClones = new Dictionary<IShape, IShape>();
         }
 
         public void Show(bool show)
@@ -46,8 +46,8 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            Point pos = Utility.GetPointInContainer(shape, container);
-            this.shapesClones.Add(shape, this.control.AddContentItem(shape.GetViewbox(), pos));
+            var cloneShape = this.control.AddShape(shape, Utility.GetPointInContainer(shape, container));
+            this.shapesClones.Add(shape, cloneShape);
 
             return true;
         }
@@ -68,7 +68,7 @@ namespace WireFrame.Selection
             {
                 if (!shapes.Contains(shape))
                 {
-                    this.control.RemoveContentItem(this.shapesClones[shape]);
+                    this.control.RemoveShape(this.shapesClones[shape]);
                     this.shapesClones.Remove(shape);
                 }
             }
@@ -97,7 +97,7 @@ namespace WireFrame.Selection
             {
                 Point pos = Utility.GetPointInContainer(shapes[i], container);
                 pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
-                this.control.UpdateContentItem(shapes[i].GetViewbox(), this.shapesClones[shapes[i]], pos, zoomFactor);
+                this.control.UpdateShape(shapes[i], this.shapesClones[shapes[i]], pos, zoomFactor);
             }
         }
 
@@ -105,7 +105,7 @@ namespace WireFrame.Selection
         {
             if (this.shapesClones.ContainsKey(shape))
             {
-                this.control.RemoveContentItem(this.shapesClones[shape]);
+                this.control.RemoveShape(this.shapesClones[shape]);
                 this.shapesClones.Remove(shape);
                 return true;
             }
@@ -116,7 +116,7 @@ namespace WireFrame.Selection
         public void RemoveAllShapes()
         {
             this.shapesClones.Clear();
-            this.control.RemoveContents();
+            this.control.RemoveShapes();
         }
 
         ///-------------------------------------------------------------------

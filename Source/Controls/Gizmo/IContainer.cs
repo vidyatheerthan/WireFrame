@@ -9,12 +9,12 @@ using WireFrame.Shapes;
 
 namespace WireFrame.Controls.Gizmo
 {
-    public interface IContainer : IBox
+    public interface IContainer
     {
-        Viewbox AddContentItem(Viewbox referenceItemView, Point position);
-        void RemoveContentItem(Viewbox viewbox);
-        void RemoveContents();
-        void UpdateContentItem(Viewbox refView, Viewbox cloneView, Point position, float zoomFactor);
-        List<Viewbox> GetContents();
+        IShape AddShape(IShape refShape, Point position);
+        void RemoveShape(IShape cloneShape);
+        void RemoveShapes();
+        void UpdateShape(IShape refView, IShape cloneShape, Point position, float zoomFactor);
+        List<Viewbox> GetViewboxes();
     }
 }

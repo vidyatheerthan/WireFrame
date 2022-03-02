@@ -25,7 +25,7 @@ namespace WireFrame.Controls.Gizmo
 
         double HITBOX_SIZE = 10.0;
 
-        private IContainer box;
+        private MoveResizeControl moveResizeControl;
 
         private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
@@ -47,10 +47,10 @@ namespace WireFrame.Controls.Gizmo
         // -----------------------------------
 
 
-        public CornerResizeGizmo(IContainer box, double hitboxSize)
+        public CornerResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize)
         {
             HITBOX_SIZE = hitboxSize;
-            this.box = box;
+            this.moveResizeControl = moveResizeControl;
         }
 
         public void AddGizmo(Shape shape, Gizmo gizmo) 
@@ -99,9 +99,9 @@ namespace WireFrame.Controls.Gizmo
         {
             this.gizmos[this.gizmoClicked].Fill = this.highlightBrush;
             this.clickPoint = point;
-            this.boxBeforeResize = new Rect(this.box.GetLeft(), this.box.GetTop(), this.box.GetLength(), this.box.GetBreath());
+            this.boxBeforeResize = new Rect(this.moveResizeControl.GetLeft(), this.moveResizeControl.GetTop(), this.moveResizeControl.GetLength(), this.moveResizeControl.GetBreath());
             this.boxContents.Clear();
-            foreach(var viewbox in this.box.GetContents())
+            foreach(var viewbox in this.moveResizeControl.GetViewboxes())
             {
                 this.boxContents.Add(viewbox, new Rect(Canvas.GetLeft(viewbox), Canvas.GetTop(viewbox), viewbox.ActualWidth, viewbox.ActualHeight));
             }
@@ -117,7 +117,7 @@ namespace WireFrame.Controls.Gizmo
             double scaleX = 0.0;
             double scaleY = 0.0;
 
-            this.box.GetScale(ref scaleX, ref scaleY);
+            this.moveResizeControl.GetScale(ref scaleX, ref scaleY);
 
             Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
 
@@ -150,12 +150,12 @@ namespace WireFrame.Controls.Gizmo
                 breath = this.boxBeforeResize.Height + diff.Y;
             }
 
-            this.box.SetLeft(left);
-            this.box.SetLength(Math.Abs(length));
-            this.box.SetTop(top);
-            this.box.SetBreath(Math.Abs(breath));
+            this.moveResizeControl.SetLeft(left);
+            this.moveResizeControl.SetLength(Math.Abs(length));
+            this.moveResizeControl.SetTop(top);
+            this.moveResizeControl.SetBreath(Math.Abs(breath));
 
-            this.box.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
+            this.moveResizeControl.SetScale(length > 0 ? 1 : -1, breath > 0 ? 1 : -1);
 
             UpdateContainerItemSizes();
         }
@@ -167,8 +167,8 @@ namespace WireFrame.Controls.Gizmo
 
         private void UpdateContainerItemSizes()
         {
-            double xRatio = this.box.GetLength() / this.boxBeforeResize.Width;
-            double yRatio = this.box.GetBreath() / this.boxBeforeResize.Height;
+            double xRatio = this.moveResizeControl.GetLength() / this.boxBeforeResize.Width;
+            double yRatio = this.moveResizeControl.GetBreath() / this.boxBeforeResize.Height;
 
             foreach (var viewboxSize in this.boxContents)
             {
