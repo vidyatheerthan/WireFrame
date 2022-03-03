@@ -49,7 +49,7 @@ namespace WireFrame.Selection
         {
             if (refShape == null || this.shapeClones.ContainsKey(refShape)) { return false; }
 
-            var cloneShape = this.control.AddShape(refShape, Utility.GetPointInContainer(refShape, container));
+            var cloneShape = this.control.AddShape(refShape, Utility.GetTopLeft(refShape, container));
 
             this.shapeClones.Add(refShape, cloneShape);
 
@@ -91,7 +91,7 @@ namespace WireFrame.Selection
 
             foreach (var shape in this.shapeClones.Keys)
             {
-                this.control.UpdateShape(shape, this.shapeClones[shape], Utility.GetPointInContainer(shape, container), zoomFactor);
+                this.control.UpdateShape(shape, this.shapeClones[shape], Utility.GetTopLeft(shape, container), zoomFactor);
             }
         }
 

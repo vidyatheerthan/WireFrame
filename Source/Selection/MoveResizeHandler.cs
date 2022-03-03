@@ -46,7 +46,7 @@ namespace WireFrame.Selection
                 return false;
             }
 
-            var cloneShape = this.control.AddShape(shape, Utility.GetPointInContainer(shape, container));
+            var cloneShape = this.control.AddShape(shape, Utility.GetTopLeft(shape, container));
             this.shapesClones.Add(shape, cloneShape);
 
             return true;
@@ -89,13 +89,13 @@ namespace WireFrame.Selection
 
             for (int i = 0; i < shapes.Count; ++i)
             {
-                Point pos = Utility.GetPointInContainer(shapes[i], container);
-                UpdateControl(shapes[i].GetViewbox(), pos, zoomFactor, i == 0);
+                Point pos = Utility.GetTopLeft(shapes[i], container, true);
+                UpdateControl(shapes[i], pos, zoomFactor, i == 0);
             }
 
             for (int i = 0; i < shapes.Count; ++i)
             {
-                Point pos = Utility.GetPointInContainer(shapes[i], container);
+                Point pos = Utility.GetTopLeft(shapes[i], container);
                 pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
                 this.control.UpdateShape(shapes[i], this.shapesClones[shapes[i]], pos, zoomFactor);
             }
@@ -135,21 +135,25 @@ namespace WireFrame.Selection
         {
             this.control.StopResize(pointer);
 
-            double scaleX = 0.0, scaleY = 0.0;
-            this.control.GetScale(ref scaleX, ref scaleY);
+            double boxScaleX = 0.0, boxScaleY = 0.0;
+            this.control.GetScale(ref boxScaleX, ref boxScaleY);
 
             foreach (var shapeClone in this.shapesClones)
             {
                 var srcShape = shapeClone.Value;
                 var destShape = shapeClone.Key;
-                ShapeCloner.Update(srcShape, destShape, Utility.GetPointInContainer(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
-                destShape.SetScale(scaleX, scaleY);
+                ShapeCloner.Update(srcShape, destShape, Utility.GetTopLeft(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
+
+                double shapeScaleX = 0.0, shapeScaleY = 0.0;
+                srcShape.GetScale(ref shapeScaleX, ref shapeScaleY);
+
+                destShape.SetScale(boxScaleX * shapeScaleX, boxScaleY * shapeScaleY);
             }
         }
 
         ///-------------------------------------------------------------------
 
-        public void UpdateControl(Viewbox refView, Point position, float zoomFactor, bool reset)
+        private void UpdateControl(IShape refShape, Point position, float zoomFactor, bool reset)
         {
             if (reset)
             {
@@ -169,14 +173,14 @@ namespace WireFrame.Selection
                 }
             }
 
-            if (position.X + (refView.ActualWidth * zoomFactor) > this.bounds.Right)
+            if (position.X + (refShape.GetLength() * zoomFactor) > this.bounds.Right)
             {
-                this.bounds.Right = position.X + (refView.ActualWidth * zoomFactor);
+                this.bounds.Right = position.X + (refShape.GetLength() * zoomFactor);
             }
 
-            if (position.Y + (refView.ActualHeight * zoomFactor) > this.bounds.Bottom)
+            if (position.Y + (refShape.GetBreath() * zoomFactor) > this.bounds.Bottom)
             {
-                this.bounds.Bottom = position.Y + (refView.ActualHeight * zoomFactor);
+                this.bounds.Bottom = position.Y + (refShape.GetBreath() * zoomFactor);
             }
 
             this.control.SetLeft(this.bounds.Left);
