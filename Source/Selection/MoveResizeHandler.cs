@@ -149,6 +149,13 @@ namespace WireFrame.Selection
 
                 destShape.SetScale(boxScaleX * shapeScaleX, boxScaleY * shapeScaleY);
             }
+
+            // reset box
+            this.control.SetScale(1.0, 1.0);
+            var shapes = GetShapes();
+            RemoveAllShapes();
+            AddShapes(shapes);
+            UpdateShapes(zoomFactor);
         }
 
         ///-------------------------------------------------------------------
