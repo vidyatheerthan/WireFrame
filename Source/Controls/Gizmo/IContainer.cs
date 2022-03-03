@@ -15,6 +15,6 @@ namespace WireFrame.Controls.Gizmo
         void RemoveShape(IShape cloneShape);
         void RemoveShapes();
         void UpdateShape(IShape refView, IShape cloneShape, Point position, float zoomFactor);
-        List<Viewbox> GetViewboxes();
+        List<IShape> GetShapes();
     }
 }

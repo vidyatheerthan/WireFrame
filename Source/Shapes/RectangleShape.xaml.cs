@@ -174,5 +174,60 @@ namespace WireFrame.Shapes
         {
             return this._path;
         }
+
+        public Control GetControl()
+        {
+            return this;
+        }
+
+        public void SetStroke(Brush brush)
+        {
+            Stroke = brush;
+        }
+
+        public Brush GetStroke()
+        {
+            return Stroke;
+        }
+
+        public void SetFill(Brush brush)
+        {
+            Fill = brush;
+        }
+
+        public Brush GetFill()
+        {
+            return Fill;
+        }
+
+        public void SetFillRule(FillRule rule)
+        {
+            FillRule = rule;
+        }
+
+        public FillRule GetFillRule()
+        {
+            return FillRule;
+        }
+
+        public void SetPathStretch(Stretch stretch)
+        {
+            PathStretch = stretch;
+        }
+
+        public Stretch GetPathStretch()
+        {
+            return PathStretch;
+        }
+
+        public void SetOpacity(double opacity)
+        {
+            this._viewbox.Opacity = opacity;
+        }
+
+        public double GetOpacity()
+        {
+            return this._viewbox.Opacity;
+        }
     }
 }

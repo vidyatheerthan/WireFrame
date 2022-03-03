@@ -142,7 +142,7 @@ namespace WireFrame.Selection
             {
                 var srcShape = shapeClone.Value;
                 var destShape = shapeClone.Key;
-                ShapeCloner.Update(srcShape, ref destShape, Utility.GetPointInContainer(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
+                ShapeCloner.Update(srcShape, destShape, Utility.GetPointInContainer(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
                 destShape.SetScale(scaleX, scaleY);
             }
         }

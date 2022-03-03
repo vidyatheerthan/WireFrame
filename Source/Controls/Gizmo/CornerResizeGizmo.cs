@@ -41,7 +41,7 @@ namespace WireFrame.Controls.Gizmo
 
         private Gizmo gizmoClicked;
         private Rect boxBeforeResize;
-        private Dictionary<Viewbox, Rect> boxContents = new Dictionary<Viewbox, Rect>();
+        private Dictionary<IShape, Rect> boxContents = new Dictionary<IShape, Rect>();
         private Point clickPoint;
 
         // -----------------------------------
@@ -101,9 +101,9 @@ namespace WireFrame.Controls.Gizmo
             this.clickPoint = point;
             this.boxBeforeResize = new Rect(this.moveResizeControl.GetLeft(), this.moveResizeControl.GetTop(), this.moveResizeControl.GetLength(), this.moveResizeControl.GetBreath());
             this.boxContents.Clear();
-            foreach(var viewbox in this.moveResizeControl.GetViewboxes())
+            foreach(IShape shape in this.moveResizeControl.GetShapes())
             {
-                this.boxContents.Add(viewbox, new Rect(Canvas.GetLeft(viewbox), Canvas.GetTop(viewbox), viewbox.ActualWidth, viewbox.ActualHeight));
+                this.boxContents.Add(shape, new Rect(shape.GetLeft(), shape.GetTop(), shape.GetLength(), shape.GetBreath()));
             }
         }
 
@@ -170,19 +170,15 @@ namespace WireFrame.Controls.Gizmo
             double xRatio = this.moveResizeControl.GetLength() / this.boxBeforeResize.Width;
             double yRatio = this.moveResizeControl.GetBreath() / this.boxBeforeResize.Height;
 
-            foreach (var viewboxSize in this.boxContents)
+            foreach (var shapeRect in this.boxContents)
             {
-                double left = viewboxSize.Value.X;
-                Canvas.SetLeft(viewboxSize.Key, left * xRatio);
+                IShape shape = shapeRect.Key;
+                Rect rect = shapeRect.Value;
 
-                double top = viewboxSize.Value.Y;
-                Canvas.SetTop(viewboxSize.Key, top * yRatio);
-
-                double width = viewboxSize.Value.Width;
-                viewboxSize.Key.Width = width* xRatio;
-
-                double height = viewboxSize.Value.Height;
-                viewboxSize.Key.Height = height * yRatio;
+                shape.SetLeft(rect.X * xRatio);
+                shape.SetTop(rect.Y * yRatio);
+                shape.SetLength(rect.Width * xRatio);
+                shape.SetBreath(rect.Height * yRatio);
             }
         }
     }

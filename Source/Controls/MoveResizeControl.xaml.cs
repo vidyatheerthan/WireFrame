@@ -198,24 +198,20 @@ namespace WireFrame.Controls
             if(refShape == null) { return null; }
 
             var cloneShape = ShapeCloner.Clone(refShape);
-            ShapeCloner.Update(refShape, ref cloneShape, position, 1.0f, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, 1.0f, 1.0f);
 
-            var refPath = refShape.GetPath();
-            var cloneView = cloneShape.GetViewbox();
-            var clonePath = cloneShape.GetPath();
-
-            cloneView.Opacity = 0.5;
-            clonePath.Fill = refPath.Fill;
-            clonePath.Stroke = refPath.Stroke;
+            cloneShape.SetOpacity(0.5);
+            cloneShape.SetFill(refShape.GetFill());
+            cloneShape.SetStroke(refShape.GetStroke());
             
-            _canvas.Children.Add(cloneView);
+            _canvas.Children.Add(cloneShape.GetControl());
             
             return cloneShape;
         }
 
         public void RemoveShape(IShape cloneShape)
         {
-            _canvas.Children.Remove(cloneShape.GetViewbox());
+            _canvas.Children.Remove(cloneShape.GetControl());
         }
 
         public void RemoveShapes()
@@ -226,17 +222,17 @@ namespace WireFrame.Controls
 
         public void UpdateShape(IShape refShape, IShape cloneShape, Point position, float zoomFactor)
         {
-            if (!this._canvas.Children.Contains(cloneShape.GetViewbox()))
+            if (!this._canvas.Children.Contains(cloneShape.GetControl()))
             {
                 return;
             }
 
-            ShapeCloner.Update(refShape, ref cloneShape, position, zoomFactor, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, zoomFactor, 1.0f);
         }
 
-        public List<Viewbox> GetViewboxes()
+        public List<IShape> GetShapes()
         {
-            return _canvas.Children.Cast<Viewbox>().ToList();
+            return _canvas.Children.Where(item => item is IShape).Cast<IShape>().ToList();
         }
 
         ///-------------------------------------------------------------------

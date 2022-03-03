@@ -23,7 +23,7 @@
 
                 <Canvas x:Name="_container">
 
-                    <shapes:CompoundShape Stroke="DarkGreen" Fill="GreenYellow" Left="1000" Top="300" Length="200" Breath="100" FillRule="Nonzero"  PathStretch="Fill" ViewStretch="Fill">
+                    <shapes:CompoundShape Stroke="DarkGreen" Fill="GreenYellow" Left="1000" Top="300" Length="200" Breath="100" FillRule="Nonzero"  PathStretch="Fill" ViewStretch="Fill" ScaleX="-1" ScaleY="-1">
                         <RectangleGeometry Rect="100,100,300,200" />
                         <RectangleGeometry Rect="0,0,300,500" />
                     </shapes:CompoundShape>

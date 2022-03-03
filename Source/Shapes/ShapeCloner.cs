@@ -9,55 +9,40 @@ namespace WireFrame.Shapes
     {
         public static IShape Clone(IShape refShape)
         {
-            var shape = new CompoundShape();
-            var viewbox = CloneViewbox(refShape.GetViewbox());
-            shape.SetViewbox(viewbox);
-            shape.SetPath(viewbox.Child as Path);
-            return shape;
-        }
+            var cloneShape = new CompoundShape();
+            cloneShape.GetViewbox().Stretch = refShape.GetViewbox().Stretch;
+            CopyPath(refShape.GetPath(), cloneShape.GetPath());
 
-        public static void Update(IShape refShape, ref IShape cloneShape, Point refPos, float zoomFactor, float posFactor)
-        {
-            var cloneViewbox = cloneShape.GetViewbox();
-            UpdateViewbox(refShape.GetViewbox(), ref cloneViewbox, refPos, zoomFactor, posFactor);
             double scaleX = 0.0, scaleY = 0.0;
+
             refShape.GetScale(ref scaleX, ref scaleY);
             cloneShape.SetScale(scaleX, scaleY);
+
+            return cloneShape;
         }
 
-        private static Viewbox CloneViewbox(Viewbox refView)
+        public static void Update(IShape refShape, IShape cloneShape, Point refPos, float zoomFactor, float posFactor)
         {
-            Viewbox v = new Viewbox();
-            v.Child = ClonePath(refView);
-            return v;
+            cloneShape.SetLeft(refPos.X * posFactor);
+            cloneShape.SetTop(refPos.Y * posFactor);
+            cloneShape.SetLength(refShape.GetLength() * zoomFactor);
+            cloneShape.SetBreath(refShape.GetBreath() * zoomFactor);
         }
 
-        private static Path ClonePath(Viewbox refView)
+        private static void CopyPath(Path srcPath, Path dstPath)
         {
-            var refPath = refView.Child as Path;
-            Path cloneViewPath = new Path();
-            cloneViewPath.Stretch = refPath.Stretch;
-            cloneViewPath.Fill = refPath.Fill;
-            cloneViewPath.Stroke = refPath.Stroke;
-            cloneViewPath.Data = CloneGeometryGroup(refView);
-            return cloneViewPath;
+            dstPath.Stretch = srcPath.Stretch;
+            dstPath.Fill = srcPath.Fill;
+            dstPath.Stroke = srcPath.Stroke;
+            dstPath.Data = CloneGeometryGroup(srcPath);
         }
 
-        private static void UpdateViewbox(Viewbox refView, ref Viewbox cloneView, Point refViewPos, float zoomFactor, float posFactor)
-        {
-            Canvas.SetLeft(cloneView, refViewPos.X * posFactor);
-            Canvas.SetTop(cloneView, refViewPos.Y * posFactor);
-            cloneView.Width = refView.ActualWidth * zoomFactor;
-            cloneView.Height = refView.ActualHeight * zoomFactor;
-            cloneView.Stretch = refView.Stretch;
-        }
-
-        private static GeometryGroup CloneGeometryGroup(Viewbox cloneView)
+        private static GeometryGroup CloneGeometryGroup(Path srcPath)
         {
             GeometryGroup gg = new GeometryGroup();
             gg.Children = new GeometryCollection();
 
-            var geoGroup = (cloneView.Child as Path).Data as GeometryGroup;
+            var geoGroup = srcPath.Data as GeometryGroup;
             foreach (var geo in geoGroup.Children)
             {
                 if (geo is EllipseGeometry)
