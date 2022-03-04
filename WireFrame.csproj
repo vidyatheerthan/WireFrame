@@ -123,7 +123,6 @@
     <Compile Include="Source\Controls\Gizmo\ResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\IContainer.cs" />
     <Compile Include="Source\Controls\Gizmo\IGizmo.cs" />
-    <Compile Include="Source\Controls\Gizmo\FreeSideResizeGizmo.cs" />
     <Compile Include="Source\Controls\Gizmo\MoveGizmo.cs" />
     <Compile Include="Source\Shapes\ShapeCloner.cs" />
     <Compile Include="Source\Selection\MoveResizeHandler.cs" />

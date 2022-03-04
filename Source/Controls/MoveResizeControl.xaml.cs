@@ -77,17 +77,15 @@ namespace WireFrame.Controls
             resizeGizmo.AddGizmo(_top_left_circle, ResizeGizmo.Gizmo.TopLeft);
             resizeGizmo.AddGizmo(_top_right_circle, ResizeGizmo.Gizmo.TopRight);
             resizeGizmo.AddGizmo(_bottom_left_circle, ResizeGizmo.Gizmo.BottomLeft);
-            resizeGizmo.AddGizmo(_bottom_right_circle, ResizeGizmo.Gizmo.BottomRight);            
+            resizeGizmo.AddGizmo(_bottom_right_circle, ResizeGizmo.Gizmo.BottomRight);
+            resizeGizmo.AddGizmo(_top_sqr, ResizeGizmo.Gizmo.FreeTop);
+            resizeGizmo.AddGizmo(_bottom_sqr, ResizeGizmo.Gizmo.FreeBottom);
+            resizeGizmo.AddGizmo(_left_sqr, ResizeGizmo.Gizmo.FreeLeft);
+            resizeGizmo.AddGizmo(_right_sqr, ResizeGizmo.Gizmo.FreeRight);
 
             this.gizmos = new IGizmo[]
             {
-                // corners
                 resizeGizmo,
-                // free sided
-                new FreeSideResizeGizmo(10.0, _top_sqr, FreeSideResizeGizmo.Gizmo.Top),
-                new FreeSideResizeGizmo(10.0, _bottom_sqr, FreeSideResizeGizmo.Gizmo.Bottom),
-                new FreeSideResizeGizmo(10.0, _left_sqr, FreeSideResizeGizmo.Gizmo.Left),
-                new FreeSideResizeGizmo(10.0, _right_sqr, FreeSideResizeGizmo.Gizmo.Right),
                 // box
                 //new MoveGizmo(_box),
             };
@@ -166,7 +164,7 @@ namespace WireFrame.Controls
         {
             this.activeGizmo = gizmo;
 
-            if (gizmo is ResizeGizmo || gizmo is FreeSideResizeGizmo)
+            if (gizmo is ResizeGizmo)
             {
                 Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
             }
