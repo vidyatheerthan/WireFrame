@@ -23,14 +23,14 @@ namespace WireFrame.States
             public ScrollViewer scrollViewer;
             public Canvas canvas;
             public Canvas hud;
-            public MoveResizeHandler resizeHandler;
+            public MoveResizeHandler moveHandler;
 
             public Data(ScrollViewer scrollViewer, Canvas canvas, Canvas hud, MoveResizeHandler resizeHandler)
             {
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
                 this.hud = hud;
-                this.resizeHandler = resizeHandler;
+                this.moveHandler = resizeHandler;
             }
         }
 
@@ -57,7 +57,7 @@ namespace WireFrame.States
                     hudPointer.Properties.IsLeftButtonPressed &&
                     !Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftControl).HasFlag(CoreVirtualKeyStates.Down))
             {
-                data.resizeHandler.StartTrackingPointer(hudPointer.Position);
+                data.moveHandler.StartTrackingPointer(hudPointer.Position);
 
                 this.isTracking = true;
             }
@@ -65,14 +65,14 @@ namespace WireFrame.States
             {
                 if (this.isTracking)
                 {
-                    data.resizeHandler.TrackPointer(hudPointer.Position);
+                    data.moveHandler.TrackPointer(hudPointer.Position);
                 }
             }
             else if (pointerState == PointerState.Released)
             {
                 if (this.isTracking)
                 {
-                    data.resizeHandler.StopTrackingPointer(hudPointer.Position, data.scrollViewer.ZoomFactor);
+                    data.moveHandler.StopTrackingPointer(hudPointer.Position, data.scrollViewer.ZoomFactor);
                     this.isTracking = false;
                 }
             }
