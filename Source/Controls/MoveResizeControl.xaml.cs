@@ -68,21 +68,21 @@ namespace WireFrame.Controls
 
             // --
 
-            var cornerGizmo = new CornerResizeGizmo(this, 10.0);
-            cornerGizmo.AddGizmo(_top_left_circle, CornerResizeGizmo.Gizmo.TopLeft);
-            cornerGizmo.AddGizmo(_top_right_circle, CornerResizeGizmo.Gizmo.TopRight);
-            cornerGizmo.AddGizmo(_bottom_left_circle, CornerResizeGizmo.Gizmo.BottomLeft);
-            cornerGizmo.AddGizmo(_bottom_right_circle, CornerResizeGizmo.Gizmo.BottomRight);
+            var resizeGizmo = new ResizeGizmo(this, 10.0);
+            // --
+            resizeGizmo.AddGizmo(_top_bar, ResizeGizmo.Gizmo.Top);
+            resizeGizmo.AddGizmo(_bottom_bar, ResizeGizmo.Gizmo.Bottom);
+            resizeGizmo.AddGizmo(_left_bar, ResizeGizmo.Gizmo.Left);
+            resizeGizmo.AddGizmo(_right_bar, ResizeGizmo.Gizmo.Right);
+            resizeGizmo.AddGizmo(_top_left_circle, ResizeGizmo.Gizmo.TopLeft);
+            resizeGizmo.AddGizmo(_top_right_circle, ResizeGizmo.Gizmo.TopRight);
+            resizeGizmo.AddGizmo(_bottom_left_circle, ResizeGizmo.Gizmo.BottomLeft);
+            resizeGizmo.AddGizmo(_bottom_right_circle, ResizeGizmo.Gizmo.BottomRight);            
 
             this.gizmos = new IGizmo[]
             {
                 // corners
-                cornerGizmo,
-                // fixed sided
-                new FixedSideResizeGizmo(10.0, _top_bar, FixedSideResizeGizmo.Gizmo.Top),
-                new FixedSideResizeGizmo(10.0, _bottom_bar, FixedSideResizeGizmo.Gizmo.Bottom),
-                new FixedSideResizeGizmo(10.0, _left_bar, FixedSideResizeGizmo.Gizmo.Left),
-                new FixedSideResizeGizmo(10.0, _right_bar, FixedSideResizeGizmo.Gizmo.Right),
+                resizeGizmo,
                 // free sided
                 new FreeSideResizeGizmo(10.0, _top_sqr, FreeSideResizeGizmo.Gizmo.Top),
                 new FreeSideResizeGizmo(10.0, _bottom_sqr, FreeSideResizeGizmo.Gizmo.Bottom),
@@ -166,7 +166,7 @@ namespace WireFrame.Controls
         {
             this.activeGizmo = gizmo;
 
-            if (gizmo is CornerResizeGizmo || gizmo is FixedSideResizeGizmo || gizmo is FreeSideResizeGizmo)
+            if (gizmo is ResizeGizmo || gizmo is FreeSideResizeGizmo)
             {
                 Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
             }

@@ -13,10 +13,14 @@ using Point = Windows.Foundation.Point;
 
 namespace WireFrame.Controls.Gizmo
 {
-    public class CornerResizeGizmo : IGizmo
+    public class ResizeGizmo : IGizmo
     {
         public enum Gizmo
         {
+            Top,
+            Bottom,
+            Left,
+            Right,
             TopLeft,
             TopRight,
             BottomLeft,
@@ -26,6 +30,9 @@ namespace WireFrame.Controls.Gizmo
         double HITBOX_SIZE = 10.0;
 
         private MoveResizeControl moveResizeControl;
+
+        private CoreCursor westEastCursor = new CoreCursor(CoreCursorType.SizeWestEast, 1);
+        private CoreCursor northSouthCursor = new CoreCursor(CoreCursorType.SizeNorthSouth, 1);
 
         private CoreCursor northEastSouthWestCursor = new CoreCursor(CoreCursorType.SizeNortheastSouthwest, 1);
         private CoreCursor northWestSouthEastCursor = new CoreCursor(CoreCursorType.SizeNorthwestSoutheast, 1);
@@ -47,7 +54,7 @@ namespace WireFrame.Controls.Gizmo
         // -----------------------------------
 
 
-        public CornerResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize)
+        public ResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize)
         {
             HITBOX_SIZE = hitboxSize;
             this.moveResizeControl = moveResizeControl;
@@ -61,6 +68,18 @@ namespace WireFrame.Controls.Gizmo
             {
                 switch (gizmo)
                 {
+                    case Gizmo.Top:
+                        Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+                        break;
+                    case Gizmo.Bottom:
+                        Window.Current.CoreWindow.PointerCursor = this.northSouthCursor;
+                        break;
+                    case Gizmo.Left:
+                        Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+                        break;
+                    case Gizmo.Right:
+                        Window.Current.CoreWindow.PointerCursor = this.westEastCursor;
+                        break;
                     case Gizmo.TopLeft:
                         Window.Current.CoreWindow.PointerCursor = this.northWestSouthEastCursor;
                         break;
@@ -121,7 +140,45 @@ namespace WireFrame.Controls.Gizmo
 
             Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
 
-            if (this.gizmoClicked == Gizmo.TopLeft) 
+            // move
+            //if (this.gizmoClicked == Gizmo.Move)
+            //{
+            //    left = this.boxBeforeResize.X + diff.X;
+            //    top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
+            //    length = this.boxBeforeResize.Width;
+            //    breath = this.boxBeforeResize.Height;
+            //}
+
+            if (this.gizmoClicked == Gizmo.Top)
+            {
+                left = this.boxBeforeResize.X;
+                top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
+                length = this.boxBeforeResize.Width;
+                breath = this.boxBeforeResize.Height - diff.Y;
+            }
+            else if (this.gizmoClicked == Gizmo.Bottom)
+            {
+                left = this.boxBeforeResize.X;
+                top = scaleY > 0 ? this.boxBeforeResize.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height + diff.Y;
+                length = this.boxBeforeResize.Width;
+                breath = this.boxBeforeResize.Height + diff.Y;
+            }
+            else if (this.gizmoClicked == Gizmo.Left)
+            {
+                left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.boxBeforeResize.X + this.boxBeforeResize.Width;
+                top = this.boxBeforeResize.Y;
+                length = this.boxBeforeResize.Width - diff.X;
+                breath = this.boxBeforeResize.Height;
+            }
+            else if (this.gizmoClicked == Gizmo.Right)
+            {
+                left = scaleX > 0 ? this.boxBeforeResize.X : this.boxBeforeResize.X + this.boxBeforeResize.Width + diff.X;
+                top = this.boxBeforeResize.Y;
+                length = this.boxBeforeResize.Width + diff.X;
+                breath = this.boxBeforeResize.Height;
+            }
+            // --
+            else if (this.gizmoClicked == Gizmo.TopLeft) 
             {
                 left = scaleX > 0 ? this.boxBeforeResize.X + diff.X : this.boxBeforeResize.X + this.boxBeforeResize.Width;
                 top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
