@@ -17,20 +17,44 @@
 
             <Canvas x:Name="_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
 
-            <Rectangle x:Name="_left_bar" Width="10" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-5, 0, 0, 0" Fill="Red" IsHitTestVisible="True" />
-            <Rectangle x:Name="_right_bar" Width="10" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0, 0, -5, 0" Fill="Green" IsHitTestVisible="True" />
-            <Rectangle x:Name="_top_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0, -5, 0, 0" Fill="Blue" IsHitTestVisible="True" />
-            <Rectangle x:Name="_bottom_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" Fill="Yellow" IsHitTestVisible="True" />
+            <Grid x:Name="_left_bar" Width="10" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-5, 0, 0, 0" Background="Transparent" IsHitTestVisible="True">
+                <Rectangle Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Fill="Blue" />
+            </Grid>
+            <Grid x:Name="_right_bar" Width="10" HorizontalAlignment="Right" VerticalAlignment="Stretch" Margin="0, 0, -5, 0" Background="Transparent" IsHitTestVisible="True">
+                <Rectangle Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Fill="Blue" />
+            </Grid>
+            <Grid x:Name="_top_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Top" Margin="0, -5, 0, 0" Background="Transparent" IsHitTestVisible="True">
+                <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Fill="Blue" />
+            </Grid>
+            <Grid x:Name="_bottom_bar" Height="10" HorizontalAlignment="Stretch" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" Background="Transparent" IsHitTestVisible="True">
+                <Rectangle Height="1" HorizontalAlignment="Stretch" VerticalAlignment="Center" Fill="Blue" />
+            </Grid>
 
-            <Rectangle x:Name="_left_sqr" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5, 0, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Rectangle x:Name="_right_sqr" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, -5, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Rectangle x:Name="_top_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, -5, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Rectangle x:Name="_bottom_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Grid x:Name="_left_sqr" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="-5, 0, 0, 0" IsHitTestVisible="True">
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_right_sqr" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0, 0, -5, 0" IsHitTestVisible="True">
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_top_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="0, -5, 0, 0" IsHitTestVisible="True">
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_bottom_sqr" Width="10" Height="10" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0, 0, 0, -5" IsHitTestVisible="True">
+                <Rectangle HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
 
-            <Ellipse x:Name="_top_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-5, -5, 0, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Ellipse x:Name="_top_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0, -5, -5, 0" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Ellipse x:Name="_bottom_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5, 0, 0, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
-            <Ellipse x:Name="_bottom_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0, 0, -5, -5" Stroke="#FF011B8D" Fill="AliceBlue" IsHitTestVisible="True"/>
+            <Grid x:Name="_top_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="-5, -5, 0, 0" IsHitTestVisible="True">
+                <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_top_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0, -5, -5, 0" IsHitTestVisible="True">
+                <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_bottom_left_circle" Width="10" Height="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="-5, 0, 0, -5" IsHitTestVisible="True">
+                <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
+            <Grid x:Name="_bottom_right_circle" Width="10" Height="10" HorizontalAlignment="Right" VerticalAlignment="Bottom" Margin="0, 0, -5, -5" IsHitTestVisible="True">
+                <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="Blue" Fill="AliceBlue" />
+            </Grid>
 
         </Grid>
     </Canvas>

@@ -48,12 +48,12 @@ namespace WireFrame.Controls.Gizmo
 
         private CoreCursor arrowCursor = new CoreCursor(CoreCursorType.Arrow, 1);
 
-        private Dictionary<Gizmo, Shape> gizmos = new Dictionary<Gizmo, Shape>();
+        private Dictionary<Gizmo, Panel> gizmos = new Dictionary<Gizmo, Panel>();
 
         private Action<IGizmo> onActivateAction;
 
         private SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Aqua);
-        private SolidColorBrush normalBrush = new SolidColorBrush(Colors.AliceBlue);
+        private SolidColorBrush normalBrush = new SolidColorBrush(Colors.Blue);
 
         private Gizmo gizmoClicked;
         private Rect boxBeforeResize;
@@ -69,11 +69,11 @@ namespace WireFrame.Controls.Gizmo
             this.moveResizeControl = moveResizeControl;
         }
 
-        public void AddGizmo(Shape shape, Gizmo gizmo) 
+        public void AddGizmo(Panel panel, Gizmo gizmo) 
         {
-            this.gizmos[gizmo] = shape;
+            this.gizmos[gizmo] = panel;
 
-            shape.PointerEntered += (object sender, PointerRoutedEventArgs e) =>
+            panel.PointerEntered += (object sender, PointerRoutedEventArgs e) =>
             {
                 switch (gizmo)
                 {
@@ -118,12 +118,12 @@ namespace WireFrame.Controls.Gizmo
                 }
             };
 
-            shape.PointerExited += (object sender, PointerRoutedEventArgs e) => 
+            panel.PointerExited += (object sender, PointerRoutedEventArgs e) => 
             {
                 Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
             };
 
-            shape.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
+            panel.PointerPressed += (object sender, PointerRoutedEventArgs e) =>
             {
                 this.gizmoClicked = gizmo;
                 this.onActivateAction(this);
@@ -139,7 +139,7 @@ namespace WireFrame.Controls.Gizmo
 
         public void StartTrackingPointer(Point point)
         {
-            this.gizmos[this.gizmoClicked].Fill = this.highlightBrush;
+            (this.gizmos[this.gizmoClicked].Children[0] as Shape).Fill = this.highlightBrush;
             this.clickPoint = point;
             this.boxBeforeResize = new Rect(this.moveResizeControl.GetLeft(), this.moveResizeControl.GetTop(), this.moveResizeControl.GetLength(), this.moveResizeControl.GetBreath());
             this.boxContents.Clear();
@@ -275,7 +275,7 @@ namespace WireFrame.Controls.Gizmo
 
         public void StopTrackingPointer(Point point)
         {
-            this.gizmos[this.gizmoClicked].Fill = this.normalBrush;
+            (this.gizmos[this.gizmoClicked].Children[0] as Shape).Fill = this.normalBrush;
         }
 
         private void UpdateContainerItemSizes()
