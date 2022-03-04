@@ -276,6 +276,8 @@ namespace WireFrame.Controls.Gizmo
         public void StopTrackingPointer(Point point)
         {
             (this.gizmos[this.gizmoClicked].Children[0] as Shape).Fill = this.normalBrush;
+            this.boxBeforeResize = Rect.Empty;
+            this.boxContents.Clear();
         }
 
         private void UpdateContainerItemSizes()

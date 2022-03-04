@@ -16,7 +16,7 @@ using WireFrame.Selection;
 
 namespace WireFrame.States
 {
-    class ResizeState : IFiniteStateMachine
+    class MoveState : IFiniteStateMachine
     {
         private class Data
         {
@@ -41,7 +41,7 @@ namespace WireFrame.States
 
         // --
 
-        public ResizeState(List<object> objects)
+        public MoveState(List<object> objects)
         {
             if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is Canvas) && (objects[3] is MoveResizeHandler))
             {

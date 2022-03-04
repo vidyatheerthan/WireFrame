@@ -17,6 +17,8 @@
 
             <Canvas x:Name="_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
 
+            <Grid x:Name="_move_box" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" IsHitTestVisible="True" />
+
             <Grid x:Name="_left_bar" Width="10" HorizontalAlignment="Left" VerticalAlignment="Stretch" Margin="-5, 0, 0, 0" Background="Transparent" IsHitTestVisible="True">
                 <Rectangle Width="1" HorizontalAlignment="Center" VerticalAlignment="Stretch" Fill="Blue" />
             </Grid>

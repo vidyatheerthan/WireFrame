@@ -121,19 +121,19 @@ namespace WireFrame.Selection
 
         ///-------------------------------------------------------------------
 
-        public void StartResize(Point pointer)
+        public void StartTrackingPointer(Point pointer)
         {
-            this.control.StartResize(pointer);            
+            this.control.StartTrackingPointer(pointer);            
         }
 
-        public void Resize(Point pointer)
+        public void TrackPointer(Point pointer)
         {
-            this.control.Resize(pointer);
+            this.control.TrackPointer(pointer);
         }
 
-        public void StopResize(Point pointer, float zoomFactor)
+        public void StopTrackingPointer(Point pointer, float zoomFactor)
         {
-            this.control.StopResize(pointer);
+            this.control.StopTrackingPointer(pointer);
 
             double boxScaleX = 0.0, boxScaleY = 0.0;
             this.control.GetScale(ref boxScaleX, ref boxScaleY);

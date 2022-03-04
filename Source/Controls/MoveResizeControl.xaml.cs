@@ -69,7 +69,6 @@ namespace WireFrame.Controls
             // --
 
             var resizeGizmo = new ResizeGizmo(this, 10.0);
-            // --
             resizeGizmo.AddGizmo(_top_bar, ResizeGizmo.Gizmo.Top);
             resizeGizmo.AddGizmo(_bottom_bar, ResizeGizmo.Gizmo.Bottom);
             resizeGizmo.AddGizmo(_left_bar, ResizeGizmo.Gizmo.Left);
@@ -83,12 +82,9 @@ namespace WireFrame.Controls
             resizeGizmo.AddGizmo(_left_sqr, ResizeGizmo.Gizmo.FreeLeft);
             resizeGizmo.AddGizmo(_right_sqr, ResizeGizmo.Gizmo.FreeRight);
 
-            this.gizmos = new IGizmo[]
-            {
-                resizeGizmo,
-                // box
-                //new MoveGizmo(_box),
-            };
+            var moveGizmo = new MoveGizmo(this, _move_box);
+
+            this.gizmos = new IGizmo[] { resizeGizmo, moveGizmo };
 
             foreach (IGizmo gizmo in this.gizmos)
             {
@@ -168,21 +164,25 @@ namespace WireFrame.Controls
             {
                 Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Resize);
             }
+            else if (gizmo is MoveGizmo)
+            {
+                Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Move);
+            }
         }
         
         ///-------------------------------------------------------------------
         
-        public void StartResize(Point pointer)
+        public void StartTrackingPointer(Point pointer)
         {
             this.activeGizmo.StartTrackingPointer(pointer);
         }
 
-        public void Resize(Point pointer)
+        public void TrackPointer(Point pointer)
         {
             this.activeGizmo.TrackPointer(pointer);
         }
 
-        public void StopResize(Point pointer)
+        public void StopTrackingPointer(Point pointer)
         {
             this.activeGizmo.StopTrackingPointer(pointer);
             this.activeGizmo = null;
