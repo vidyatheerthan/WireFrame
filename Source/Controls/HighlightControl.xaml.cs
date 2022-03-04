@@ -27,7 +27,7 @@ namespace WireFrame.Controls
         public IShape AddShape(IShape refShape, Point position)
         {
             var cloneShape = ShapeCloner.Clone(refShape);
-            ShapeCloner.Update(refShape, cloneShape, position, 1.0f, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, 1.0f);
             cloneShape.SetFill(fillBrush);
             cloneShape.SetStroke(strokeBrush);
             _canvas.Children.Add(cloneShape.GetControl());
@@ -51,7 +51,7 @@ namespace WireFrame.Controls
                 return;
             }
 
-            ShapeCloner.Update(refShape, cloneShape, position, zoomFactor, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, zoomFactor);
         }
 
         public List<IShape> GetShapes()

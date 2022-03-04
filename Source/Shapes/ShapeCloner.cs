@@ -21,10 +21,10 @@ namespace WireFrame.Shapes
             return cloneShape;
         }
 
-        public static void Update(IShape refShape, IShape cloneShape, Point refPos, float zoomFactor, float posFactor)
+        public static void Update(IShape refShape, IShape cloneShape, Point refPos, float zoomFactor)
         {
-            cloneShape.SetLeft(refPos.X * posFactor);
-            cloneShape.SetTop(refPos.Y * posFactor);
+            cloneShape.SetLeft(refPos.X);
+            cloneShape.SetTop(refPos.Y);
             cloneShape.SetLength(refShape.GetLength() * zoomFactor);
             cloneShape.SetBreath(refShape.GetBreath() * zoomFactor);
         }

@@ -146,7 +146,7 @@ namespace WireFrame.Selection
                 GeneralTransform transform = srcShape.GetViewbox().TransformToVisual(destShape.GetControl());
                 Point pos = transform.TransformPoint(new Point(0,0));
 
-                ShapeCloner.Update(srcShape, destShape, pos, 1.0f / zoomFactor, 1.0f);
+                ShapeCloner.Update(srcShape, destShape, pos, 1.0f / zoomFactor);
 
                 double shapeScaleX = 0.0, shapeScaleY = 0.0;
                 srcShape.GetScale(ref shapeScaleX, ref shapeScaleY);

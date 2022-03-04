@@ -198,7 +198,7 @@ namespace WireFrame.Controls
             if(refShape == null) { return null; }
 
             var cloneShape = ShapeCloner.Clone(refShape);
-            ShapeCloner.Update(refShape, cloneShape, position, 1.0f, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, 1.0f);
 
             cloneShape.SetOpacity(0.5);
             cloneShape.SetFill(refShape.GetFill());
@@ -227,7 +227,7 @@ namespace WireFrame.Controls
                 return;
             }
 
-            ShapeCloner.Update(refShape, cloneShape, position, zoomFactor, 1.0f);
+            ShapeCloner.Update(refShape, cloneShape, position, zoomFactor);
         }
 
         public List<IShape> GetShapes()
