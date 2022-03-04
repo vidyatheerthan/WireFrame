@@ -142,7 +142,11 @@ namespace WireFrame.Selection
             {
                 var srcShape = shapeClone.Value;
                 var destShape = shapeClone.Key;
-                ShapeCloner.Update(srcShape, destShape, Utility.GetTopLeft(srcShape, container), 1.0f / zoomFactor, 1.0f / zoomFactor);
+
+                GeneralTransform transform = srcShape.GetViewbox().TransformToVisual(destShape.GetControl());
+                Point pos = transform.TransformPoint(new Point(0,0));
+
+                ShapeCloner.Update(srcShape, destShape, pos, 1.0f / zoomFactor, 1.0f);
 
                 double shapeScaleX = 0.0, shapeScaleY = 0.0;
                 srcShape.GetScale(ref shapeScaleX, ref shapeScaleY);
