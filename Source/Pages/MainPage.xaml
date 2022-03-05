@@ -4,13 +4,43 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:local="using:WireFrame.Controls"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:local1="using:WireFrame.UI.Controls"
     mc:Ignorable="d"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
 
     <Grid x:Name="_grid" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Gray">
 
-        <local:CanvasControl x:Name="_canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+        </Grid.RowDefinitions>
+
+
+
+        <local1:MenuControl Grid.Row="0" />
+
+        <Grid Grid.Row="1">
+            
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="100"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+
+            <local1:VerticalButtonsPanel Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+
+            <local:CanvasControl Grid.Column="1" x:Name="_canvas" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
+
+            <Rectangle Grid.Column="2" Fill="LightGray"/>
+
+        </Grid>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Background="LightGray">
+            
+            <TextBlock Padding="5" Text="sample footer text.."/>
+            
+        </StackPanel>
 
     </Grid>
     

@@ -176,6 +176,12 @@
     <Compile Include="Source\Canvas\States\SelectionState.cs" />
     <Compile Include="Source\Canvas\States\PanState.cs" />
     <Compile Include="Source\Canvas\States\StateExecutor.cs" />
+    <Compile Include="Source\UI\Controls\MenuControl.xaml.cs">
+      <DependentUpon>MenuControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Source\UI\Controls\VerticalButtonsPanel.xaml.cs">
+      <DependentUpon>VerticalButtonsPanel.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Vendors\Signals.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -235,6 +241,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Source\Canvas\Shapes\RectangleShape.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\UI\Controls\MenuControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Source\UI\Controls\VerticalButtonsPanel.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -87,7 +87,7 @@ namespace WireFrame.States
                 DrawNewBoundingBox(data.hud, hudPointer.Position);
                 
                 bool shiftDown = Window.Current.CoreWindow.GetKeyState(Windows.System.VirtualKey.LeftShift).HasFlag(CoreVirtualKeyStates.Down);
-                SelectShapeUnderPointer(canvasPointer.Position, shiftDown);
+                SelectShapeUnderPointer(hudPointer.Position, shiftDown);
 
                 this.isTracking = true;
             }
@@ -96,11 +96,11 @@ namespace WireFrame.States
                 if (this.isTracking)
                 {
                     ResizeBoundingBox(hudPointer.Position);
-                    SelectShapesUnderBoundingBox(data.container);
+                    SelectShapesUnderBoundingBox();
                 }
                 else
                 {
-                    HighlightShapeUnderPointer(canvasPointer.Position);
+                    HighlightShapeUnderPointer(hudPointer.Position);
                 }
             }
             else if (pointerState == PointerState.Released)
@@ -171,9 +171,9 @@ namespace WireFrame.States
             this.boundingBox.Track(position);
         }
 
-        private void SelectShapesUnderBoundingBox(Canvas container)
+        private void SelectShapesUnderBoundingBox()
         {
-            var shapes = GetShapesUnderBounds(container, this.boundingBox.GetBounds());
+            var shapes = GetShapesUnderBounds(this.boundingBox.GetBounds());
             data.selector.AddShapes(shapes);
             data.selector.UpdateShapes(data.scrollViewer.ZoomFactor);
             data.selector.Show(true);
@@ -190,25 +190,27 @@ namespace WireFrame.States
         {
         }
 
-        private List<IShape> GetShapesUnderPointer(ScrollViewer scrollViewer, Canvas container, Point position)
+        private List<IShape> GetShapesUnderPointer(Point hudPosition)
         {
-            GeneralTransform transform = container.TransformToVisual(scrollViewer);
-            Point transformedPoint = transform.TransformPoint(position);
-            var elements = VisualTreeHelper.FindElementsInHostCoordinates(transformedPoint, container);
+            GeneralTransform transform = data.hud.TransformToVisual(null);
+            var tp = transform.TransformPoint(hudPosition);
+            var elements = VisualTreeHelper.FindElementsInHostCoordinates(tp, data.container);
             var shapes  = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
             return shapes;
         }
 
-        private List<IShape> GetShapesUnderBounds(Canvas container,  Rect bounds)
+        private List<IShape> GetShapesUnderBounds(Rect hudBounds)
         {
-            var elements = VisualTreeHelper.FindElementsInHostCoordinates(bounds, container);
+            GeneralTransform transform = data.hud.TransformToVisual(null);
+            var tb = transform.TransformBounds(hudBounds);
+            var elements = VisualTreeHelper.FindElementsInHostCoordinates(tb, data.container);
             var shapes = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
             return shapes;
         }
 
-        private void SelectShapeUnderPointer(Point position, bool alternateSelection)
+        private void SelectShapeUnderPointer(Point hudPosition, bool alternateSelection)
         {
-            var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
+            var shapes = GetShapesUnderPointer(hudPosition);
 
             if (!alternateSelection)
             {
@@ -234,9 +236,9 @@ namespace WireFrame.States
             }
         }
 
-        private void HighlightShapeUnderPointer(Point position)
+        private void HighlightShapeUnderPointer(Point hudPosition)
         {
-            var shapes = GetShapesUnderPointer(data.scrollViewer, data.container, position);
+            var shapes = GetShapesUnderPointer(hudPosition);
             
             if (shapes != null && shapes.Count() > 0)
             {
