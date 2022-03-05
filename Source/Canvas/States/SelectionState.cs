@@ -192,19 +192,19 @@ namespace WireFrame.States
 
         private List<IShape> GetShapesUnderPointer(Point hudPosition)
         {
-            GeneralTransform transform = data.hud.TransformToVisual(null);
+            GeneralTransform transform = data.hud.TransformToVisual(null); // always transform to root
             var tp = transform.TransformPoint(hudPosition);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(tp, data.container);
-            var shapes  = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
+            var shapes  = elements.Where(item => item is IShape).Cast<IShape>().ToList();
             return shapes;
         }
 
         private List<IShape> GetShapesUnderBounds(Rect hudBounds)
         {
-            GeneralTransform transform = data.hud.TransformToVisual(null);
+            GeneralTransform transform = data.hud.TransformToVisual(null); // always transform to root
             var tb = transform.TransformBounds(hudBounds);
             var elements = VisualTreeHelper.FindElementsInHostCoordinates(tb, data.container);
-            var shapes = elements.Where(item => item is IShape).Cast<IShape>().ToList(); // allow only IShape
+            var shapes = elements.Where(item => item is IShape).Cast<IShape>().ToList();
             return shapes;
         }
 
