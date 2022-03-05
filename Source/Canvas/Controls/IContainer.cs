@@ -7,7 +7,7 @@ using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
 using WireFrame.Shapes;
 
-namespace WireFrame.Controls.Gizmo
+namespace WireFrame.Controls
 {
     public interface IContainer
     {

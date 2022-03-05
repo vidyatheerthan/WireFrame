@@ -16,7 +16,7 @@ using WireFrame.States;
 
 namespace WireFrame.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, Gizmo.IContainer, IBox
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IContainer, IBox
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
