@@ -127,7 +127,7 @@ namespace WireFrame.Controls
             IFiniteStateMachine moveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), moveResizeHandler });
             IFiniteStateMachine resizeState = new ResizeState(new List<object>() { _scrollViewer, _canvas, _HUD, moveResizeHandler });
             IFiniteStateMachine moveState = new MoveState(new List<object>() { _scrollViewer, _canvas, _HUD, moveResizeHandler });
-            IFiniteStateMachine rotateElementState = new RotateElementState(new List<object>() { _grid, _scrollViewer, _canvas, _rotationControl });
+            IFiniteStateMachine rotateState = new RotateState(new List<object>() { _grid, _scrollViewer, _canvas, _rotationControl });
             IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _moveResizeControl, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
@@ -136,7 +136,7 @@ namespace WireFrame.Controls
             StateExecutor.Instance.AddState(StateExecutor.State.SelectMoveResize_Pan_Focus, new List<IFiniteStateMachine>() { moveResizeState, panState, focusState });
             StateExecutor.Instance.AddState(StateExecutor.State.Resize, new List<IFiniteStateMachine>() { resizeState });
             StateExecutor.Instance.AddState(StateExecutor.State.Move, new List<IFiniteStateMachine>() { moveState });
-            StateExecutor.Instance.AddState(StateExecutor.State.Rotate, new List<IFiniteStateMachine>() { rotateElementState });
+            StateExecutor.Instance.AddState(StateExecutor.State.Rotate, new List<IFiniteStateMachine>() { rotateState });
             StateExecutor.Instance.AddState(StateExecutor.State.DrawEllipse, new List<IFiniteStateMachine>() { drawEllipseState });
             StateExecutor.Instance.AddState(StateExecutor.State.DrawRectangle, new List<IFiniteStateMachine>() { drawRectangleState });
 

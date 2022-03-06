@@ -14,7 +14,7 @@ using WireFrame.Misc;
 
 namespace WireFrame.States
 {
-    class RotateElementState : IFiniteStateMachine
+    class RotateState : IFiniteStateMachine
     {
         private class Data
         {
@@ -43,7 +43,7 @@ namespace WireFrame.States
 
         // --
 
-        public RotateElementState(List<object> objects)
+        public RotateState(List<object> objects)
         {
             if (objects != null && objects.Count == 4 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas) && (objects[3] is RotationControl))
             {

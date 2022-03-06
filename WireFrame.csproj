@@ -172,7 +172,7 @@
     <Compile Include="Source\Canvas\States\IFiniteStateMachine.cs" />
     <Compile Include="Source\Canvas\States\MoveState.cs" />
     <Compile Include="Source\Canvas\States\ResizeState.cs" />
-    <Compile Include="Source\Canvas\States\RotateElementState.cs" />
+    <Compile Include="Source\Canvas\States\RotateState.cs" />
     <Compile Include="Source\Canvas\States\SelectionState.cs" />
     <Compile Include="Source\Canvas\States\PanState.cs" />
     <Compile Include="Source\Canvas\States\StateExecutor.cs" />
