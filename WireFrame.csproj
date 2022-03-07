@@ -121,6 +121,7 @@
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
     <Compile Include="Source\DrawArea\Controls\Gizmo\ResizeGizmo.cs" />
+    <Compile Include="Source\DrawArea\Controls\Gizmo\RotateGizmo.cs" />
     <Compile Include="Source\DrawArea\Controls\IContainer.cs" />
     <Compile Include="Source\DrawArea\Controls\Gizmo\IGizmo.cs" />
     <Compile Include="Source\DrawArea\Controls\Gizmo\MoveGizmo.cs" />

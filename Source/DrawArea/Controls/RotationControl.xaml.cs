@@ -1,82 +1,78 @@
 ﻿using System;
+using System.ComponentModel;
 using Windows.Foundation;
+using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
+using WireFrame.DrawArea.Controls.Gizmo;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
 namespace WireFrame.DrawArea.Controls
 {
-    public sealed partial class RotationControl : UserControl
+    public sealed partial class RotationControl : UserControl, INotifyPropertyChanged
     {
-        private Point axisPoint = new Point(1000, 1000);
-        private double arcRadius = 10.0;
-        private double innerRingRadius = 1.0;
-        private double outerRing1Radius = 10.0;
-        private double outerRing2Radius = 11.0;
+        public static readonly DependencyProperty ArcRadiusProperty = DependencyProperty.Register(nameof(ArcRadius), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
 
-        public Point AxisPoint { get => this.axisPoint; }
+        public double ArcRadius { 
+            get => (double)GetValue(ArcRadiusProperty); 
+            set => SetValue(ArcRadiusProperty, value); 
+        }
+
+        // --
+
+        public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(nameof(Axis), typeof(Point), typeof(RotationControl), new PropertyMetadata(null));
+
+        public Point Axis { 
+            get => (Point)GetValue(AxisProperty);
+            set { 
+                SetValue(AxisProperty, value);
+                OnPropertyChanged(nameof(Axis));
+            } 
+        }
+
+        // --
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // --
 
         public RotationControl()
         {
             this.InitializeComponent();
 
-            UpdateRing(_inner_ring, this.axisPoint, this.innerRingRadius);
-            UpdateRing(_outer_ring_1, this.axisPoint, this.outerRing1Radius);
-            UpdateRing(_outer_ring_2, this.axisPoint, this.outerRing2Radius);
-            DrawArc(this.axisPoint, this.arcRadius, 0.0, 0.0);
+            this.DataContext = this; // important: set this to receive change to DependencyProperty from other classes
+
+            PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
+                if(e.PropertyName == nameof(Axis))
+                {
+                    Canvas.SetLeft(_grid, Axis.X - _grid.Width * 0.5);
+                    Canvas.SetTop(_grid, Axis.Y - _grid.Height * 0.5);
+
+                    _line1.Point = Axis;
+                }
+            };
+
+            new RotateGizmo(this);
         }
 
-        private void UpdateRing(Ellipse ring, Point center, double radius)
+        private void OnPropertyChanged(string propertyName = null)
         {
-            ring.Width = ring.Height = 2 * radius;
-            Canvas.SetLeft(ring, center.X - radius);
-            Canvas.SetTop(ring, center.Y - radius);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        public void Rotate(double startAngle, double endAngle)
+        public void SetArc(bool isLargeArc, Point startPoint, Point endPoint, Size arcSize, SweepDirection dir)
         {
-            DrawArc(this.axisPoint, this.arcRadius, startAngle, endAngle);
+            _line2.Point = startPoint;
+
+            _pathFigure.StartPoint = startPoint;
+
+            _arcSegment.IsLargeArc = isLargeArc;
+            _arcSegment.Point = endPoint;
+            _arcSegment.Size = arcSize;
+            _arcSegment.SweepDirection = dir;
         }
 
-
-        private void DrawArc(Point center, double radius, double start_angle, double end_angle)
-        {
-            Canvas.SetLeft(_path, 0);
-            Canvas.SetTop(_path, 0);
-
-            start_angle = SanitizeAngle(start_angle);
-            end_angle = SanitizeAngle(end_angle);
-
-            if (end_angle < start_angle)
-            {
-                double temp_angle = end_angle;
-                end_angle = start_angle;
-                start_angle = temp_angle;
-            }
-
-            double angle_diff = Math.Abs(end_angle - start_angle) ;
-
-            _arcSegment.IsLargeArc = angle_diff >= Math.PI;
-            _arcSegment.Point = PolarToCartesian(end_angle, radius, center);
-            _arcSegment.Size = new Size(radius, radius);
-            _arcSegment.SweepDirection = SweepDirection.Clockwise;
-
-            _pathFigure.StartPoint = PolarToCartesian(start_angle, radius, center);
-
-            _line1.Point = center;
-            _line2.Point = _pathFigure.StartPoint;
-        }
-
-        public static Point PolarToCartesian(double angle, double radius, Point center)
-        {
-            return new Point((center.X + (radius * Math.Cos(angle))), (center.Y + (radius * Math.Sin(angle))));
-        }
-
-        private static Double SanitizeAngle(double angle)
-        {
-            return ((angle % (Math.PI * 2)) + Math.PI * 2) % (Math.PI * 2);
-        }
     }
 }
