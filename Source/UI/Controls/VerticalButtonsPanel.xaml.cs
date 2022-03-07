@@ -23,5 +23,10 @@ namespace WireFrame.UI.Controls
         {
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Select_Pan);
         }
+
+        private void OnPointerPressedOnRotate(object sender, PointerRoutedEventArgs e)
+        {
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectRotate_Pan_Focus);
+        }
     }
 }

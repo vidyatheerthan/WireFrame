@@ -7,12 +7,12 @@ using WireFrame.DrawArea.Shapes;
 
 namespace WireFrame.DrawArea.Controls.Gizmo
 {
-    class MoveGizmo : IGizmo
+    class MoveGizmo : IGizmoHandler
     {
         private MoveResizeControl moveResizeControl;
         private Panel gizmoElement;
 
-        private Action<IGizmo> onActivateAction;
+        private Action<IGizmoHandler> onActivateAction;
 
         private Rect boxBeforeResize;
         private Dictionary<IShape, Rect> boxContents = new Dictionary<IShape, Rect>();
@@ -20,7 +20,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         // ------------------------------
 
-        public MoveGizmo(MoveResizeControl moveResizeControl, Panel gizmoElement)
+        public MoveGizmo(MoveResizeControl moveResizeControl, Panel gizmoElement, Action<IGizmoHandler> action)
         {
             this.moveResizeControl = moveResizeControl;
             this.gizmoElement = gizmoElement;
@@ -28,12 +28,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             this.gizmoElement.PointerPressed += (object sender, PointerRoutedEventArgs e) => {
                 this.onActivateAction(this);
             };
-        }
 
-        // ------------------------------
-
-        public void OnActivate(Action<IGizmo> action)
-        {
             this.onActivateAction = action;
         }
 

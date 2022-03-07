@@ -9,13 +9,13 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Canvas>
+    <Canvas x:Name="_canvas">
         <Grid x:Name="_box" Canvas.Left="{x:Bind Left, Mode=OneWay}" Canvas.Top="{x:Bind Top, Mode=OneWay}" Width="{x:Bind Length, Mode=OneWay}" Height="{x:Bind Breath, Mode=OneWay}" Background="Transparent" BorderBrush="Green" RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
                 <CompositeTransform ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>
             </Grid.RenderTransform>
 
-            <Canvas x:Name="_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+            <Canvas x:Name="_container_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
 
             <Grid x:Name="_move_box" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Background="Transparent" IsHitTestVisible="True" />
 

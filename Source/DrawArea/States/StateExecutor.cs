@@ -14,6 +14,7 @@ namespace WireFrame.DrawArea.States
         {
             Select_Pan,
             SelectMoveResize_Pan_Focus,
+            SelectRotate_Pan_Focus,
             Resize,
             Move,
             Rotate,

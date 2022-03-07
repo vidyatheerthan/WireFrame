@@ -12,7 +12,7 @@
     <StackPanel>
 
         <TextBlock Padding="5" FontSize="18" PointerPressed="OnPointerPressedOnMoveResize">Move/Resize</TextBlock>
-
+        <TextBlock Padding="5" FontSize="18" PointerPressed="OnPointerPressedOnRotate">Rotate</TextBlock>
         <TextBlock Padding="5" FontSize="18" PointerPressed="OnPointerPressedOnSelect">Select</TextBlock>
 
     </StackPanel>

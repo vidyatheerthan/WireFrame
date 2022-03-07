@@ -8,6 +8,7 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using WireFrame.DrawArea.Controls;
 using WireFrame.DrawArea.Misc;
+using WireFrame.DrawArea.Selection;
 
 namespace WireFrame.DrawArea.States
 {
@@ -18,14 +19,14 @@ namespace WireFrame.DrawArea.States
             public Grid grid;
             public ScrollViewer scrollViewer;
             public Canvas canvas;
-            public RotationControl rotationControl;
+            public MoveResizeRotateHandler rotationHandler;
 
-            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, RotationControl rotationControl)
+            public Data(Grid grid, ScrollViewer scrollViewer, Canvas canvas, MoveResizeRotateHandler rotationHandler)
             {
                 this.grid = grid;
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
-                this.rotationControl = rotationControl;
+                this.rotationHandler = rotationHandler;
             }
         }
 
@@ -42,9 +43,9 @@ namespace WireFrame.DrawArea.States
 
         public RotateState(List<object> objects)
         {
-            if (objects != null && objects.Count == 4 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas) && (objects[3] is RotationControl))
+            if (objects != null && objects.Count == 4 && (objects[0] is Grid) && (objects[1] is ScrollViewer) && (objects[2] is Canvas) && (objects[3] is MoveResizeRotateHandler))
             {
-                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as RotationControl);
+                this.data = new Data(objects[0] as Grid, objects[1] as ScrollViewer, objects[2] as Canvas, objects[3] as MoveResizeRotateHandler);
             }
         }
 
@@ -63,11 +64,11 @@ namespace WireFrame.DrawArea.States
             }
             else if (pointerState == PointerState.Moved && isTracking)
             {
-                RotateElement(this.data.scrollViewer, pointer.Position);
+                RotateElement(pointer.Position);
             }
             else if (pointerState == PointerState.Released)
             {
-                EndRotation();
+                EndRotation(pointer.Position);
             }
 
             return this.isTracking;
@@ -92,19 +93,19 @@ namespace WireFrame.DrawArea.States
 
         private void StartRotation(Point pos)
         {
-            Window.Current.CoreWindow.PointerCursor = this.rotationCursor;
+            data.rotationHandler.StartTrackingPointer(pos);
             this.isTracking = true;
         }
 
-        private void RotateElement(ScrollViewer scrollViewer, Point pointerPos)
+        private void RotateElement(Point pointerPos)
         {
-            
+            data.rotationHandler.TrackPointer(pointerPos);
         }
 
-        private void EndRotation()
+        private void EndRotation(Point pointerPos)
         {
             this.isTracking = false;
-            Window.Current.CoreWindow.PointerCursor = this.arrowCursor;
+            data.rotationHandler.StopTrackingPointer(pointerPos, data.scrollViewer.ZoomFactor);
         }
     }
 }

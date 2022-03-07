@@ -6,7 +6,7 @@ using Windows.UI.Xaml.Shapes;
 
 namespace WireFrame.DrawArea.Controls.Gizmo
 {
-    class RotateGizmo : IGizmo
+    class RotateGizmo : IGizmoHandler
     {
         private RotationControl rotationControl;
 
@@ -21,11 +21,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         // --
 
-        public void OnActivate(Action<IGizmo> action)
-        {
-        }
 
-        
         public void StartTrackingPointer(Point pointer)
         {
         }

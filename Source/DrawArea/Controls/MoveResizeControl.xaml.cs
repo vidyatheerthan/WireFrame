@@ -15,7 +15,7 @@ using WireFrame.DrawArea.States;
 
 namespace WireFrame.DrawArea.Controls
 {
-    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IContainer, IBox
+    public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IGizmo
     {
         public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
@@ -48,9 +48,9 @@ namespace WireFrame.DrawArea.Controls
 
         ///-------------------------------------------------------------------
 
-        private IGizmo activeGizmo = null;
+        private IGizmoHandler activeGizmoHandler = null;
 
-        private IGizmo[] gizmos;
+        private IGizmoHandler[] gizmos;
 
         private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
         private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
@@ -67,7 +67,7 @@ namespace WireFrame.DrawArea.Controls
 
             // --
 
-            var resizeGizmo = new ResizeGizmo(this, 10.0);
+            var resizeGizmo = new ResizeGizmo(this, 10.0, OnGizmoActivated);
             resizeGizmo.AddGizmo(_top_bar, ResizeGizmo.Gizmo.Top);
             resizeGizmo.AddGizmo(_bottom_bar, ResizeGizmo.Gizmo.Bottom);
             resizeGizmo.AddGizmo(_left_bar, ResizeGizmo.Gizmo.Left);
@@ -81,14 +81,9 @@ namespace WireFrame.DrawArea.Controls
             resizeGizmo.AddGizmo(_left_sqr, ResizeGizmo.Gizmo.FreeLeft);
             resizeGizmo.AddGizmo(_right_sqr, ResizeGizmo.Gizmo.FreeRight);
 
-            var moveGizmo = new MoveGizmo(this, _move_box);
+            var moveGizmo = new MoveGizmo(this, _move_box, OnGizmoActivated);
 
-            this.gizmos = new IGizmo[] { resizeGizmo, moveGizmo };
-
-            foreach (IGizmo gizmo in this.gizmos)
-            {
-                gizmo.OnActivate(OnGizmoActivated);
-            }
+            this.gizmos = new IGizmoHandler[] { resizeGizmo, moveGizmo };
 
             // --
         }
@@ -155,9 +150,9 @@ namespace WireFrame.DrawArea.Controls
         
         ///-------------------------------------------------------------------
 
-        private void OnGizmoActivated(IGizmo gizmo)
+        private void OnGizmoActivated(IGizmoHandler gizmo)
         {
-            this.activeGizmo = gizmo;
+            this.activeGizmoHandler = gizmo;
 
             if (gizmo is ResizeGizmo)
             {
@@ -173,18 +168,18 @@ namespace WireFrame.DrawArea.Controls
         
         public void StartTrackingPointer(Point pointer)
         {
-            this.activeGizmo.StartTrackingPointer(pointer);
+            this.activeGizmoHandler.StartTrackingPointer(pointer);
         }
 
         public void TrackPointer(Point pointer)
         {
-            this.activeGizmo.TrackPointer(pointer);
+            this.activeGizmoHandler.TrackPointer(pointer);
         }
 
         public void StopTrackingPointer(Point pointer)
         {
-            this.activeGizmo.StopTrackingPointer(pointer);
-            this.activeGizmo = null;
+            this.activeGizmoHandler.StopTrackingPointer(pointer);
+            this.activeGizmoHandler = null;
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectMoveResize_Pan_Focus);
         }
 
@@ -201,25 +196,25 @@ namespace WireFrame.DrawArea.Controls
             cloneShape.SetFill(refShape.GetFill());
             cloneShape.SetStroke(refShape.GetStroke());
             
-            _canvas.Children.Add(cloneShape.GetControl());
+            _container_canvas.Children.Add(cloneShape.GetControl());
             
             return cloneShape;
         }
 
         public void RemoveShape(IShape cloneShape)
         {
-            _canvas.Children.Remove(cloneShape.GetControl());
+            _container_canvas.Children.Remove(cloneShape.GetControl());
         }
 
         public void RemoveShapes()
         {
-            _canvas.Children.Clear();
+            _container_canvas.Children.Clear();
             SetScale(1.0, 1.0);
         }
 
         public void UpdateShape(IShape refShape, IShape cloneShape, Point position, float zoomFactor)
         {
-            if (!this._canvas.Children.Contains(cloneShape.GetControl()))
+            if (!this._container_canvas.Children.Contains(cloneShape.GetControl()))
             {
                 return;
             }
@@ -229,7 +224,12 @@ namespace WireFrame.DrawArea.Controls
 
         public List<IShape> GetShapes()
         {
-            return _canvas.Children.Where(item => item is IShape).Cast<IShape>().ToList();
+            return _container_canvas.Children.Where(item => item is IShape).Cast<IShape>().ToList();
+        }
+
+        public void Activate(bool activate)
+        {
+            _canvas.Visibility = activate ? Visibility.Visible : Visibility.Collapsed;
         }
 
         ///-------------------------------------------------------------------

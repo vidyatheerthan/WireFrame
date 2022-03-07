@@ -9,22 +9,22 @@
     d:DesignHeight="300"
     d:DesignWidth="400">
 
-    <Canvas>
-        <Grid x:Name="_grid" Width="50" Height="50">
+    <Canvas x:Name="_canvas">
+        <Grid x:Name="_gizmo_grid" Width="50" Height="50">
             <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Stroke="White" StrokeThickness="1.0"/>
             <Ellipse HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Stroke="#FF011B8D" Fill="#33011B8D" StrokeThickness="1.0"/>
 
-            <Path x:Name="_path" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Fill="#C9011B8D" StrokeThickness="1.0">
+            <Path x:Name="_gizmo_path" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2" Fill="#C9011B8D" StrokeThickness="1.0">
                 <Path.Data>
                     <GeometryGroup>
-                        <PathGeometry x:Name="_pathGeometry">
-                            <PathFigure x:Name="_pathFigure" StartPoint="100, 50">
-                                <ArcSegment x:Name="_arcSegment" IsLargeArc="True"
+                        <PathGeometry x:Name="_gizmo_pathGeometry">
+                            <PathFigure x:Name="_gizmo_pathFigure" StartPoint="100, 50">
+                                <ArcSegment x:Name="_gizmo_arcSegment" IsLargeArc="True"
                                             Point="0, 0"
                                             Size="10, 10"
                                             SweepDirection="Clockwise" />
-                                <LineSegment x:Name="_line1" Point="100, 50" />
-                                <LineSegment x:Name="_line2" Point="200, 100" />
+                                <LineSegment x:Name="_gizmo_line_1" Point="100, 50" />
+                                <LineSegment x:Name="_gizmo_line_2" Point="200, 100" />
                             </PathFigure>
                         </PathGeometry>
                     </GeometryGroup>
@@ -32,6 +32,15 @@
             </Path>
 
             <Ellipse Width="2" Height="2" HorizontalAlignment="Center" VerticalAlignment="Center" Fill="#FF011B8D"/>
+        </Grid>
+
+        
+        <Grid x:Name="_container" Canvas.Left="{x:Bind Left, Mode=OneWay}" Canvas.Top="{x:Bind Top, Mode=OneWay}" Width="{x:Bind Length, Mode=OneWay}" Height="{x:Bind Breath, Mode=OneWay}" Background="Transparent" BorderBrush="Green" BorderThickness="1" RenderTransformOrigin="0.5,0.5">
+            <Grid.RenderTransform>
+                <CompositeTransform Rotation="0"/>
+            </Grid.RenderTransform>
+
+            <Canvas x:Name="_container_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
         </Grid>
 
     </Canvas>

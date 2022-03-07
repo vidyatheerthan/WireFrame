@@ -16,9 +16,9 @@ namespace WireFrame.DrawArea.States
             public ScrollViewer scrollViewer;
             public Canvas canvas;
             public Canvas hud;
-            public MoveResizeHandler resizeHandler;
+            public MoveResizeRotateHandler resizeHandler;
 
-            public Data(ScrollViewer scrollViewer, Canvas canvas, Canvas hud, MoveResizeHandler resizeHandler)
+            public Data(ScrollViewer scrollViewer, Canvas canvas, Canvas hud, MoveResizeRotateHandler resizeHandler)
             {
                 this.scrollViewer = scrollViewer;
                 this.canvas = canvas;
@@ -36,9 +36,9 @@ namespace WireFrame.DrawArea.States
 
         public ResizeState(List<object> objects)
         {
-            if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is Canvas) && (objects[3] is MoveResizeHandler))
+            if (objects != null && objects.Count == 4 && (objects[0] is ScrollViewer) && (objects[1] is Canvas) && (objects[2] is Canvas) && (objects[3] is MoveResizeRotateHandler))
             {
-                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as Canvas, objects[3] as MoveResizeHandler);
+                this.data = new Data(objects[0] as ScrollViewer, objects[1] as Canvas, objects[2] as Canvas, objects[3] as MoveResizeRotateHandler);
             }
         }
 

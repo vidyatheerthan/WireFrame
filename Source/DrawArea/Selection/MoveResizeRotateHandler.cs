@@ -8,16 +8,16 @@ using WireFrame.DrawArea.Shapes;
 
 namespace WireFrame.DrawArea.Selection
 {
-    public class MoveResizeHandler : ISelectionHandler
+    public class MoveResizeRotateHandler : ISelectionHandler
     {
         private Thickness bounds;
-        private MoveResizeControl control = null;
+        private IGizmo control = null;
         private Dictionary<IShape, IShape> shapesClones = null;
         private FrameworkElement container = null;
 
         ///-------------------------------------------------------------------
 
-        public MoveResizeHandler(MoveResizeControl control)
+        public MoveResizeRotateHandler(IGizmo control)
         {
             this.control = control;
             this.shapesClones = new Dictionary<IShape, IShape>();
@@ -25,7 +25,7 @@ namespace WireFrame.DrawArea.Selection
 
         public void Show(bool show)
         {
-            this.control.Visibility = show ? Visibility.Visible : Visibility.Collapsed;
+            this.control.Activate(show);
         }
 
         public void SetContainer(FrameworkElement container)
@@ -90,7 +90,7 @@ namespace WireFrame.DrawArea.Selection
             for (int i = 0; i < shapes.Count; ++i)
             {
                 Point pos = Utility.GetTopLeft(shapes[i], container);
-                pos = new Point(pos.X - this.control.Left, pos.Y - this.control.Top);
+                pos = new Point(pos.X - this.control.GetLeft(), pos.Y - this.control.GetTop());
                 this.control.UpdateShape(shapes[i], this.shapesClones[shapes[i]], pos, zoomFactor);
             }
         }

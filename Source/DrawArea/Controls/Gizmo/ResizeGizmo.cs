@@ -13,7 +13,7 @@ using Point = Windows.Foundation.Point;
 
 namespace WireFrame.DrawArea.Controls.Gizmo
 {
-    public class ResizeGizmo : IGizmo
+    public class ResizeGizmo : IGizmoHandler
     {
         public enum Gizmo
         {
@@ -50,7 +50,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         private Dictionary<Gizmo, Panel> gizmos = new Dictionary<Gizmo, Panel>();
 
-        private Action<IGizmo> onActivateAction;
+        private Action<IGizmoHandler> onActivateAction;
 
         private SolidColorBrush highlightBrush = new SolidColorBrush(Colors.Aqua);
         private SolidColorBrush normalBrush = new SolidColorBrush(Colors.Blue);
@@ -63,10 +63,11 @@ namespace WireFrame.DrawArea.Controls.Gizmo
         // -----------------------------------
 
 
-        public ResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize)
+        public ResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize, Action<IGizmoHandler> action)
         {
             HITBOX_SIZE = hitboxSize;
             this.moveResizeControl = moveResizeControl;
+            this.onActivateAction = action;
         }
 
         public void AddGizmo(Panel panel, Gizmo gizmo) 
@@ -132,10 +133,6 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         // ----------------------------------------------------------
 
-        public void OnActivate(Action<IGizmo> action)
-        {
-            this.onActivateAction = action;
-        }
 
         public void StartTrackingPointer(Point point)
         {
