@@ -120,62 +120,62 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="SignalDeclarations.cs" />
-    <Compile Include="Source\Canvas\Controls\Gizmo\ResizeGizmo.cs" />
-    <Compile Include="Source\Canvas\Controls\IContainer.cs" />
-    <Compile Include="Source\Canvas\Controls\Gizmo\IGizmo.cs" />
-    <Compile Include="Source\Canvas\Controls\Gizmo\MoveGizmo.cs" />
-    <Compile Include="Source\Canvas\Shapes\ShapeCloner.cs" />
-    <Compile Include="Source\Canvas\Selection\MoveResizeHandler.cs" />
-    <Compile Include="Source\Canvas\Selection\HighlightHandler.cs" />
-    <Compile Include="Source\Canvas\Controls\HighlightControl.xaml.cs">
+    <Compile Include="Source\DrawArea\Controls\Gizmo\ResizeGizmo.cs" />
+    <Compile Include="Source\DrawArea\Controls\IContainer.cs" />
+    <Compile Include="Source\DrawArea\Controls\Gizmo\IGizmo.cs" />
+    <Compile Include="Source\DrawArea\Controls\Gizmo\MoveGizmo.cs" />
+    <Compile Include="Source\DrawArea\Shapes\ShapeCloner.cs" />
+    <Compile Include="Source\DrawArea\Selection\MoveResizeHandler.cs" />
+    <Compile Include="Source\DrawArea\Selection\HighlightHandler.cs" />
+    <Compile Include="Source\DrawArea\Controls\HighlightControl.xaml.cs">
       <DependentUpon>HighlightControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Misc\CanvasProfile.cs" />
-    <Compile Include="Source\Canvas\Selection\ISelectionHandler.cs" />
-    <Compile Include="Source\Canvas\Controls\ActionTip.xaml.cs">
+    <Compile Include="Source\DrawArea\Misc\CanvasProfile.cs" />
+    <Compile Include="Source\DrawArea\Selection\ISelectionHandler.cs" />
+    <Compile Include="Source\DrawArea\Controls\ActionTip.xaml.cs">
       <DependentUpon>ActionTip.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Controls\RotationControl.xaml.cs">
+    <Compile Include="Source\DrawArea\Controls\RotationControl.xaml.cs">
       <DependentUpon>RotationControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Controls\MoveResizeControl.xaml.cs">
+    <Compile Include="Source\DrawArea\Controls\MoveResizeControl.xaml.cs">
       <DependentUpon>MoveResizeControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Misc\Commons.cs" />
-    <Compile Include="Source\Canvas\Misc\PropertyStore.cs" />
+    <Compile Include="Source\DrawArea\Misc\Commons.cs" />
+    <Compile Include="Source\DrawArea\Misc\PropertyStore.cs" />
     <Compile Include="Source\Pages\MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Source\Canvas\Controls\TitleBox.xaml.cs">
+    <Compile Include="Source\DrawArea\Controls\TitleBox.xaml.cs">
       <DependentUpon>TitleBox.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Misc\Utility.cs" />
-    <Compile Include="Source\Canvas\Controls\CanvasControl.xaml.cs">
+    <Compile Include="Source\DrawArea\Misc\Utility.cs" />
+    <Compile Include="Source\DrawArea\Controls\CanvasControl.xaml.cs">
       <DependentUpon>CanvasControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Shapes\BoundingBox.cs" />
-    <Compile Include="Source\Canvas\Shapes\CompoundShape.xaml.cs">
+    <Compile Include="Source\DrawArea\Shapes\BoundingBox.cs" />
+    <Compile Include="Source\DrawArea\Shapes\CompoundShape.xaml.cs">
       <DependentUpon>CompoundShape.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\Shapes\EllipseShape.xaml.cs">
+    <Compile Include="Source\DrawArea\Shapes\EllipseShape.xaml.cs">
       <DependentUpon>EllipseShape.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\IBox.cs" />
-    <Compile Include="Source\Canvas\Shapes\IShape.cs" />
-    <Compile Include="Source\Canvas\Shapes\RectangleShape.xaml.cs">
+    <Compile Include="Source\DrawArea\IBox.cs" />
+    <Compile Include="Source\DrawArea\Shapes\IShape.cs" />
+    <Compile Include="Source\DrawArea\Shapes\RectangleShape.xaml.cs">
       <DependentUpon>RectangleShape.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Source\Canvas\States\DrawEllipseState.cs" />
-    <Compile Include="Source\Canvas\States\DrawRectangleState.cs" />
-    <Compile Include="Source\Canvas\States\FocusState.cs" />
-    <Compile Include="Source\Canvas\States\IFiniteStateMachine.cs" />
-    <Compile Include="Source\Canvas\States\MoveState.cs" />
-    <Compile Include="Source\Canvas\States\ResizeState.cs" />
-    <Compile Include="Source\Canvas\States\RotateState.cs" />
-    <Compile Include="Source\Canvas\States\SelectionState.cs" />
-    <Compile Include="Source\Canvas\States\PanState.cs" />
-    <Compile Include="Source\Canvas\States\StateExecutor.cs" />
+    <Compile Include="Source\DrawArea\States\DrawEllipseState.cs" />
+    <Compile Include="Source\DrawArea\States\DrawRectangleState.cs" />
+    <Compile Include="Source\DrawArea\States\FocusState.cs" />
+    <Compile Include="Source\DrawArea\States\IFiniteStateMachine.cs" />
+    <Compile Include="Source\DrawArea\States\MoveState.cs" />
+    <Compile Include="Source\DrawArea\States\ResizeState.cs" />
+    <Compile Include="Source\DrawArea\States\RotateState.cs" />
+    <Compile Include="Source\DrawArea\States\SelectionState.cs" />
+    <Compile Include="Source\DrawArea\States\PanState.cs" />
+    <Compile Include="Source\DrawArea\States\StateExecutor.cs" />
     <Compile Include="Source\UI\Controls\MenuControl.xaml.cs">
       <DependentUpon>MenuControl.xaml</DependentUpon>
     </Compile>
@@ -204,19 +204,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Page Include="Source\Canvas\Controls\ActionTip.xaml">
+    <Page Include="Source\DrawArea\Controls\ActionTip.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Controls\RotationControl.xaml">
+    <Page Include="Source\DrawArea\Controls\RotationControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Controls\MoveResizeControl.xaml">
+    <Page Include="Source\DrawArea\Controls\MoveResizeControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Controls\HighlightControl.xaml">
+    <Page Include="Source\DrawArea\Controls\HighlightControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -224,23 +224,23 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="Source\Canvas\Controls\TitleBox.xaml">
+    <Page Include="Source\DrawArea\Controls\TitleBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Controls\CanvasControl.xaml">
+    <Page Include="Source\DrawArea\Controls\CanvasControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Shapes\CompoundShape.xaml">
+    <Page Include="Source\DrawArea\Shapes\CompoundShape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Shapes\EllipseShape.xaml">
+    <Page Include="Source\DrawArea\Shapes\EllipseShape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Source\Canvas\Shapes\RectangleShape.xaml">
+    <Page Include="Source\DrawArea\Shapes\RectangleShape.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
