@@ -1,19 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
+using Windows.System;
 using Windows.UI.Core;
-using Windows.UI.Input;
-using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using Windows.System;
-using WireFrame.Controls;
-using WireFrame.Misc;
+using WireFrame.DrawArea.Controls;
+using WireFrame.DrawArea.Misc;
 
-namespace WireFrame.States
+namespace WireFrame.DrawArea.States
 {
     class FocusState : IFiniteStateMachine
     {

@@ -1,16 +1,12 @@
-﻿using System;
+﻿using deVoid.Utils;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.UI.Input;
-using Windows.UI.Xaml.Input;
-using Windows.UI.Core;
-using WireFrame.Misc;
-using deVoid.Utils;
 using System.Diagnostics;
+using Windows.UI.Core;
+using Windows.UI.Xaml.Input;
+using WireFrame.DrawArea.Misc;
 
-namespace WireFrame.States
+namespace WireFrame.DrawArea.States
 {
     public sealed class StateExecutor
     {

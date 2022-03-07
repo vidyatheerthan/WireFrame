@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Size = Windows.Foundation.Size;
 
-namespace WireFrame.Misc
+namespace WireFrame.DrawArea.Misc
 {
     public class CanvasProfile
     {

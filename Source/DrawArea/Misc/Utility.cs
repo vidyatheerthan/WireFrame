@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Windows.Graphics.Display;
+﻿using Windows.Graphics.Display;
 using Windows.UI.Xaml;
-using WireFrame.Shapes;
-using Size = Windows.Foundation.Size;
+using WireFrame.DrawArea.Shapes;
 using Point = Windows.Foundation.Point;
+using Size = Windows.Foundation.Size;
 
-namespace WireFrame.Misc
+namespace WireFrame.DrawArea.Misc
 {
     public static class Utility
     {

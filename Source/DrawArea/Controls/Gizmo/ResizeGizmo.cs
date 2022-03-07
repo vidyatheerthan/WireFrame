@@ -8,10 +8,10 @@ using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
-using WireFrame.Shapes;
+using WireFrame.DrawArea.Shapes;
 using Point = Windows.Foundation.Point;
 
-namespace WireFrame.Controls.Gizmo
+namespace WireFrame.DrawArea.Controls.Gizmo
 {
     public class ResizeGizmo : IGizmo
     {

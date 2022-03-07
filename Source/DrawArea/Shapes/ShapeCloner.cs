@@ -1,9 +1,8 @@
 ﻿using Windows.Foundation;
-using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
-namespace WireFrame.Shapes
+namespace WireFrame.DrawArea.Shapes
 {
     public static class ShapeCloner
     {

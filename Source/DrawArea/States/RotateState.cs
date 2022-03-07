@@ -1,18 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Windows.Foundation;
 using Windows.UI.Core;
 using Windows.UI.Input;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Input;
-using WireFrame.Controls;
-using WireFrame.Misc;
+using WireFrame.DrawArea.Controls;
+using WireFrame.DrawArea.Misc;
 
-namespace WireFrame.States
+namespace WireFrame.DrawArea.States
 {
     class RotateState : IFiniteStateMachine
     {

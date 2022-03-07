@@ -1,33 +1,18 @@
-﻿using System;
+﻿using deVoid.Utils;
 using System.Collections.Generic;
 using System.ComponentModel;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Runtime.InteropServices.WindowsRuntime;
-using Windows.Foundation;
-using Windows.Foundation.Collections;
-using Windows.Graphics.Display;
-using Windows.UI;
+using Windows.System;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
-using Windows.UI.Xaml.Controls.Primitives;
-using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
-using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Navigation;
-using Windows.UI.Xaml.Shapes;
-using Windows.System;
-using Size = Windows.Foundation.Size;
-using WireFrame.States;
-using WireFrame.Misc;
-using FocusState = WireFrame.States.FocusState;
-using deVoid.Utils;
-using WireFrame.Selection;
+using WireFrame.DrawArea.Misc;
+using WireFrame.DrawArea.Selection;
+using WireFrame.DrawArea.States;
+using FocusState = WireFrame.DrawArea.States.FocusState;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace WireFrame.Controls
+namespace WireFrame.DrawArea.Controls
 {
     public sealed partial class CanvasControl : UserControl, INotifyPropertyChanged
     {

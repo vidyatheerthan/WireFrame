@@ -7,14 +7,13 @@ using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
-using Windows.UI.Xaml.Shapes;
-using WireFrame.Controls.Gizmo;
-using WireFrame.Shapes;
-using WireFrame.States;
+using WireFrame.DrawArea.Controls.Gizmo;
+using WireFrame.DrawArea.Shapes;
+using WireFrame.DrawArea.States;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
-namespace WireFrame.Controls
+namespace WireFrame.DrawArea.Controls
 {
     public sealed partial class MoveResizeControl : UserControl, INotifyPropertyChanged, IContainer, IBox
     {
