@@ -66,6 +66,10 @@ namespace WireFrame.DrawArea.Shapes
         public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
         public double ScaleY { get => (double)GetValue(ScaleYProperty); set => SetValue(ScaleYProperty, value); }
 
+        // --
+
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
+        public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
 
         // --
 
@@ -159,6 +163,16 @@ namespace WireFrame.DrawArea.Shapes
         {
             ScaleX = x;
             ScaleY = y;
+        }
+
+        public double GetRotation()
+        {
+            return this.RotationAngle;
+        }
+
+        public void SetRotation(double rotation)
+        {
+            this.RotationAngle = rotation;
         }
 
         public void SetViewbox(Viewbox viewbox)

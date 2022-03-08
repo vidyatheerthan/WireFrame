@@ -18,7 +18,7 @@
             RenderTransformOrigin="0.0, 0.0">
             
             <Viewbox.RenderTransform>
-                <CompositeTransform ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>
+                <CompositeTransform Rotation="{x:Bind RotationAngle, Mode=OneWay}" ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>
             </Viewbox.RenderTransform>
             
             <Path 

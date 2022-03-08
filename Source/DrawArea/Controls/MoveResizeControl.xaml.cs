@@ -147,7 +147,15 @@ namespace WireFrame.DrawArea.Controls
             ScaleY = y;
         }
 
-        
+        public double GetRotation()
+        {
+            return 0;
+        }
+
+        public void SetRotation(double rotation)
+        {
+        }
+
         ///-------------------------------------------------------------------
 
         private void OnGizmoActivated(IGizmoHandler gizmo)

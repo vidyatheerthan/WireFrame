@@ -16,5 +16,8 @@
 
         void GetScale(ref double x, ref double y);
         void SetScale(double x, double y);
+
+        double GetRotation();
+        void SetRotation(double rotation);
     }
 }

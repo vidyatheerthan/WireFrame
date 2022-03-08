@@ -37,7 +37,7 @@
         
         <Grid x:Name="_container" Canvas.Left="{x:Bind Left, Mode=OneWay}" Canvas.Top="{x:Bind Top, Mode=OneWay}" Width="{x:Bind Length, Mode=OneWay}" Height="{x:Bind Breath, Mode=OneWay}" Background="Transparent" BorderBrush="Green" BorderThickness="1" RenderTransformOrigin="0.5,0.5">
             <Grid.RenderTransform>
-                <CompositeTransform Rotation="0"/>
+                <CompositeTransform Rotation="{x:Bind RotationAngle, Mode=OneWay}"/>
             </Grid.RenderTransform>
 
             <Canvas x:Name="_container_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />

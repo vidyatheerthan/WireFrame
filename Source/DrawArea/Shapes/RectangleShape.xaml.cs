@@ -11,59 +11,63 @@ namespace WireFrame.DrawArea.Shapes
 {
     public sealed partial class RectangleShape : UserControl, IShape, INotifyPropertyChanged
     {
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double Top { get => (double)GetValue(TopProperty); set => SetValue(TopProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double Length { get => (double)GetValue(LengthProperty); set => SetValue(LengthProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double Breath { get => (double)GetValue(BreathProperty); set => SetValue(BreathProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty StrokeProperty = DependencyProperty.Register(nameof(Stroke), typeof(SolidColorBrush), typeof(RectangleShape), new PropertyMetadata(null));
         public Brush Stroke { get => (Brush)GetValue(StrokeProperty); set => SetValue(StrokeProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty ColorFillProperty = DependencyProperty.Register(nameof(Fill), typeof(SolidColorBrush), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty ColorFillProperty = DependencyProperty.Register(nameof(Fill), typeof(SolidColorBrush), typeof(RectangleShape), new PropertyMetadata(null));
         public Brush Fill { get => (Brush)GetValue(ColorFillProperty); set => SetValue(ColorFillProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty PathStretchProperty = DependencyProperty.Register(nameof(PathStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty PathStretchProperty = DependencyProperty.Register(nameof(PathStretch), typeof(Stretch), typeof(RectangleShape), new PropertyMetadata(null));
         public Stretch PathStretch { get => (Stretch)GetValue(PathStretchProperty); set => SetValue(PathStretchProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty ViewStretchProperty = DependencyProperty.Register(nameof(ViewStretch), typeof(Stretch), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty ViewStretchProperty = DependencyProperty.Register(nameof(ViewStretch), typeof(Stretch), typeof(RectangleShape), new PropertyMetadata(null));
         public Stretch ViewStretch { get => (Stretch)GetValue(ViewStretchProperty); set => SetValue(ViewStretchProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register(nameof(FillRule), typeof(FillRule), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty FillRuleProperty = DependencyProperty.Register(nameof(FillRule), typeof(FillRule), typeof(RectangleShape), new PropertyMetadata(null));
         public FillRule FillRule { get => (FillRule)GetValue(FillRuleProperty); set => SetValue(FillRuleProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register(nameof(ScaleX), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register(nameof(ScaleX), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double ScaleX { get => (double)GetValue(ScaleXProperty); set => SetValue(ScaleXProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
         public double ScaleY { get => (double)GetValue(ScaleYProperty); set => SetValue(ScaleYProperty, value); }
 
+        // --
+
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(RectangleShape), new PropertyMetadata(null));
+        public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
 
         // --
 
@@ -143,6 +147,16 @@ namespace WireFrame.DrawArea.Shapes
         {
             ScaleX = x;
             ScaleY = y;
+        }
+
+        public double GetRotation()
+        {
+            return this.RotationAngle;
+        }
+
+        public void SetRotation(double rotation)
+        {
+            this.RotationAngle = rotation;
         }
 
         public void SetViewbox(Viewbox viewbox)

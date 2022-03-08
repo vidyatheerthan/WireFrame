@@ -36,6 +36,11 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
+        public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
+
+        // --
+
         public static readonly DependencyProperty ArcRadiusProperty = DependencyProperty.Register(nameof(ArcRadius), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
 
         public double ArcRadius { 
@@ -134,6 +139,16 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetScale(double x, double y)
         {
+        }
+
+        public double GetRotation()
+        {
+            return this.RotationAngle;
+        }
+
+        public void SetRotation(double rotation)
+        {
+            this.RotationAngle = rotation;
         }
 
         ///-------------------------------------------------------------------
