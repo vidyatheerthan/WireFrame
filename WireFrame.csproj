@@ -126,6 +126,7 @@
     <Compile Include="Source\DrawArea\Controls\IContainer.cs" />
     <Compile Include="Source\DrawArea\Controls\IGizmo.cs" />
     <Compile Include="Source\DrawArea\Controls\Gizmo\MoveGizmo.cs" />
+    <Compile Include="Source\DrawArea\IMouseEventHandler.cs" />
     <Compile Include="Source\DrawArea\Shapes\ShapeCloner.cs" />
     <Compile Include="Source\DrawArea\Selection\MoveResizeRotateHandler.cs" />
     <Compile Include="Source\DrawArea\Selection\HighlightHandler.cs" />

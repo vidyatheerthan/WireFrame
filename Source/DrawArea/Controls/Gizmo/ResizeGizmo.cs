@@ -63,12 +63,13 @@ namespace WireFrame.DrawArea.Controls.Gizmo
         // -----------------------------------
 
 
-        public ResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize, Action<IGizmoHandler> action)
+        public ResizeGizmo(MoveResizeControl moveResizeControl, double hitboxSize)
         {
             HITBOX_SIZE = hitboxSize;
             this.moveResizeControl = moveResizeControl;
-            this.onActivateAction = action;
         }
+
+        // -----------------------------------
 
         public void AddGizmo(Panel panel, Gizmo gizmo) 
         {
@@ -133,6 +134,10 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         // ----------------------------------------------------------
 
+        public void OnActivate(Action<IGizmoHandler> action)
+        {
+            this.onActivateAction = action;
+        }
 
         public void StartTrackingPointer(Point point)
         {
@@ -159,15 +164,6 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             this.moveResizeControl.GetScale(ref scaleX, ref scaleY);
 
             Point diff = new Point(point.X - this.clickPoint.X, point.Y - this.clickPoint.Y);
-
-            // move
-            //if (this.gizmoClicked == Gizmo.Move)
-            //{
-            //    left = this.boxBeforeResize.X + diff.X;
-            //    top = scaleY > 0 ? this.boxBeforeResize.Y + diff.Y : this.boxBeforeResize.Y + this.boxBeforeResize.Height;
-            //    length = this.boxBeforeResize.Width;
-            //    breath = this.boxBeforeResize.Height;
-            //}
 
             if (this.gizmoClicked == Gizmo.Top)
             {

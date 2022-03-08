@@ -1,11 +1,10 @@
-﻿using Windows.Foundation;
+﻿using System;
+using Windows.Foundation;
 
 namespace WireFrame.DrawArea.Controls.Gizmo
 {
-    public interface IGizmoHandler
+    public interface IGizmoHandler : IMouseEventHandler
     {
-        void StartTrackingPointer(Point pointer);
-        void TrackPointer(Point pointer);
-        void StopTrackingPointer(Point pointer);
+        void OnActivate(Action<IGizmoHandler> action);
     }
 }

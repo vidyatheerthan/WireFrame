@@ -20,7 +20,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         // ------------------------------
 
-        public MoveGizmo(MoveResizeControl moveResizeControl, Panel gizmoElement, Action<IGizmoHandler> action)
+        public MoveGizmo(MoveResizeControl moveResizeControl, Panel gizmoElement)
         {
             this.moveResizeControl = moveResizeControl;
             this.gizmoElement = gizmoElement;
@@ -28,11 +28,14 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             this.gizmoElement.PointerPressed += (object sender, PointerRoutedEventArgs e) => {
                 this.onActivateAction(this);
             };
-
-            this.onActivateAction = action;
         }
 
         // ------------------------------
+
+        public void OnActivate(Action<IGizmoHandler> action)
+        {
+            this.onActivateAction = action;
+        }
 
         public void StartTrackingPointer(Point point)
         {

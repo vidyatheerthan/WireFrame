@@ -67,7 +67,7 @@ namespace WireFrame.DrawArea.Controls
 
             // --
 
-            var resizeGizmo = new ResizeGizmo(this, 10.0, OnGizmoActivated);
+            var resizeGizmo = new ResizeGizmo(this, 10.0);
             resizeGizmo.AddGizmo(_top_bar, ResizeGizmo.Gizmo.Top);
             resizeGizmo.AddGizmo(_bottom_bar, ResizeGizmo.Gizmo.Bottom);
             resizeGizmo.AddGizmo(_left_bar, ResizeGizmo.Gizmo.Left);
@@ -81,9 +81,14 @@ namespace WireFrame.DrawArea.Controls
             resizeGizmo.AddGizmo(_left_sqr, ResizeGizmo.Gizmo.FreeLeft);
             resizeGizmo.AddGizmo(_right_sqr, ResizeGizmo.Gizmo.FreeRight);
 
-            var moveGizmo = new MoveGizmo(this, _move_box, OnGizmoActivated);
+            var moveGizmo = new MoveGizmo(this, _move_box);
 
             this.gizmos = new IGizmoHandler[] { resizeGizmo, moveGizmo };
+
+            foreach (IGizmoHandler gizmo in this.gizmos)
+            {
+                gizmo.OnActivate(OnGizmoActivated);
+            }
 
             // --
         }

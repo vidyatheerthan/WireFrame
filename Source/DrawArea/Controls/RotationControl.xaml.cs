@@ -1,4 +1,5 @@
-﻿using System;
+﻿using deVoid.Utils;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -9,6 +10,7 @@ using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 using WireFrame.DrawArea.Controls.Gizmo;
 using WireFrame.DrawArea.Shapes;
+using WireFrame.DrawArea.States;
 
 // The User Control item template is documented at https://go.microsoft.com/fwlink/?LinkId=234236
 
@@ -83,7 +85,8 @@ namespace WireFrame.DrawArea.Controls
                 }
             };
 
-            this.rotateGizmo = new RotateGizmo(this);
+            this.rotateGizmo = new RotateGizmo(this, _rotate_box);
+            this.rotateGizmo.OnActivate(OnGizmoActivated);
         }
 
         private void OnPropertyChanged(string propertyName = null)
@@ -91,8 +94,13 @@ namespace WireFrame.DrawArea.Controls
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
+        private void OnGizmoActivated(IGizmoHandler gizmo)
+        {
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.Rotate);
+        }
+
         ///-------------------------------------------------------------------
-        
+
         public double GetLeft()
         {
             return this.Left;
@@ -166,6 +174,7 @@ namespace WireFrame.DrawArea.Controls
         public void StopTrackingPointer(Point pointer)
         {
             this.rotateGizmo.StopTrackingPointer(pointer);
+            Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectRotate_Pan_Focus);
         }
 
         ///-------------------------------------------------------------------

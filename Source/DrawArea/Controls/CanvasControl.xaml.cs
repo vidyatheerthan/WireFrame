@@ -110,17 +110,18 @@ namespace WireFrame.DrawArea.Controls
 
             IFiniteStateMachine panState = new PanState(new List<object>() { _grid, _scrollViewer, _canvas });
             IFiniteStateMachine selectionState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), new HighlightHandler(_selectControl) });
-            IFiniteStateMachine moveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), moveResizeHandler });
+            IFiniteStateMachine selectMoveResizeState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), moveResizeHandler });
             IFiniteStateMachine resizeState = new ResizeState(new List<object>() { _scrollViewer, _canvas, _HUD, moveResizeHandler });
             IFiniteStateMachine moveState = new MoveState(new List<object>() { _scrollViewer, _canvas, _HUD, moveResizeHandler });
-            IFiniteStateMachine rotateState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), rotationHandler });
+            IFiniteStateMachine selectRotateState = new SelectionState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, new HighlightHandler(_highlightControl), rotationHandler });
+            IFiniteStateMachine rotateState = new MoveState(new List<object>() { _scrollViewer, _canvas, _HUD, rotationHandler });
             IFiniteStateMachine focusState = new FocusState(new List<object>() { _scrollViewer, _canvas, _moveResizeControl, VirtualKey.F });
             IFiniteStateMachine drawEllipseState = new DrawEllipseState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
             IFiniteStateMachine drawRectangleState = new DrawRectangleState(new List<object>() { _grid, _scrollViewer, _canvas, _container, _HUD, _actionTip });
 
             StateExecutor.Instance.AddState(StateExecutor.State.Select_Pan, new List<IFiniteStateMachine>() { selectionState, panState });
-            StateExecutor.Instance.AddState(StateExecutor.State.SelectMoveResize_Pan_Focus, new List<IFiniteStateMachine>() { moveResizeState, panState, focusState });
-            StateExecutor.Instance.AddState(StateExecutor.State.SelectRotate_Pan_Focus, new List<IFiniteStateMachine>() { rotateState, panState, focusState });
+            StateExecutor.Instance.AddState(StateExecutor.State.SelectMoveResize_Pan_Focus, new List<IFiniteStateMachine>() { selectMoveResizeState, panState, focusState });
+            StateExecutor.Instance.AddState(StateExecutor.State.SelectRotate_Pan_Focus, new List<IFiniteStateMachine>() { selectRotateState, panState, focusState });
             StateExecutor.Instance.AddState(StateExecutor.State.Resize, new List<IFiniteStateMachine>() { resizeState });
             StateExecutor.Instance.AddState(StateExecutor.State.Move, new List<IFiniteStateMachine>() { moveState });
             StateExecutor.Instance.AddState(StateExecutor.State.Rotate, new List<IFiniteStateMachine>() { rotateState });

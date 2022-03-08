@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using Windows.Foundation;
 using Windows.UI.Xaml.Controls;
+using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -9,18 +11,29 @@ namespace WireFrame.DrawArea.Controls.Gizmo
     class RotateGizmo : IGizmoHandler
     {
         private RotationControl rotationControl;
+        private Action<IGizmoHandler> onActivateAction;
+        private Panel gizmoElement;
 
         // --
 
-        public RotateGizmo(RotationControl rotationControl)
+        public RotateGizmo(RotationControl rotationControl, Panel gizmoElement)
         {
             this.rotationControl = rotationControl;
+            this.gizmoElement = gizmoElement;
 
-            TrackPointer(new Point(1000, 1000)); // test
+            this.gizmoElement.PointerPressed += (object sender, PointerRoutedEventArgs e) => {
+                this.onActivateAction(this);
+            };
+
+            TrackPointer(new Point(0, 0)); // test
         }
 
         // --
 
+        public void OnActivate(Action<IGizmoHandler> action)
+        {
+            this.onActivateAction = action;
+        }
 
         public void StartTrackingPointer(Point pointer)
         {
@@ -32,6 +45,8 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             double endAngle = 2 * Math.PI - 0.0001;
 
             DrawArc(startAngle, endAngle);
+            this.rotationControl.SetRotation(startAngle * 180.0 / Math.PI);
+            Debug.WriteLine("RotateGizmo startAngle:" + (startAngle * 180.0 / Math.PI));
         }
 
         public void StopTrackingPointer(Point pointer)
