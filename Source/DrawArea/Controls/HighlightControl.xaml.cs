@@ -12,14 +12,15 @@ namespace WireFrame.DrawArea.Controls
 {
     public sealed partial class HighlightControl : UserControl, IContainer
     {
-        private SolidColorBrush fillBrush = new SolidColorBrush(Color.FromArgb(100, 0, 0, 255));
-        private SolidColorBrush strokeBrush = new SolidColorBrush(Color.FromArgb(255, 0, 0, 255));
+        private SolidColorBrush fillBrush = new SolidColorBrush(Colors.Aqua);
 
         // -----------------------------------------------------
 
         public HighlightControl()
         {
             this.InitializeComponent();
+
+            fillBrush.Opacity = 0.75;
         }
 
         public IShape AddShape(IShape refShape, Point position)
@@ -27,7 +28,11 @@ namespace WireFrame.DrawArea.Controls
             var cloneShape = ShapeCloner.Clone(refShape);
             ShapeCloner.Update(refShape, cloneShape, position, 1.0f);
             cloneShape.SetFill(fillBrush);
-            cloneShape.SetStroke(strokeBrush);
+            cloneShape.SetStroke(fillBrush);
+            cloneShape.SetStrokeThickness(0);
+            cloneShape.SetPathStretch(Stretch.Fill);
+            cloneShape.SetViewStretch(Stretch.Fill);
+            cloneShape.SetFillRule(FillRule.Nonzero);
             _canvas.Children.Add(cloneShape.GetControl());
             return cloneShape;
         }

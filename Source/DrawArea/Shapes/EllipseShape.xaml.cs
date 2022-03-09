@@ -36,6 +36,11 @@ namespace WireFrame.DrawArea.Shapes
 
         // --
 
+        public static readonly DependencyProperty StrokeThicknessProperty = DependencyProperty.Register(nameof(StrokeThickness), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
+        public double StrokeThickness { get => (double)GetValue(StrokeThicknessProperty); set => SetValue(StrokeThicknessProperty, value); }
+
+        // --
+
         public static readonly DependencyProperty ColorFillProperty = DependencyProperty.Register(nameof(Fill), typeof(SolidColorBrush), typeof(EllipseShape), new PropertyMetadata(null));
         public Brush Fill { get => (Brush)GetValue(ColorFillProperty); set => SetValue(ColorFillProperty, value); }
 
@@ -189,6 +194,16 @@ namespace WireFrame.DrawArea.Shapes
             return Stroke;
         }
 
+        public void SetStrokeThickness(double strokeThickness)
+        {
+            StrokeThickness = strokeThickness;
+        }
+
+        public double GetStrokeThickness()
+        {
+            return StrokeThickness;
+        }
+
         public void SetFill(Brush brush)
         {
             Fill = brush;
@@ -217,6 +232,16 @@ namespace WireFrame.DrawArea.Shapes
         public Stretch GetPathStretch()
         {
             return PathStretch;
+        }
+
+        public void SetViewStretch(Stretch stretch)
+        {
+            ViewStretch = stretch;
+        }
+
+        public Stretch GetViewStretch()
+        {
+            return ViewStretch;
         }
 
         public void SetOpacity(double opacity)

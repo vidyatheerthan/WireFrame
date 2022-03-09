@@ -9,11 +9,17 @@ namespace WireFrame.DrawArea.Shapes
         void SetStroke(Brush brush);
         Brush GetStroke();
 
+        void SetStrokeThickness(double strokeThickness);
+        double GetStrokeThickness();
+
         void SetFill(Brush brush);
         Brush GetFill();
 
         void SetFillRule(FillRule rule);
         FillRule GetFillRule();
+
+        void SetViewStretch(Stretch stretch);
+        Stretch GetViewStretch();
 
         void SetPathStretch(Stretch stretch);
         Stretch GetPathStretch();

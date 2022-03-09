@@ -27,6 +27,7 @@
                 Width="{x:Bind Length, Mode=OneWay}"
                 Height="{x:Bind Breath, Mode=OneWay}"
                 Stroke="{x:Bind Stroke, Mode=OneWay}"
+                StrokeThickness="{x:Bind StrokeThickness, Mode=OneWay}"
                 Fill="{x:Bind Fill, Mode=OneWay}"
                 Stretch="{x:Bind PathStretch, Mode=OneWay}">
                 
