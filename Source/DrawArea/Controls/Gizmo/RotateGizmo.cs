@@ -24,8 +24,6 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             this.gizmoElement.PointerPressed += (object sender, PointerRoutedEventArgs e) => {
                 this.onActivateAction(this);
             };
-
-            TrackPointer(new Point(0, 0)); // test
         }
 
         // --
@@ -37,6 +35,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         public void StartTrackingPointer(Point pointer)
         {
+            this.rotationControl.EnableArc(true);
         }
 
         public void TrackPointer(Point pointer)
@@ -46,11 +45,11 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
             DrawArc(startAngle, endAngle);
             this.rotationControl.SetRotation(startAngle * 180.0 / Math.PI);
-            Debug.WriteLine("RotateGizmo startAngle:" + (startAngle * 180.0 / Math.PI));
         }
 
         public void StopTrackingPointer(Point pointer)
         {
+            this.rotationControl.EnableArc(false);
         }
 
         // --
@@ -58,7 +57,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
         private void DrawArc(double start_angle, double end_angle)
         {
             Point center = this.rotationControl.Axis;
-            double radius = this.rotationControl.ArcRadius;
+            Size radius = this.rotationControl.ArcRadius;
 
             start_angle = SanitizeAngle(start_angle);
             end_angle = SanitizeAngle(end_angle);
@@ -73,11 +72,11 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             double angle_diff = Math.Abs(end_angle - start_angle);
 
             bool isLargeArc = angle_diff >= Math.PI;
-            Point endPoint = PolarToCartesian(end_angle, radius, center);
-            Size arcSize = new Size(radius, radius);
+            Point endPoint = PolarToCartesian(end_angle, radius.Height, center);
+            Size arcSize = radius;
             SweepDirection dir = SweepDirection.Clockwise;
 
-            Point startPoint = PolarToCartesian(start_angle, radius, center);
+            Point startPoint = PolarToCartesian(start_angle, radius.Width, center);
 
             rotationControl.SetArc(isLargeArc, startPoint, endPoint, arcSize, dir);
         }

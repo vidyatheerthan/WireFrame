@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using Windows.Foundation;
+using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
@@ -43,12 +44,7 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
-        public static readonly DependencyProperty ArcRadiusProperty = DependencyProperty.Register(nameof(ArcRadius), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
-
-        public double ArcRadius { 
-            get => (double)GetValue(ArcRadiusProperty); 
-            set => SetValue(ArcRadiusProperty, value); 
-        }
+        public Size ArcRadius { get => _gizmo_arcSegment.Size; }
 
         // --
 
@@ -73,20 +69,14 @@ namespace WireFrame.DrawArea.Controls
         {
             this.InitializeComponent();
 
+            Axis = new Point(0, 0);
+
             this.DataContext = this; // important: set this to receive change to DependencyProperty from other classes
-
-            PropertyChanged += (object sender, PropertyChangedEventArgs e) => {
-                if(e.PropertyName == nameof(Axis))
-                {
-                    Canvas.SetLeft(_gizmo_grid, Axis.X - _gizmo_grid.Width * 0.5);
-                    Canvas.SetTop(_gizmo_grid, Axis.Y - _gizmo_grid.Height * 0.5);
-
-                    _gizmo_line_1.Point = Axis;
-                }
-            };
 
             this.rotateGizmo = new RotateGizmo(this, _rotate_box);
             this.rotateGizmo.OnActivate(OnGizmoActivated);
+
+            EnableArc(false);
         }
 
         private void OnPropertyChanged(string propertyName = null)
@@ -163,6 +153,7 @@ namespace WireFrame.DrawArea.Controls
 
         public void StartTrackingPointer(Point pointer)
         {
+            _rotate_box.BorderBrush = new SolidColorBrush(Colors.Aqua);
             this.rotateGizmo.StartTrackingPointer(pointer);
         }
 
@@ -173,6 +164,7 @@ namespace WireFrame.DrawArea.Controls
 
         public void StopTrackingPointer(Point pointer)
         {
+            _rotate_box.BorderBrush = new SolidColorBrush(Colors.Blue);
             this.rotateGizmo.StopTrackingPointer(pointer);
             Signals.Get<ChangeToState>().Dispatch(StateExecutor.State.SelectRotate_Pan_Focus);
         }
@@ -231,6 +223,7 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetArc(bool isLargeArc, Point startPoint, Point endPoint, Size arcSize, SweepDirection dir)
         {
+            _gizmo_line_1.Point = Axis;
             _gizmo_line_2.Point = startPoint;
 
             _gizmo_pathFigure.StartPoint = startPoint;
@@ -239,6 +232,11 @@ namespace WireFrame.DrawArea.Controls
             _gizmo_arcSegment.Point = endPoint;
             _gizmo_arcSegment.Size = arcSize;
             _gizmo_arcSegment.SweepDirection = dir;
+        }
+
+        public void EnableArc(bool enable)
+        {
+            this._gizmo_path.Visibility = enable ? Visibility.Visible : Visibility.Collapsed;
         }
 
     }
