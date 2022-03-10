@@ -1,4 +1,5 @@
-﻿using Windows.UI.Xaml.Controls;
+﻿using Windows.Foundation;
+using Windows.UI.Xaml.Controls;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Shapes;
 
@@ -32,6 +33,9 @@ namespace WireFrame.DrawArea.Shapes
 
         void SetPath(Path path);
         Path GetPath();
+
+        void SetTransformOrigin(Point point);
+        Point GetTransformOrigin();
 
         Control GetControl();
     }

@@ -16,7 +16,7 @@
             Canvas.Left="{x:Bind Left, Mode=OneWay}" 
             Canvas.Top="{x:Bind Top, Mode=OneWay}"
             Stretch="{x:Bind ViewStretch, Mode=OneWay}"
-            RenderTransformOrigin="0.0, 0.0">
+            RenderTransformOrigin="{x:Bind TransformOrigin, Mode=OneWay}">
 
             <Viewbox.RenderTransform>
                 <CompositeTransform Rotation="{x:Bind RotationAngle, Mode=OneWay}" ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>

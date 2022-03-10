@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using Windows.Foundation;
 using Windows.UI;
 using Windows.UI.Xaml;
 using Windows.UI.Xaml.Controls;
@@ -73,8 +74,13 @@ namespace WireFrame.DrawArea.Shapes
 
         // --
 
-        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(CompoundShape), new PropertyMetadata(null));
         public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty TransformOriginProperty = DependencyProperty.Register(nameof(TransformOrigin), typeof(Point), typeof(CompoundShape), new PropertyMetadata(null));
+        public Point TransformOrigin { get => (Point)GetValue(TransformOriginProperty); set => SetValue(TransformOriginProperty, value); }
 
         // --
 
@@ -273,6 +279,16 @@ namespace WireFrame.DrawArea.Shapes
         public double GetOpacity()
         {
             return this._viewbox.Opacity;
+        }
+
+        public void SetTransformOrigin(Point point)
+        {
+            this.TransformOrigin = point;
+        }
+
+        public Point GetTransformOrigin()
+        {
+            return this.TransformOrigin;
         }
 
         // ----------------------------------------------------------------------

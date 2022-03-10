@@ -2,6 +2,7 @@
 using System.Linq;
 using Windows.Foundation;
 using Windows.UI.Xaml;
+using Windows.UI.Xaml.Media;
 using WireFrame.DrawArea.Controls;
 using WireFrame.DrawArea.Misc;
 using WireFrame.DrawArea.Shapes;
@@ -144,6 +145,7 @@ namespace WireFrame.DrawArea.Selection
                 srcShape.GetScale(ref shapeScaleX, ref shapeScaleY);
 
                 destShape.SetScale(boxScaleX * shapeScaleX, boxScaleY * shapeScaleY);
+                //destShape.SetTransformOrigin(TransformPoint(srcShape.GetControl(), destShape.GetControl(), srcShape.GetTransformOrigin()));
                 destShape.SetRotation(boxRot);
             }
 
@@ -154,6 +156,13 @@ namespace WireFrame.DrawArea.Selection
             RemoveAllShapes();
             AddShapes(shapes);
             UpdateShapes(zoomFactor);
+        }
+
+        private Point TransformPoint(FrameworkElement srcElement, FrameworkElement dstElement, Point position)
+        {
+            GeneralTransform transform = srcElement.TransformToVisual(dstElement); // always transform to root
+            var tp = transform.TransformPoint(position);
+            return tp;
         }
 
         ///-------------------------------------------------------------------
