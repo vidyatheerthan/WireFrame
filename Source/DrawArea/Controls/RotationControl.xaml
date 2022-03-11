@@ -42,7 +42,9 @@
               RenderTransformOrigin="{x:Bind TransformOrigin, Mode=OneWay}">
             
             <Grid.RenderTransform>
-                <CompositeTransform Rotation="{x:Bind RotationAngle, Mode=OneWay}"/>
+                <CompositeTransform CenterX="{x:Bind CenterX, Mode=OneWay}"
+                                    CenterY="{x:Bind CenterY, Mode=OneWay}"
+                                    Rotation="{x:Bind RotationAngle, Mode=OneWay}"/>
             </Grid.RenderTransform>
 
             <Canvas x:Name="_container_canvas" HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />

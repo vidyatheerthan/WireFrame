@@ -22,7 +22,10 @@ namespace WireFrame.DrawArea
         void SetTransformOrigin(Point point);
         Point GetTransformOrigin();
 
-        double GetRotation();
-        void SetRotation(double rotation);
+        double GetRotationAngle();
+        void SetRotationAngle(double angle);
+
+        void GetCenter(ref double x, ref double y);
+        void SetCenter(double x, double y);
     }
 }

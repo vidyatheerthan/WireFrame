@@ -132,7 +132,7 @@ namespace WireFrame.DrawArea.Selection
 
             double boxScaleX = 0.0, boxScaleY = 0.0;
             this.control.GetScale(ref boxScaleX, ref boxScaleY);
-            double boxRot = this.control.GetRotation();
+            double boxRot = this.control.GetRotationAngle();
 
             foreach (var shapeClone in this.shapesClones)
             {
@@ -146,12 +146,12 @@ namespace WireFrame.DrawArea.Selection
 
                 destShape.SetScale(boxScaleX * shapeScaleX, boxScaleY * shapeScaleY);
                 //destShape.SetTransformOrigin(TransformPoint(srcShape.GetControl(), destShape.GetControl(), srcShape.GetTransformOrigin()));
-                destShape.SetRotation(boxRot);
+                destShape.SetRotationAngle(boxRot);
             }
 
             // reset box
             this.control.SetScale(1.0, 1.0);
-            this.control.SetRotation(0.0);
+            this.control.SetRotationAngle(0.0);
             var shapes = GetShapes();
             RemoveAllShapes();
             AddShapes(shapes);

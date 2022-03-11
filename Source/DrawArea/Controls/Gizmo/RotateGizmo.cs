@@ -44,7 +44,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
             double endAngle = 2 * Math.PI - 0.0001;
 
             DrawArc(startAngle, endAngle);
-            this.rotationControl.SetRotation(startAngle * 180.0 / Math.PI);
+            this.rotationControl.SetRotationAngle(startAngle * 180.0 / Math.PI);
         }
 
         public void StopTrackingPointer(Point pointer)

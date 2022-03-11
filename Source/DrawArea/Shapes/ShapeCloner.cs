@@ -12,13 +12,29 @@ namespace WireFrame.DrawArea.Shapes
             cloneShape.GetViewbox().Stretch = refShape.GetViewbox().Stretch;
             CopyPath(refShape.GetPath(), cloneShape.GetPath());
 
+            //
+
+            double centerX = 0.0, centerY = 0.0;
+
+            refShape.GetCenter(ref centerX, ref centerY);
+            cloneShape.SetCenter(centerX, centerY);
+
+            //
+
             double scaleX = 0.0, scaleY = 0.0;
 
             refShape.GetScale(ref scaleX, ref scaleY);
             cloneShape.SetScale(scaleX, scaleY);
 
+            //
+
             cloneShape.SetTransformOrigin(refShape.GetTransformOrigin());
-            cloneShape.SetRotation(refShape.GetRotation());
+            
+            //
+
+            cloneShape.SetRotationAngle(refShape.GetRotationAngle());
+
+            //
 
             return cloneShape;
         }

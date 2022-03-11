@@ -37,6 +37,16 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
+        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register(nameof(CenterX), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double CenterX { get => (double)GetValue(CenterXProperty); set => SetValue(CenterXProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register(nameof(CenterY), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public double CenterY { get => (double)GetValue(CenterYProperty); set => SetValue(CenterYProperty, value); }
+
+        // --
+
         public static readonly DependencyProperty ScaleXProperty = DependencyProperty.Register(nameof(ScaleX), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double ScaleX { get => (double)GetValue(ScaleXProperty); set => SetValue(ScaleXProperty, value); }
 
@@ -145,6 +155,18 @@ namespace WireFrame.DrawArea.Controls
             this.Breath = breath;
         }
 
+        public void GetCenter(ref double x, ref double y)
+        {
+            x = CenterX;
+            y = CenterY;
+        }
+
+        public void SetCenter(double x, double y)
+        {
+            CenterX = x;
+            CenterY = y;
+        }
+
         public void GetScale(ref double x, ref double y)
         {
             x = ScaleX;
@@ -167,12 +189,12 @@ namespace WireFrame.DrawArea.Controls
             return TransformOrigin;
         }
 
-        public double GetRotation()
+        public double GetRotationAngle()
         {
             return 0;
         }
 
-        public void SetRotation(double rotation)
+        public void SetRotationAngle(double angle)
         {
         }
 
