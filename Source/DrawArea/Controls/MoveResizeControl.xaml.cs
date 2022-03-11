@@ -44,13 +44,7 @@ namespace WireFrame.DrawArea.Controls
 
         public static readonly DependencyProperty ScaleYProperty = DependencyProperty.Register(nameof(ScaleY), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
         public double ScaleY { get => (double)GetValue(ScaleYProperty); set => SetValue(ScaleYProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty TransformOriginProperty = DependencyProperty.Register(nameof(TransformOrigin), typeof(Point), typeof(MoveResizeControl), new PropertyMetadata(null));
-        public Point TransformOrigin { get => (Point)GetValue(TransformOriginProperty); set => SetValue(TransformOriginProperty, value); }
-
-        // --
+        
 
         ///-------------------------------------------------------------------
 
@@ -70,8 +64,6 @@ namespace WireFrame.DrawArea.Controls
             this.InitializeComponent();
 
             ScaleX = ScaleY = 1.0;
-
-            TransformOrigin = new Point(0.5, 0.5);
 
             // --
 
@@ -158,22 +150,6 @@ namespace WireFrame.DrawArea.Controls
         {
             ScaleX = x;
             ScaleY = y;
-        }
-
-        public void SetTransformOrigin(Point point)
-        {
-            TransformOrigin = point;
-        }
-
-        public Point GetTransformOrigin(bool rootTransform)
-        {
-            if(rootTransform)
-            {
-                GeneralTransform t = _box.TransformToVisual(null);
-                var tp = t.TransformPoint(TransformOrigin);
-                return tp;
-            }
-            return TransformOrigin;
         }
 
         public double GetRotation()

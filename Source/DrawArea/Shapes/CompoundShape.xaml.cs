@@ -109,8 +109,6 @@ namespace WireFrame.DrawArea.Shapes
 
             ScaleX = ScaleY = 1.0;
 
-            TransformOrigin = new Point(0.5, 0.5);
-
             Children = new GeometryCollection();
 
             Stroke = new SolidColorBrush(Colors.Blue);
@@ -288,15 +286,9 @@ namespace WireFrame.DrawArea.Shapes
             this.TransformOrigin = point;
         }
 
-        public Point GetTransformOrigin(bool rootTransform)
+        public Point GetTransformOrigin()
         {
-            if (rootTransform)
-            {
-                GeneralTransform t = _viewbox.TransformToVisual(null);
-                var tp = t.TransformPoint(TransformOrigin);
-                return tp;
-            }
-            return TransformOrigin;
+            return this.TransformOrigin;
         }
 
         // ----------------------------------------------------------------------

@@ -132,7 +132,6 @@ namespace WireFrame.DrawArea.Selection
 
             double boxScaleX = 0.0, boxScaleY = 0.0;
             this.control.GetScale(ref boxScaleX, ref boxScaleY);
-            Point boxTransformPos = this.control.GetTransformOrigin(true);
             double boxRot = this.control.GetRotation();
 
             foreach (var shapeClone in this.shapesClones)
@@ -146,7 +145,7 @@ namespace WireFrame.DrawArea.Selection
                 srcShape.GetScale(ref shapeScaleX, ref shapeScaleY);
 
                 destShape.SetScale(boxScaleX * shapeScaleX, boxScaleY * shapeScaleY);
-                //destShape.SetTransformOrigin(TransformPoint(destShape.GetControl(), boxTransformPos));
+                //destShape.SetTransformOrigin(TransformPoint(srcShape.GetControl(), destShape.GetControl(), srcShape.GetTransformOrigin()));
                 destShape.SetRotation(boxRot);
             }
 
@@ -159,10 +158,10 @@ namespace WireFrame.DrawArea.Selection
             UpdateShapes(zoomFactor);
         }
 
-        private Point TransformPoint(FrameworkElement dstElement, Point rootPosition)
+        private Point TransformPoint(FrameworkElement srcElement, FrameworkElement dstElement, Point position)
         {
-            GeneralTransform t = dstElement.TransformToVisual(null).Inverse;
-            var tp = t.TransformPoint(rootPosition);
+            GeneralTransform transform = srcElement.TransformToVisual(dstElement); // always transform to root
+            var tp = transform.TransformPoint(position);
             return tp;
         }
 

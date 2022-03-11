@@ -39,13 +39,8 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
-        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
         public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty TransformOriginProperty = DependencyProperty.Register(nameof(TransformOrigin), typeof(Point), typeof(MoveResizeControl), new PropertyMetadata(null));
-        public Point TransformOrigin { get => (Point)GetValue(TransformOriginProperty); set => SetValue(TransformOriginProperty, value); }
 
         // --
 
@@ -73,8 +68,6 @@ namespace WireFrame.DrawArea.Controls
         public RotationControl()
         {
             this.InitializeComponent();
-
-            TransformOrigin = new Point(0.5, 0.5);
 
             Axis = new Point(0, 0);
 
@@ -144,22 +137,6 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetScale(double x, double y)
         {
-        }
-
-        public void SetTransformOrigin(Point point)
-        {
-            TransformOrigin = point;
-        }
-
-        public Point GetTransformOrigin(bool rootTransform)
-        {
-            if (rootTransform)
-            {
-                GeneralTransform t = _rotate_box.TransformToVisual(null);
-                var tp = t.TransformPoint(TransformOrigin);
-                return tp;
-            }
-            return TransformOrigin;
         }
 
         public double GetRotation()

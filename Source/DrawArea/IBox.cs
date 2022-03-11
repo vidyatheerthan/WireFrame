@@ -1,6 +1,4 @@
-﻿using Windows.Foundation;
-
-namespace WireFrame.DrawArea
+﻿namespace WireFrame.DrawArea
 {
     public interface IBox
     {
@@ -18,9 +16,6 @@ namespace WireFrame.DrawArea
 
         void GetScale(ref double x, ref double y);
         void SetScale(double x, double y);
-
-        void SetTransformOrigin(Point point);
-        Point GetTransformOrigin(bool rootTransform);
 
         double GetRotation();
         void SetRotation(double rotation);
