@@ -34,9 +34,6 @@ namespace WireFrame.DrawArea.Shapes
         void SetPath(Path path);
         Path GetPath();
 
-        void SetTransformOrigin(Point point);
-        Point GetTransformOrigin();
-
         Control GetControl();
     }
 }

@@ -17,6 +17,7 @@ namespace WireFrame.DrawArea.Shapes
             refShape.GetScale(ref scaleX, ref scaleY);
             cloneShape.SetScale(scaleX, scaleY);
 
+            cloneShape.SetTransformOrigin(refShape.GetTransformOrigin());
             cloneShape.SetRotation(refShape.GetRotation());
 
             return cloneShape;

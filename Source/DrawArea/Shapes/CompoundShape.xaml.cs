@@ -108,6 +108,7 @@ namespace WireFrame.DrawArea.Shapes
             this.InitializeComponent();
 
             ScaleX = ScaleY = 1.0;
+            TransformOrigin = new Point(0.0, 0.0);
 
             Children = new GeometryCollection();
 

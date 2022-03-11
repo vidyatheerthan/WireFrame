@@ -19,28 +19,33 @@ namespace WireFrame.DrawArea.Controls
 {
     public sealed partial class RotationControl : UserControl, INotifyPropertyChanged, IGizmo
     {
-        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty LeftProperty = DependencyProperty.Register(nameof(Left), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double Left { get => (double)GetValue(LeftProperty); set => SetValue(LeftProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty TopProperty = DependencyProperty.Register(nameof(Top), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double Top { get => (double)GetValue(TopProperty); set => SetValue(TopProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty LengthProperty = DependencyProperty.Register(nameof(Length), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double Length { get => (double)GetValue(LengthProperty); set => SetValue(LengthProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(MoveResizeControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty BreathProperty = DependencyProperty.Register(nameof(Breath), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double Breath { get => (double)GetValue(BreathProperty); set => SetValue(BreathProperty, value); }
 
         // --
 
-        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(EllipseShape), new PropertyMetadata(null));
+        public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
+
+        // --
+
+        public static readonly DependencyProperty TransformOriginProperty = DependencyProperty.Register(nameof(TransformOrigin), typeof(Point), typeof(RotationControl), new PropertyMetadata(null));
+        public Point TransformOrigin { get => (Point)GetValue(TransformOriginProperty); set => SetValue(TransformOriginProperty, value); }
 
         // --
 
@@ -68,6 +73,8 @@ namespace WireFrame.DrawArea.Controls
         public RotationControl()
         {
             this.InitializeComponent();
+
+            TransformOrigin = new Point(0.5, 0.5);
 
             Axis = new Point(0, 0);
 
@@ -137,6 +144,16 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetScale(double x, double y)
         {
+        }
+
+        public void SetTransformOrigin(Point point)
+        {
+            TransformOrigin = point;
+        }
+
+        public Point GetTransformOrigin()
+        {
+            return TransformOrigin;
         }
 
         public double GetRotation()
