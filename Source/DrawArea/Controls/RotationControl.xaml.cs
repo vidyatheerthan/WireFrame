@@ -63,14 +63,12 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
-        public static readonly DependencyProperty AxisProperty = DependencyProperty.Register(nameof(Axis), typeof(Point), typeof(RotationControl), new PropertyMetadata(null));
+        public static readonly DependencyProperty GizmoCenterProperty = DependencyProperty.Register(nameof(GizmoCenter), typeof(Point), typeof(RotationControl), new PropertyMetadata(null));
 
-        public Point Axis { 
-            get => (Point)GetValue(AxisProperty);
-            set { 
-                SetValue(AxisProperty, value);
-                OnPropertyChanged(nameof(Axis));
-            } 
+        public Point GizmoCenter
+        { 
+            get => (Point)GetValue(GizmoCenterProperty);
+            set => SetValue(GizmoCenterProperty, value);
         }
 
         // --
@@ -86,7 +84,7 @@ namespace WireFrame.DrawArea.Controls
 
             TransformOrigin = new Point(0.5, 0.5);
 
-            Axis = new Point(0, 0);
+            GizmoCenter = new Point(0, 0);
 
             this.DataContext = this; // important: set this to receive change to DependencyProperty from other classes
 
@@ -245,7 +243,9 @@ namespace WireFrame.DrawArea.Controls
 
             ShapeCloner.Update(refShape, cloneShape, position, zoomFactor);
 
-            Axis = new Point(Left + Length * 0.5, Top + Breath * 0.5);
+            GizmoCenter = new Point(Left + Length * 0.5, Top + Breath * 0.5);
+            var tp = _rotate_box.TransformToVisual(null).Inverse.TransformPoint(GizmoCenter);
+            SetCenter(tp.X, tp.Y);
         }
 
         public List<IShape> GetShapes()
@@ -262,7 +262,7 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetArc(bool isLargeArc, Point startPoint, Point endPoint, Size arcSize, SweepDirection dir)
         {
-            _gizmo_line_1.Point = Axis;
+            _gizmo_line_1.Point = GizmoCenter;
             _gizmo_line_2.Point = startPoint;
 
             _gizmo_pathFigure.StartPoint = startPoint;

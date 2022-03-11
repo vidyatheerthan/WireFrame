@@ -40,7 +40,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         public void TrackPointer(Point pointer)
         {
-            double startAngle = Math.Atan2(pointer.Y - this.rotationControl.Axis.Y, pointer.X - this.rotationControl.Axis.X);
+            double startAngle = Math.Atan2(pointer.Y - this.rotationControl.GizmoCenter.Y, pointer.X - this.rotationControl.GizmoCenter.X);
             double endAngle = 2 * Math.PI - 0.0001;
 
             DrawArc(startAngle, endAngle);
@@ -56,7 +56,7 @@ namespace WireFrame.DrawArea.Controls.Gizmo
 
         private void DrawArc(double start_angle, double end_angle)
         {
-            Point center = this.rotationControl.Axis;
+            Point center = this.rotationControl.GizmoCenter;
             Size radius = this.rotationControl.ArcRadius;
 
             start_angle = SanitizeAngle(start_angle);
