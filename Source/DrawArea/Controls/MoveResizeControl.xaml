@@ -10,7 +10,15 @@
     d:DesignWidth="400">
 
     <Canvas x:Name="_canvas">
-        <Grid x:Name="_box" Canvas.Left="{x:Bind Left, Mode=OneWay}" Canvas.Top="{x:Bind Top, Mode=OneWay}" Width="{x:Bind Length, Mode=OneWay}" Height="{x:Bind Breath, Mode=OneWay}" Background="Transparent" BorderBrush="Green" RenderTransformOrigin="0.5,0.5">
+        <Grid x:Name="_box" 
+              Canvas.Left="{x:Bind Left, Mode=OneWay}" 
+              Canvas.Top="{x:Bind Top, Mode=OneWay}" 
+              Width="{x:Bind Length, Mode=OneWay}" 
+              Height="{x:Bind Breath, Mode=OneWay}" 
+              Background="Transparent" 
+              BorderBrush="Green" 
+              RenderTransformOrigin="{x:Bind TransformOrigin, Mode=OneWay}">
+            
             <Grid.RenderTransform>
                 <CompositeTransform ScaleX="{x:Bind ScaleX, Mode=OneWay}" ScaleY="{x:Bind ScaleY, Mode=OneWay}"/>
             </Grid.RenderTransform>

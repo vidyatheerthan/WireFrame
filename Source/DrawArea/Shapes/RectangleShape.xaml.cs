@@ -92,6 +92,8 @@ namespace WireFrame.DrawArea.Shapes
 
             ScaleX = ScaleY = 1.0;
 
+            TransformOrigin = new Point(0.5, 0.5);
+
             Stroke = new SolidColorBrush(Colors.Blue);
             Fill = new SolidColorBrush(Colors.AliceBlue);
             FillRule = FillRule.EvenOdd;
@@ -270,9 +272,15 @@ namespace WireFrame.DrawArea.Shapes
             this.TransformOrigin = point;
         }
 
-        public Point GetTransformOrigin()
+        public Point GetTransformOrigin(bool rootTransform)
         {
-            return this.TransformOrigin;
+            if (rootTransform)
+            {
+                GeneralTransform t = _viewbox.TransformToVisual(null);
+                var tp = t.TransformPoint(TransformOrigin);
+                return tp;
+            }
+            return TransformOrigin;
         }
     }
 }
