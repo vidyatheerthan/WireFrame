@@ -18,9 +18,7 @@
             RenderTransformOrigin="{x:Bind TransformOrigin, Mode=OneWay}">
 
             <Viewbox.RenderTransform>
-                <CompositeTransform CenterX="{x:Bind CenterX, Mode=OneWay}"
-                                    CenterY="{x:Bind CenterY, Mode=OneWay}"
-                                    ScaleX="{x:Bind ScaleX, Mode=OneWay}" 
+                <CompositeTransform ScaleX="{x:Bind ScaleX, Mode=OneWay}" 
                                     ScaleY="{x:Bind ScaleY, Mode=OneWay}"
                                     Rotation="{x:Bind RotationAngle, Mode=OneWay}"/>
             </Viewbox.RenderTransform>

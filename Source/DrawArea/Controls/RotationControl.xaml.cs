@@ -39,16 +39,6 @@ namespace WireFrame.DrawArea.Controls
 
         // --
 
-        public static readonly DependencyProperty CenterXProperty = DependencyProperty.Register(nameof(CenterX), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
-        public double CenterX { get => (double)GetValue(CenterXProperty); set => SetValue(CenterXProperty, value); }
-
-        // --
-
-        public static readonly DependencyProperty CenterYProperty = DependencyProperty.Register(nameof(CenterY), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
-        public double CenterY { get => (double)GetValue(CenterYProperty); set => SetValue(CenterYProperty, value); }
-
-        // --
-
         public static readonly DependencyProperty RotationAngleProperty = DependencyProperty.Register(nameof(RotationAngle), typeof(double), typeof(RotationControl), new PropertyMetadata(null));
         public double RotationAngle { get => (double)GetValue(RotationAngleProperty); set => SetValue(RotationAngleProperty, value); }
 
@@ -146,16 +136,6 @@ namespace WireFrame.DrawArea.Controls
             this.Breath = breath;
         }
 
-        public void GetCenter(ref double x, ref double y)
-        {
-            x = CenterX;
-            y = CenterY;
-        }
-
-        public void SetCenter(double x, double y)
-        {
-        }
-
         public void GetScale(ref double x, ref double y)
         {
         }
@@ -188,12 +168,13 @@ namespace WireFrame.DrawArea.Controls
 
         public void StartTrackingPointer(Point pointer)
         {
-            var center = new Point(Left + Length * 0.5, Top + Breath * 0.5);
-            GizmoCenter = center;
+            var center = new Point(Left + (Length * 0.5), Top + (Breath * 0.5));
             var tp = _canvas.TransformToVisual(null).TransformPoint(center);
-            tp = _rotate_box.TransformToVisual(null).Inverse.TransformPoint(tp);
-            CenterX = tp.X;
-            CenterY = tp.Y;
+
+            GizmoCenter = center;
+
+            var rtp = _rotate_box.TransformToVisual(null).Inverse.TransformPoint(tp);
+            SetTransformOrigin(new Point(rtp.X / GetLength(), rtp.Y / GetBreath()));
 
             _rotate_box.BorderBrush = new SolidColorBrush(Colors.Aqua);
             

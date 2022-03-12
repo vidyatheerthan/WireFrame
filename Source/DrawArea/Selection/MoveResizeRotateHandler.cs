@@ -133,9 +133,6 @@ namespace WireFrame.DrawArea.Selection
             double boxScaleX = 0.0, boxScaleY = 0.0;
             this.control.GetScale(ref boxScaleX, ref boxScaleY);
 
-            double boxCenterX = 0.0, boxCenterY = 0.0;
-            this.control.GetCenter(ref boxCenterX, ref boxCenterY);
-
             double boxRot = this.control.GetRotationAngle();
 
             foreach (var shapeClone in this.shapesClones)

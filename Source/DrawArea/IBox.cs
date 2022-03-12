@@ -24,8 +24,5 @@ namespace WireFrame.DrawArea
 
         double GetRotationAngle();
         void SetRotationAngle(double angle);
-
-        void GetCenter(ref double x, ref double y);
-        void SetCenter(double x, double y);
     }
 }
