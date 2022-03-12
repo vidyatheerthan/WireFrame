@@ -138,6 +138,7 @@ namespace WireFrame.DrawArea.Controls
 
         public void GetScale(ref double x, ref double y)
         {
+            x = y = 1;
         }
 
         public void SetScale(double x, double y)
