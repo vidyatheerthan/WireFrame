@@ -154,8 +154,6 @@ namespace WireFrame.DrawArea.Controls
 
         public void SetCenter(double x, double y)
         {
-            CenterX = x;
-            CenterY = y;
         }
 
         public void GetScale(ref double x, ref double y)
@@ -190,7 +188,15 @@ namespace WireFrame.DrawArea.Controls
 
         public void StartTrackingPointer(Point pointer)
         {
+            var center = new Point(Left + Length * 0.5, Top + Breath * 0.5);
+            GizmoCenter = center;
+            var tp = _canvas.TransformToVisual(null).TransformPoint(center);
+            tp = _rotate_box.TransformToVisual(null).Inverse.TransformPoint(tp);
+            CenterX = tp.X;
+            CenterY = tp.Y;
+
             _rotate_box.BorderBrush = new SolidColorBrush(Colors.Aqua);
+            
             this.rotateGizmo.StartTrackingPointer(pointer);
         }
 
@@ -242,10 +248,6 @@ namespace WireFrame.DrawArea.Controls
             }
 
             ShapeCloner.Update(refShape, cloneShape, position, zoomFactor);
-
-            GizmoCenter = new Point(Left + Length * 0.5, Top + Breath * 0.5);
-            var tp = _rotate_box.TransformToVisual(null).Inverse.TransformPoint(GizmoCenter);
-            SetCenter(tp.X, tp.Y);
         }
 
         public List<IShape> GetShapes()
